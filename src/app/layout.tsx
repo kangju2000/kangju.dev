@@ -1,6 +1,9 @@
-import type { PropsWithChildren } from 'react'
-import './globals.css'
+import Providers from './Providers'
+
 import type { Metadata } from 'next'
+import type { PropsWithChildren } from 'react'
+
+import '@/styles/globals.css'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -11,7 +14,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="ko">
       <body>
-        <main>{children}</main>
+        <Providers>
+          <main>{children}</main>
+        </Providers>
       </body>
     </html>
   )
