@@ -1,6 +1,8 @@
 import { defineDocumentType, defineNestedType, makeSource } from 'contentlayer/source-files'
 import { format } from 'date-fns'
 import readingTime from 'reading-time'
+import rehypeCodeTitles from 'rehype-code-titles'
+import rehypePrism from 'rehype-prism-plus'
 import remarkBreaks from 'remark-breaks'
 import remarkGfm from 'remark-gfm'
 import remarkToc from 'remark-toc'
@@ -31,7 +33,10 @@ export const Post = defineDocumentType(() => ({
       type: 'string',
       resolve: (post) => format(new Date(post.date), 'yyyy.MM.dd'),
     },
-    slug: { type: 'string', resolve: (post) => post._raw.sourceFileName.replace(/\.mdx$/, '') },
+    slug: {
+      type: 'string',
+      resolve: (post) => post._raw.sourceFileName.replace(/\.mdx$/, ''),
+    },
     readTime: {
       type: 'nested',
       of: ReadTime,
@@ -48,7 +53,10 @@ export const Log = defineDocumentType(() => ({
     tags: { type: 'list', of: { type: 'string' } },
   },
   computedFields: {
-    slug: { type: 'string', resolve: (post) => post._raw.flattenedPath },
+    slug: {
+      type: 'string',
+      resolve: (post) => post._raw.sourceFileName.replace(/\.mdx$/, ''),
+    },
     date: {
       type: 'string',
       resolve: (post) => {
@@ -71,5 +79,7 @@ export default makeSource({
   documentTypes: [Post, Log],
   mdx: {
     remarkPlugins: [remarkGfm, remarkBreaks, remarkToc],
+    //@ts-ignore
+    rehypePlugins: [rehypeCodeTitles, rehypePrism],
   },
 })
