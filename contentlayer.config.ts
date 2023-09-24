@@ -1,5 +1,5 @@
 import { defineDocumentType, defineNestedType, makeSource } from 'contentlayer/source-files'
-import dayjs from 'dayjs'
+import { format } from 'date-fns'
 import readingTime from 'reading-time'
 import remarkBreaks from 'remark-breaks'
 import remarkGfm from 'remark-gfm'
@@ -17,9 +17,9 @@ const ReadTime = defineNestedType(() => ({
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
-  filePathPattern: `post/**/*.mdx`,
+  filePathPattern: `posts/**/*.mdx`,
+  contentType: 'mdx',
   fields: {
-    slug: { type: 'string', required: true },
     date: { type: 'date', required: true },
     title: { type: 'string', required: true },
     description: { type: 'string', required: true },
@@ -27,22 +27,28 @@ export const Post = defineDocumentType(() => ({
     tags: { type: 'list', of: { type: 'string' } },
   },
   computedFields: {
+    dateFormatted: {
+      type: 'string',
+      resolve: (post) => format(new Date(post.date), 'yyyy.MM.dd'),
+    },
+    slug: { type: 'string', resolve: (post) => post._raw.sourceFileName.replace(/\.mdx$/, '') },
     readTime: {
       type: 'nested',
       of: ReadTime,
       resolve: (post) => readingTime(post.body.raw),
     },
-    url: { type: 'string', resolve: (post) => `/posts/${post._raw.flattenedPath}` },
   },
 }))
 
 export const Log = defineDocumentType(() => ({
   name: 'Log',
   filePathPattern: `log/**/*.mdx`,
+  contentType: 'mdx',
   fields: {
     tags: { type: 'list', of: { type: 'string' } },
   },
   computedFields: {
+    slug: { type: 'string', resolve: (post) => post._raw.flattenedPath },
     date: {
       type: 'string',
       resolve: (post) => {
@@ -54,10 +60,9 @@ export const Log = defineDocumentType(() => ({
 
         const dateString = '20' + splitPath[1].split('.')[0] + '.' + splitPath[2]
 
-        return dayjs(dateString).format('YY.MM.DD')
+        return format(new Date(dateString), 'yy.MM.dd')
       },
     },
-    url: { type: 'string', resolve: (post) => `/logs/${post._raw.flattenedPath}` },
   },
 }))
 

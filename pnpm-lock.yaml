@@ -20,9 +20,9 @@ dependencies:
   contentlayer:
     specifier: ^0.3.4
     version: 0.3.4(esbuild@0.19.3)
-  dayjs:
-    specifier: ^1.11.10
-    version: 1.11.10
+  date-fns:
+    specifier: ^2.30.0
+    version: 2.30.0
   framer-motion:
     specifier: ^10.16.4
     version: 10.16.4(react-dom@18.2.0)(react@18.2.0)
@@ -43,6 +43,9 @@ dependencies:
     version: 3.3.3
 
 devDependencies:
+  '@types/mdx':
+    specifier: ^2.0.7
+    version: 2.0.7
   '@types/node':
     specifier: 20.6.3
     version: 20.6.3
@@ -2395,7 +2398,6 @@ packages:
 
   /@types/mdx@2.0.7:
     resolution: {integrity: sha512-BG4tyr+4amr3WsSEmHn/fXPqaCba/AYZ7dsaQTiavihQunHSIxk+uAtqsjvicNpyHN6cm+B9RVrUOtW9VzIKHw==}
-    dev: false
 
   /@types/ms@0.7.31:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
@@ -3146,8 +3148,11 @@ packages:
     engines: {node: '>= 12'}
     dev: false
 
-  /dayjs@1.11.10:
-    resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==}
+  /date-fns@2.30.0:
+    resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
+    engines: {node: '>=0.11'}
+    dependencies:
+      '@babel/runtime': 7.22.15
     dev: false
 
   /debug@3.2.7:
