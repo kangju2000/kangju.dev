@@ -20,8 +20,8 @@ const config: ThemeConfig = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="ko">
-      <body>
+    <html lang="ko" suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <ColorModeScript initialColorMode={config.initialColorMode} />
         <Providers>
           <Header />
