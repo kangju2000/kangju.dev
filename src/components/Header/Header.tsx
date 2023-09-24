@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation'
 
 const links = [
   { href: '/', label: 'Home' },
-  { href: '/post', label: 'Post' },
+  { href: '/posts', label: 'Posts' },
   { href: '/log', label: 'Log' },
 ]
 
@@ -52,7 +52,12 @@ const Header = () => {
         <Center as="ul" gap="24px">
           {links.map(({ href, label }) => (
             <chakra.li key={`${href}${label}`} pos="relative" p="8px 16px" cursor="pointer">
-              <Link href={href} fontWeight="bold" color="gray.500">
+              <Link
+                href={href}
+                fontWeight="bold"
+                color="gray.500"
+                _hover={{ textDecoration: 'none' }}
+              >
                 {label}
               </Link>
               {currentType === href && (
