@@ -28,6 +28,7 @@ code[class*='language-'] {
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
+  background: var(--chakra-colors-gray-900);
 }
 
 pre[class*='language-']::selection,
@@ -49,7 +50,7 @@ pre[class*='language-'] {
   padding: 1em;
   margin: 0.5em 0;
   overflow: auto;
-  background: theme('colors.zinc.900');
+  background: var(--chakra-colors-gray-900);
   border-radius: 0.5rem;
 }
 
@@ -57,7 +58,7 @@ pre[class*='language-'] {
   padding: 0.1em 0.3em;
   border-radius: 0.3em;
   color: #db4c69;
-  background: theme('colors.zinc.900');
+  background: var(--chakra-colors-gray-900);
 }
 /*********************************************************
 * Tokens
@@ -296,18 +297,18 @@ pre[class*='language-'] > code[class*='language-'] {
 }
 
 .code-line.inserted {
-  background-color: theme('colors.emerald.900'); /* Set inserted line (+) color */
+  background-color: var(--chakra-colors-blue-900); /* Set inserted line (+) color */
 }
 
 .code-line.deleted {
-  background-color: theme('colors.red.900'); /* Set deleted line (-) color */
+  background-color: var(--chakra-colors-red-900); /* Set deleted line (-) color */
 }
 
 .highlight-line {
   margin-left: -14px;
   margin-right: -16px;
-  background-color: theme('colors.zinc.800'); /* Set highlight bg color */
-  border-left: 2px solid theme('colors.amber.400'); /* Set highlight accent border color */
+  background-color: var(--chakra-colors-gray-600); /* Set highlight bg color */
+  border-left: 2px solid var(--chakra-colors-cyan-600); /* Set highlight accent border color */
 }
 
 .line-highlight.line-highlight {
@@ -331,11 +332,10 @@ pre[class*='language-'] > code[class*='language-'] {
   display: inline-flex;
   position: relative;
   top: 1rem;
-  background: theme('colors.zinc.900');
-  color: theme('colors.zinc.100');
-  font-family: theme('fontFamily.mono');
+  background: var(--chakra-colors-gray-900);
+  color: var(--chakra-colors-gray-300);
   padding: 0.25rem 1.5rem;
   border-radius: 0.5rem 0.5rem 0 0;
-  border-top: 4px solid theme('colors.indigo.600');
+  border-top: 4px solid var(--chakra-colors-blue-500);
   font-size: 0.8rem;
 }
