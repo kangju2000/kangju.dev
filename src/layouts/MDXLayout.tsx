@@ -29,7 +29,7 @@ const MDXLayout = ({ content }: MDXLayoutProps) => {
   return (
     <div>
       <Heading as="h1" fontSize="5xl" fontWeight="bold" mb="24px">
-        {content.date}
+        {content.title}
       </Heading>
       <MDXComponent components={components} />
     </div>

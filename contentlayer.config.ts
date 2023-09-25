@@ -59,7 +59,7 @@ export const Log = defineDocumentType(() => ({
       type: 'string',
       resolve: (post) => post._raw.sourceFileName.replace(/\.mdx$/, ''),
     },
-    date: {
+    title: {
       type: 'string',
       resolve: (post) => {
         const splitPath = post._raw.flattenedPath.match(/(\d{2}\.\d{2})\/(\d{2}\.\d{2})/)
@@ -84,8 +84,13 @@ export default makeSource({
     rehypePlugins: [
       rehypeSlug,
       rehypeCodeTitles,
-      //@ts-ignore
-      rehypePrism,
+      [
+        //@ts-ignore
+        rehypePrism,
+        {
+          showLineNumbers: true,
+        },
+      ],
       [
         rehypeAutoLinkHeadings,
         {

@@ -8,7 +8,7 @@ export default function LogPage() {
       {allLogs.map((log) => {
         return (
           <Link key={log.slug} href={`${log._raw.flattenedPath}`}>
-            <h1>{log.date}</h1>
+            <h1>{log.title}</h1>
           </Link>
         )
       })}
