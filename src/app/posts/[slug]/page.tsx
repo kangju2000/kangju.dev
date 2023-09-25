@@ -1,14 +1,12 @@
 'use client'
 import { allPosts } from 'contentlayer/generated'
-import { notFound } from 'next/navigation'
-import { useMDXComponent } from 'next-contentlayer/hooks'
+
+import MDXPost from '@/layouts/MDXLayout'
 
 export default function PostPage({ params }: { params: { slug: string } }) {
   const post = allPosts.find((post) => post.slug === params.slug)
 
-  if (!post) notFound()
+  if (!post) return <div>not found</div>
 
-  const MDXContent = useMDXComponent(post.body.code)
-
-  return <MDXContent />
+  return <MDXPost content={post} />
 }
