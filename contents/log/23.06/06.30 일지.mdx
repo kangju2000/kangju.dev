@@ -1,5 +1,3 @@
-# 23.06.30
-
 ### 오늘 한 일
 
 - [x] DogSounds TIL에 검색 및 댓글 기능 추가
@@ -12,7 +10,7 @@
 
 ---
 
-# DogSounds TIL
+## DogSounds TIL
 
 ## 검색 기능 추가
 
@@ -32,7 +30,7 @@ module.exports = {
       contextualSearch: true,
     },
   },
-};
+}
 ```
 
 위에 키는 공개되도 상관없는 키이다.
@@ -113,48 +111,48 @@ jobs:
 ### Comment 컴포넌트 추가
 
 ```tsx
-import React, { useEffect, useRef } from 'react';
-import { useColorMode } from '@docusaurus/theme-common';
+import React, { useEffect, useRef } from 'react'
+import { useColorMode } from '@docusaurus/theme-common'
 
 function Comment() {
-  const containerRef = useRef(null);
-  const utterancesRef = useRef(null);
+  const containerRef = useRef(null)
+  const utterancesRef = useRef(null)
 
-  const { colorMode } = useColorMode();
-  const utterancesTheme = colorMode === 'dark' ? 'github-dark' : 'github-light';
+  const { colorMode } = useColorMode()
+  const utterancesTheme = colorMode === 'dark' ? 'github-dark' : 'github-light'
 
   useEffect(() => {
     const createUtterancesEl = () => {
-      const script = document.createElement('script');
-      script.src = 'https://utteranc.es/client.js';
-      script.setAttribute('repo', 'Self-Driven-Development/Dogsounds-TIL');
-      script.setAttribute('issue-term', 'title');
-      script.setAttribute('label', 'comment');
-      script.setAttribute('theme', utterancesTheme);
-      script.crossOrigin = 'anonymous';
-      script.async = true;
+      const script = document.createElement('script')
+      script.src = 'https://utteranc.es/client.js'
+      script.setAttribute('repo', 'Self-Driven-Development/Dogsounds-TIL')
+      script.setAttribute('issue-term', 'title')
+      script.setAttribute('label', 'comment')
+      script.setAttribute('theme', utterancesTheme)
+      script.crossOrigin = 'anonymous'
+      script.async = true
       script.onload = () => {
-        utterancesRef.current = document.querySelector('.utterances-frame');
-      };
+        utterancesRef.current = document.querySelector('.utterances-frame')
+      }
 
-      containerRef.current.appendChild(script);
-    };
-    createUtterancesEl();
-  }, []);
+      containerRef.current.appendChild(script)
+    }
+    createUtterancesEl()
+  }, [])
 
   useEffect(() => {
-    if (!utterancesRef.current) return;
+    if (!utterancesRef.current) return
     const message = {
       type: 'set-theme',
       theme: utterancesTheme,
-    };
+    }
 
-    utterancesRef.current.contentWindow.postMessage(message, 'https://utteranc.es');
-  }, [utterancesTheme]);
+    utterancesRef.current.contentWindow.postMessage(message, 'https://utteranc.es')
+  }, [utterancesTheme])
 
-  return <div ref={containerRef} />;
+  return <div ref={containerRef} />
 }
-export default Comment;
+export default Comment
 ```
 
 ### DocItem 컴포넌트 수정
@@ -168,9 +166,9 @@ pnpm swizzle @docusaurus/theme-classic DocItem --danger
 그럼 이제 `DocItem` 컴포넌트 안에 `Comment` 컴포넌트를 추가하면 된다.
 
 ```tsx
-import React from 'react';
-import DocItem from '@theme-original/DocItem';
-import Comment from '@site/src/components/Comment';
+import React from 'react'
+import DocItem from '@theme-original/DocItem'
+import Comment from '@site/src/components/Comment'
 
 export default function DocItemWrapper(props) {
   return (
@@ -178,7 +176,7 @@ export default function DocItemWrapper(props) {
       <DocItem {...props} />
       <Comment />
     </>
-  );
+  )
 }
 ```
 

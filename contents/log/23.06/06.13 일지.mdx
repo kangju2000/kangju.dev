@@ -1,5 +1,3 @@
-# 23.06.13
-
 ### 오늘 한 일
 
 - [x] 알고리즘 문제 풀이
@@ -35,15 +33,15 @@
 `react-countup` 라이브러리를 사용해서 숫자 카운트도 넣었다. 예측 수익률 보여줄 때 쓸려고 넣었다.
 
 ```tsx
-import CountUp from 'react-countup';
+import CountUp from 'react-countup'
 
 //...
 
-<CountUp
+;<CountUp
   end={Math.abs(rate)}
-  suffix='%'
+  suffix="%"
   className={`text-[24px] ${isProfit ? 'text-red-500' : 'text-blue-500'}`}
-/>;
+/>
 
 //...
 ```

@@ -3,8 +3,6 @@ description: react-hook-form의 필드 별 useController를 호출해주는 훅�
 tags: [react-hook-form, useController, useForm, useControllers, Devtools]
 ---
 
-# 23.07.25
-
 ## 오늘 한 일
 
 - 카공실록 PR 리뷰 반영
@@ -34,59 +32,62 @@ import {
   type UseControllerReturn,
   type UseFormReturn,
   useController,
-} from 'react-hook-form';
+} from 'react-hook-form'
 
 export function useControllers<T extends FieldValues>(
   methods: UseFormReturn<T>,
   options?: {
-    setDefaultFields?: Array<FieldPath<T>>;
+    setDefaultFields?: Array<FieldPath<T>>
   }
 ) {
-  const { control, getValues } = methods;
+  const { control, getValues } = methods
 
-  const values = getValues();
+  const values = getValues()
 
-  const forms = (options?.setDefaultFields ?? Object.keys(values)).reduce((acc, key) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const controller = useController<T>({
-      name: key as FieldPath<T>,
-      control,
-    });
+  const forms = (options?.setDefaultFields ?? Object.keys(values)).reduce(
+    (acc, key) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const controller = useController<T>({
+        name: key as FieldPath<T>,
+        control,
+      })
 
-    acc[key as FieldPath<T>] = controller;
+      acc[key as FieldPath<T>] = controller
 
-    return acc;
-  }, {} as Record<FieldPath<T>, UseControllerReturn<T>>);
+      return acc
+    },
+    {} as Record<FieldPath<T>, UseControllerReturn<T>>
+  )
 
-  return forms;
+  return forms
 }
 ```
 
 이렇게 만들어진 훅을 사용하면 아래와 같이 사용할 수 있다.
 
 ```tsx
-const methods = useForm();
-const { title, content } = useControllers(methods); // fields를 지정하지 않으면 모든 필드를 가져온다.
+const methods = useForm()
+const { title, content } = useControllers(methods) // fields를 지정하지 않으면 모든 필드를 가져온다.
 
 return (
   <form onSubmit={methods.handleSubmit(onSubmit)}>
     <input {...title.field} />
     <input {...content.field} />
   </form>
-);
+)
 ```
 
 만약 특정 필드만 가져오고 싶다면 아래와 같이 사용할 수 있다.
 
 ```tsx
-const methods = useForm();
-const { title } = useControllers(methods, { setDefaultFields: ['title'] });
+const methods = useForm()
+const { title } = useControllers(methods, { setDefaultFields: ['title'] })
 
 return (
   <form onSubmit={methods.handleSubmit(onSubmit)}>
     <input {...title.field} />
   </form>
-);
+)
 ```
 
 사실 `setDefaultFields`를 사용하지 않아도 특정 필드만 가져올 수는 있지만, 문제는 다른 필드를 사용하지 않아도 `useController`가 이미 훅 내부에서 실행이 되었기 때문에 불필요한 비용이 발생하게 된다. 그래서 `setDefaultFields`를 사용해서 필요한 필드만 가져오도록 했다.
@@ -96,16 +97,16 @@ return (
 `@hookform/devtools`라는 라이브러리도 있었다. 하지만 Next에서 hydration 문제가 있었다. 동일한 이슈를 겪은 사람이 있었고, 그 사람의 해결 방법을 참고해서 해결했다.
 
 ```tsx
-import dynamic from 'next/dynamic';
+import dynamic from 'next/dynamic'
 
 const FormDevtools: React.ElementType = dynamic(
-  () => import('@hookform/devtools').then(module => module.DevTool),
+  () => import('@hookform/devtools').then((module) => module.DevTool),
   {
     ssr: false,
   }
-);
+)
 
-export default FormDevtools;
+export default FormDevtools
 ```
 
 근데 여기서 뜨는 필드들은 등록된 필드들만 보여주는 것 같다. 단순히 setValue로 관리되는 필드들은 보여주지 않는다. 근데 위에서 만든 `useControllers`를 사용하면 `useController`로 등록된 필드들도 보여준다.

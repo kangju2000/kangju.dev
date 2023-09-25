@@ -1,5 +1,3 @@
-# 23.09.09
-
 ## 오늘 한 일
 
 - 너디너리 세션 듣기
@@ -8,7 +6,7 @@
 
 ---
 
-# gloddy
+## gloddy
 
 ## useModal 이슈
 
@@ -24,7 +22,7 @@
 
 하지만 useModal로 연 모달은 상태를 전달받지 못해 비활성화 되지 않았다.
 
-<br/>
+<br />
 
 slash에서 [이슈](https://github.com/toss/slash/issues/222)를 찾을 수 있었지만, 버그가 아닌 당연한 현상이고, 전역 상태를 사용하는 것을 해결책으로 제시하고 있었다.
 
@@ -47,25 +45,25 @@ Modal 외부에서 상태를 주입하는 것이 아닌 Modal 내부에서 요�
 그래서 우리는 로딩 레이어를 덮는 방법으로 해결했다.
 
 ```tsx
-'use client';
-import Loading from './Loading';
-import { ModalWrapper } from '../Modal';
-import { AnimatePresence } from 'framer-motion';
-import { useEffect } from 'react';
+'use client'
+import Loading from './Loading'
+import { ModalWrapper } from '../Modal'
+import { AnimatePresence } from 'framer-motion'
+import { useEffect } from 'react'
 
 interface LayerLoadingProps {
-  isLoading: boolean;
-  layerNumber?: number;
+  isLoading: boolean
+  layerNumber?: number
 }
 
 export default function LayerLoading({ isLoading, layerNumber = 1 }: LayerLoadingProps) {
   useEffect(() => {
-    document.body.style.overflow = isLoading ? 'hidden' : 'unset';
+    document.body.style.overflow = isLoading ? 'hidden' : 'unset'
 
     return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isLoading]);
+      document.body.style.overflow = 'unset'
+    }
+  }, [isLoading])
 
   return (
     <AnimatePresence>
@@ -75,7 +73,7 @@ export default function LayerLoading({ isLoading, layerNumber = 1 }: LayerLoadin
         </ModalWrapper>
       )}
     </AnimatePresence>
-  );
+  )
 }
 ```
 
@@ -97,7 +95,7 @@ status가 페칭 중이거나 성공했을 때 계속 로딩이 뜨게 구현했
 
 모달에 `useOnClickOutside`라는 훅을 사용해서 모달 외부를 클릭하면 모달이 닫히게 구현했었다. 하지만 로딩 레이어를 추가로 덮었을 때에는 꺼지게 하지 않고 싶었다. 분기처리하는 prop을 추가하면 되겠지만 너무 복잡해질 것 같아서 일단 모달의 확인 버튼을 클릭하면 모달이 닫히고 로딩 레이어가 뜨게 구현했다.
 
-# next 블로그
+## next 블로그
 
 확실히 익숙한 next를 쓰니까 금방 된다. 레퍼런스가 gatsby에 비해 많이 없지만, 다른 분들의 레포지토리를 참고해서 구현할 수 있었다.
 

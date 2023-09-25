@@ -1,5 +1,3 @@
-# 23.05.20
-
 ## 오늘 한 일
 
 - [x] 알고리즘 문제 풀이
@@ -27,41 +25,41 @@ Sentry에서 제공하는 ErrorBoundary를 이용하여 에러가 발생하면 �
 ```tsx
 // src/components/uis/Toast/index.tsx
 type Props = {
-  message: string;
-  type: 'success' | 'error';
-  delay?: number;
-};
+  message: string
+  type: 'success' | 'error'
+  delay?: number
+}
 
 const Toast = ({ message, type, delay = 3000 }: Props) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   const toastColor = {
     success: 'bg-green-500',
     error: 'bg-red-500',
-  };
+  }
 
   useEffect(() => {
-    setIsOpen(true);
-    const timer = setTimeout(() => setIsOpen(false), delay);
-    return () => clearTimeout(timer);
-  }, []);
+    setIsOpen(true)
+    const timer = setTimeout(() => setIsOpen(false), delay)
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
-    <Modal.Background isOpen={isOpen} className='fixed left-0 top-0 z-[1999]'>
+    <Modal.Background isOpen={isOpen} className="fixed left-0 top-0 z-[1999]">
       <Modal
         className={`round-[7px] border-1 fixed left-1/2 top-[20px] flex h-[50px] max-w-[200px] translate-x-[-50%] items-center justify-center rounded-[15px] p-[15px] text-white ${toastColor[type]}`}
       >
         <p>{message}</p>
       </Modal>
     </Modal.Background>
-  );
-};
+  )
+}
 ```
 
 ```tsx
 // src/pages/content/App.tsx
-<Portal elementId='modal'>
-  <ErrorBoundary fallback={<Toast message='에러가 발생했습니다.' type='error' />}>
+<Portal elementId="modal">
+  <ErrorBoundary fallback={<Toast message="에러가 발생했습니다." type="error" />}>
     <ContentModal ref={modalRef} onClick={handleModalClick} isOpen={isModalOpen} />
   </ErrorBoundary>
 </Portal>
@@ -90,14 +88,14 @@ const Toast = ({ message, type, delay = 3000 }: Props) => {
 ```tsx
 // src/hooks/useError.ts
 const useError = () => {
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<Error | null>(null)
 
   const catchAsyncError = (error: Error) => {
-    setError(error);
-  };
+    setError(error)
+  }
 
-  return { error, catchAsyncError };
-};
+  return { error, catchAsyncError }
+}
 ```
 
 > 예외 처리할 때 throw하지 않고 return을 해주는 경우에도 로그를 남기고 싶다면?
@@ -110,19 +108,19 @@ const useError = () => {
 const getVideoAtCourseDocument = ($: cheerio.CheerioAPI, courseId: string) => {
   return $('.total_sections .activity.vod .activityinstance')
     .map((i, el) => {
-      const link = $(el).find('a').attr('href');
+      const link = $(el).find('a').attr('href')
       if (!link) {
-        captureException(new Error(`동영상 링크가 없습니다. courseId: ${courseId}`)); // here
-        return;
+        captureException(new Error(`동영상 링크가 없습니다. courseId: ${courseId}`)) // here
+        return
       }
 
-      const id = getLinkId(link);
-      const title = $(el).find('.instancename').clone().children().remove().end().text().trim();
+      const id = getLinkId(link)
+      const title = $(el).find('.instancename').clone().children().remove().end().text().trim()
       const [, endAt, timeInfo] = $(el)
         .find('.displayoptions')
         .text()
         .split(/ ~ |,/)
-        .map((str) => str.trim());
+        .map((str) => str.trim())
 
       const v: Video = {
         type: 'video',
@@ -132,12 +130,12 @@ const getVideoAtCourseDocument = ($: cheerio.CheerioAPI, courseId: string) => {
         title,
         endAt,
         timeInfo,
-      };
+      }
 
-      return v;
+      return v
     })
-    .get();
-};
+    .get()
+}
 ```
 
 ### 리팩토링
@@ -155,19 +153,19 @@ const useScrollLock = () => {
       position: fixed; 
       top: -${window.scrollY}px;
       overflow-y: scroll;
-      width: 100%;`;
-  };
+      width: 100%;`
+  }
 
   const scrollUnlock = () => {
-    const scrollY = document.body.style.top;
-    document.body.style.cssText = '';
-    window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
-  };
+    const scrollY = document.body.style.top
+    document.body.style.cssText = ''
+    window.scrollTo(0, parseInt(scrollY || '0', 10) * -1)
+  }
 
-  return { scrollLock, scrollUnlock };
-};
+  return { scrollLock, scrollUnlock }
+}
 
-export default useScrollLock;
+export default useScrollLock
 ```
 
 ### useFetchData hook
@@ -178,42 +176,42 @@ export default useScrollLock;
 // src/hooks/useFetchData.ts
 
 type dataType = {
-  courseList: Course[];
-  activityList: ActivityType[];
-  updateAt: number;
-};
+  courseList: Course[]
+  activityList: ActivityType[]
+  updateAt: number
+}
 
 const useFetchData = () => {
-  const [pos, setPos] = useState(0);
+  const [pos, setPos] = useState(0)
   const [data, setData] = useState<dataType>({
     courseList: [{ id: '-1', title: '전체' }],
     activityList: [],
     updateAt: 0,
-  });
+  })
 
   const getData = async () => {
-    const courses = await getCourses();
+    const courses = await getCourses()
     const activities = await allProgress(
       courses.map((course) => getActivities(course.id)),
       (progress) => setPos(progress)
-    ).then((activities) => activities.flat());
+    ).then((activities) => activities.flat())
 
-    const updateAt = new Date().getTime();
+    const updateAt = new Date().getTime()
 
     setData({
       courseList: [{ id: '-1', title: '전체' }, ...courses],
       activityList: activities,
       updateAt,
-    });
+    })
 
-    setPos(0);
+    setPos(0)
 
     chrome.storage.local.set({
       courses,
       activities,
       updateAt,
-    });
-  };
+    })
+  }
 
   const getLocalData = () => {
     chrome.storage.local.get(({ updateAt, courses, activities }) => {
@@ -221,14 +219,14 @@ const useFetchData = () => {
         courseList: [{ id: '-1', title: '전체' }, ...courses],
         activityList: activities,
         updateAt,
-      });
-    });
-  };
+      })
+    })
+  }
 
-  return { getData, getLocalData, data, pos };
-};
+  return { getData, getLocalData, data, pos }
+}
 
-export default useFetchData;
+export default useFetchData
 ```
 
 모달을 열었을 때 업데이트 된 시간이 10분이 지났으면 `getData`, 아니면 `getLocalData`를 호출하도록 했다.

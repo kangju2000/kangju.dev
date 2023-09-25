@@ -1,5 +1,3 @@
-# 23.08.12
-
 ## 오늘 한 일
 
 - 프로그라피 팀 모임
@@ -7,7 +5,7 @@
 
 ---
 
-# 카공실록
+## 카공실록
 
 오늘 프로그라피 팀 모임에서 api 연결 테스트를 진행했다.
 
@@ -42,7 +40,7 @@ const { data } = await ky
       'Content-Type': 'application/json',
     },
   })
-  .json<APIResponse<{ tags: PlaceCondition[] }>>();
+  .json<APIResponse<{ tags: PlaceCondition[] }>>()
 ```
 
 ### 테스트 2 - axios
@@ -69,7 +67,7 @@ const { data } = await fetch(process.env.NEXT_PUBLIC_API_URL + 'api/v1/tags/all'
   headers: {
     'Content-Type': 'application/json',
   },
-}).then(res => res.json());
+}).then((res) => res.json())
 ```
 
 ### 해결
@@ -98,13 +96,13 @@ ky 라이브러리의 이슈라고 판단했다. 내일 이슈 적어서 올려�
 ### 해결
 
 ```ts
-const map = mapRef?.current as kakao.maps.Map;
-const center = map.getCenter();
+const map = mapRef?.current as kakao.maps.Map
+const center = map.getCenter()
 
-const latitude = center.getLat();
-const longitude = center.getLng();
-const latitudeBound = map.getBounds().getNorthEast().getLat() - latitude;
-const longitudeBound = map.getBounds().getNorthEast().getLng() - longitude;
+const latitude = center.getLat()
+const longitude = center.getLng()
+const latitudeBound = map.getBounds().getNorthEast().getLat() - latitude
+const longitudeBound = map.getBounds().getNorthEast().getLng() - longitude
 ```
 
 ### 리팩토링
@@ -118,13 +116,13 @@ const longitudeBound = map.getBounds().getNorthEast().getLng() - longitude;
 
 ```tsx
 export default function MapSection() {
-  const { coordinates } = useCenterCoordinateStore();
-  const { refetch } = useGetPlacesAround(coordinates);
-  const mapRef = useRef<kakao.maps.Map>(null);
+  const { coordinates } = useCenterCoordinateStore()
+  const { refetch } = useGetPlacesAround(coordinates)
+  const mapRef = useRef<kakao.maps.Map>(null)
 
   useEffect(() => {
-    refetch();
-  }, [coordinates]);
+    refetch()
+  }, [coordinates])
 
   return (
     <section>
@@ -145,7 +143,7 @@ export default function MapSection() {
         <LocationCTAButton mapRef={mapRef} />
       </Map>
     </section>
-  );
+  )
 }
 ```
 
@@ -159,33 +157,33 @@ Sheet 상태에 따라 달라지는 곳이 많아서 context로 관리하기로 
 <summary>SheetProvider 코드</summary>
 
 ```tsx
-'use client';
-import { createContext, useContext } from 'react';
-import { createStore, useStore } from 'zustand';
+'use client'
+import { createContext, useContext } from 'react'
+import { createStore, useStore } from 'zustand'
 
 interface SheetStore {
-  isBottomSheetUp: boolean;
-  setIsBottomSheetUp: (isBottomSheetUp: boolean) => void;
+  isBottomSheetUp: boolean
+  setIsBottomSheetUp: (isBottomSheetUp: boolean) => void
 }
 
-const sheetStore = createStore<SheetStore>(set => ({
+const sheetStore = createStore<SheetStore>((set) => ({
   isBottomSheetUp: false,
-  setIsBottomSheetUp: isBottomSheetUp => set({ isBottomSheetUp }),
-}));
+  setIsBottomSheetUp: (isBottomSheetUp) => set({ isBottomSheetUp }),
+}))
 
-const sheetContext = createContext<typeof sheetStore | null>(null);
+const sheetContext = createContext<typeof sheetStore | null>(null)
 
 export const SheetProvider = ({ children }: { children: React.ReactNode }) => {
-  return <sheetContext.Provider value={sheetStore}>{children}</sheetContext.Provider>;
-};
+  return <sheetContext.Provider value={sheetStore}>{children}</sheetContext.Provider>
+}
 
 export function useSheetContext<T>(selector: (state: SheetStore) => T): T {
-  const store = useContext(sheetContext);
+  const store = useContext(sheetContext)
   if (!store) {
-    throw new Error('Cannot find SheetProvider');
+    throw new Error('Cannot find SheetProvider')
   }
 
-  return useStore(store, selector);
+  return useStore(store, selector)
 }
 ```
 
@@ -209,7 +207,7 @@ export default function HomePage() {
         <HomeBottomSheet />
       </SheetProvider>
     </QueryAsyncBoundary>
-  );
+  )
 }
 ```
 

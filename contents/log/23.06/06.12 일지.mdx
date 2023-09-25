@@ -1,5 +1,3 @@
-# 23.06.12
-
 ### 오늘 한 일
 
 - [x] 알고리즘 문제 풀이
@@ -20,21 +18,21 @@ UI가 심심해서 뭐 할거 없나 찾다가 [정민](https://github.com/danmi
 사용법은 되게 쉽다. 그냥 배열로 들어갈 텍스트 넣어주면 끝이다.
 
 ```js
-import ReactRotatingText from 'react-rotating-text';
+import ReactRotatingText from 'react-rotating-text'
 
-const stocks = ['삼성전자', 'NAVER', '카카오', 'LG전자'];
-const prices = ['100만원', '200만원', '300만원', '1000만원'];
+const stocks = ['삼성전자', 'NAVER', '카카오', 'LG전자']
+const prices = ['100만원', '200만원', '300만원', '1000만원']
 
 //...
 
 return (
-  <h1 className='text-[24px]'>
+  <h1 className="text-[24px]">
     만약 <ReactRotatingText items={stocks} />를
     <br />
     <ReactRotatingText items={prices} />에 샀더라면...
   </h1>
   //...
-);
+)
 ```
 
 지금 배포된 [페이지](https://gcu-it.netlify.app/chart)에서 확인할 수 있다.

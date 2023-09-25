@@ -1,5 +1,3 @@
-# 23.07.27
-
 ## 오늘 한 일
 
 - 카공실록 폴더 구조 변경 [PR](https://github.com/kagong-sillok/kagong-sillok-client/pull/50)
@@ -44,11 +42,11 @@ api 호출해서 가져오는 DTO들은 어디서든 사용될 가능성이 있�
 ```ts
 declare namespace Common {
   interface Response<T> {
-    result?: string;
-    message?: string;
-    data: T;
+    result?: string
+    message?: string
+    data: T
   }
-  type Modify<T, R> = Omit<T, keyof R> & R;
+  type Modify<T, R> = Omit<T, keyof R> & R
 }
 ```
 
@@ -62,28 +60,28 @@ export const postImages = async (payload: ImagesPayload) => {
     .post('api/v1/images', {
       json: payload,
     })
-    .json<Common.Response<{ images: Image[] }>>();
+    .json<Common.Response<{ images: Image[] }>>()
 
-  return data;
-};
+  return data
+}
 ```
 
 ```ts
 export interface Place {
-  id: number;
-  name: string;
-  address: string;
-  latitude: number;
-  longitude: number;
-  imageIds: number[];
-  tags: string[]; // ['#조용한', '#나만알고싶은', '#노트북']
-  rating: number;
-  isOpen: boolean;
-  phone: string; // 02-1234-1234
+  id: number
+  name: string
+  address: string
+  latitude: number
+  longitude: number
+  imageIds: number[]
+  tags: string[] // ['#조용한', '#나만알고싶은', '#노트북']
+  rating: number
+  isOpen: boolean
+  phone: string // 02-1234-1234
   links: {
-    linkType: LinkType;
-    url: string;
-  }[];
+    linkType: LinkType
+    url: string
+  }[]
   businessHours: [
     Common.Modify<BusinessHour, { dayOfWeek: 'MONDAY' }>,
     Common.Modify<BusinessHour, { dayOfWeek: 'TUESDAY' }>,
@@ -91,8 +89,8 @@ export interface Place {
     Common.Modify<BusinessHour, { dayOfWeek: 'THURSDAY' }>,
     Common.Modify<BusinessHour, { dayOfWeek: 'FRIDAY' }>,
     Common.Modify<BusinessHour, { dayOfWeek: 'SATURDAY' }>,
-    Common.Modify<BusinessHour, { dayOfWeek: 'SUNDAY' }>
-  ];
+    Common.Modify<BusinessHour, { dayOfWeek: 'SUNDAY' }>,
+  ]
 }
 ```
 
@@ -107,7 +105,7 @@ businessHours: [
   Omit<BusinessHour, 'dayOfWeek'> & { dayOfWeek: 'FRIDAY' },
   Omit<BusinessHour, 'dayOfWeek'> & { dayOfWeek: 'SATURDAY' },
   Omit<BusinessHour, 'dayOfWeek'> & { dayOfWeek: 'SUNDAY' },
-];
+]
 ```
 
 `dayOfWeek`를 두 번 써야해서 커스텀 타입 만들어서 작성했다.

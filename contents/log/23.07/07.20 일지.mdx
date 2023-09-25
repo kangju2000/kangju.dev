@@ -3,8 +3,6 @@ description: Gloddy 프로젝트에서 상태 관리 방식에 대한 고민
 tags: [전역상태, Context API, Jotai, zustand]
 ---
 
-# 23.07.20
-
 ## 오늘 한 일
 
 - Gloddy 개발 - 게시글 작성 페이지 구현
@@ -22,7 +20,10 @@ tags: [전역상태, Context API, Jotai, zustand]
 
 일단 최종 구현은 다음과 같다.
 
-<img src="https://user-images.githubusercontent.com/23312485/254798997-18a685c3-8ae6-4160-8315-3996abf2a86f.png" width="400" />
+<img
+  src="https://user-images.githubusercontent.com/23312485/254798997-18a685c3-8ae6-4160-8315-3996abf2a86f.png"
+  width="400"
+/>
 
 `TopNavigationBar`에서 이미지 추가 버튼이 존재한다.
 
@@ -61,7 +62,7 @@ export default function WritePage() {
         <InputForm />
       </WriteContextProvider>
     </main>
-  );
+  )
 }
 ```
 
@@ -70,36 +71,36 @@ export default function WritePage() {
 ```tsx
 // WriteContext.tsx
 
-'use client';
-import { createContext, useContext, useMemo, useState } from 'react';
+'use client'
+import { createContext, useContext, useMemo, useState } from 'react'
 
-import type { ImageType, StrictPropsWithChildren } from '@/types';
+import type { ImageType, StrictPropsWithChildren } from '@/types'
 
 type WriteContextType = {
-  images: ImageType[];
-  setImages: React.Dispatch<React.SetStateAction<ImageType[]>>;
-};
+  images: ImageType[]
+  setImages: React.Dispatch<React.SetStateAction<ImageType[]>>
+}
 
-const WriteContext = createContext<WriteContextType | null>(null);
+const WriteContext = createContext<WriteContextType | null>(null)
 
 function WriteContextProvider({ children }: StrictPropsWithChildren) {
-  const [images, setImages] = useState<ImageType[]>([]);
+  const [images, setImages] = useState<ImageType[]>([])
 
-  const contextValue = useMemo(() => ({ images, setImages }), [images]);
+  const contextValue = useMemo(() => ({ images, setImages }), [images])
 
-  return <WriteContext.Provider value={contextValue}>{children}</WriteContext.Provider>;
+  return <WriteContext.Provider value={contextValue}>{children}</WriteContext.Provider>
 }
 
 function useWriteContext() {
-  const context = useContext(WriteContext);
+  const context = useContext(WriteContext)
   if (context === null) {
-    throw new Error('useWriteContext must be used within a WriteContextProvider');
+    throw new Error('useWriteContext must be used within a WriteContextProvider')
   }
 
-  return context;
+  return context
 }
 
-export { useWriteContext, WriteContextProvider };
+export { useWriteContext, WriteContextProvider }
 ```
 
 뭔가 복잡해 보이지만 사실 별거 없다.
@@ -121,7 +122,7 @@ export { useWriteContext, WriteContextProvider };
 #### context 사용
 
 ```tsx
-const { images, setImages } = useWriteContext();
+const { images, setImages } = useWriteContext()
 ```
 
 이렇게 사용하고 싶은 곳에서 `useWriteContext`를 사용해서 `images`와 `setImages`를 가져온다.

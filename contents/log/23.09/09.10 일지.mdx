@@ -1,5 +1,3 @@
-# 23.09.10
-
 ## 오늘 한 일
 
 - gloddy 개발
@@ -7,7 +5,7 @@
 
 ---
 
-# 차단/신고 기능
+## 차단/신고 기능
 
 아직 api가 나오지 않았는데, ios 배포를 위해 필요한 기능이라서 일단 클라이언트에서 처리해서 눈속임을 하려한다.
 
@@ -29,37 +27,37 @@
 
 ```ts
 // useBlockStore.ts
-import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
 
 type BlockState = {
-  blockGroupIds: number[];
-  blockArticleIds: number[];
-  blockCommentIds: number[];
-  blockNoticeIds: number[];
-  setBlockId: (id: number, type: 'group' | 'article' | 'comment' | 'notice') => void;
-};
+  blockGroupIds: number[]
+  blockArticleIds: number[]
+  blockCommentIds: number[]
+  blockNoticeIds: number[]
+  setBlockId: (id: number, type: 'group' | 'article' | 'comment' | 'notice') => void
+}
 
 export const useBlockStore = create(
   persist<BlockState>(
-    set => ({
+    (set) => ({
       blockArticleIds: [],
       blockCommentIds: [],
       blockGroupIds: [],
       blockNoticeIds: [],
       setBlockId: (id: number, type: 'group' | 'article' | 'comment' | 'notice') => {
-        set(state => {
+        set((state) => {
           const capitalizedState = ('block' +
             (type.charAt(0).toUpperCase() + type.slice(1)) +
-            'Ids') as keyof Omit<BlockState, 'setBlockId'>;
+            'Ids') as keyof Omit<BlockState, 'setBlockId'>
 
-          if (state[capitalizedState].includes(id)) return state;
+          if (state[capitalizedState].includes(id)) return state
 
           return {
             ...state,
             [capitalizedState]: [...state[capitalizedState], id],
-          };
-        });
+          }
+        })
       },
     }),
     {
@@ -67,7 +65,7 @@ export const useBlockStore = create(
       storage: createJSONStorage(() => localStorage),
     }
   )
-);
+)
 ```
 
 이제 이 전역 상태를 통해 눈속임을 할 수 있게 되었다.

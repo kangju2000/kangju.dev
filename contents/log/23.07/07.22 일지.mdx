@@ -3,8 +3,6 @@ description: 커스텀한 useFunnel 훅에 타입 추론 적용해보기
 tags: [useFunnel, 타입 추론, readonly, react-hook-form]
 ---
 
-# 23.07.22
-
 ## 오늘 한 일
 
 - Gloddy 개발
@@ -16,7 +14,7 @@ tags: [useFunnel, 타입 추론, readonly, react-hook-form]
 `useFunnel`을 직접 구현하면서 타입 추론이 잘 안되는 문제가 있었다.
 
 ```tsx {5}
-const { Funnel, prevStep, nextStep } = useFunnel(['praise', 'mate']);
+const { Funnel, prevStep, nextStep } = useFunnel(['praise', 'mate'])
 
 return (
   <Funnel>
@@ -27,7 +25,7 @@ return (
       <MateComponent onPrevClick={prevStep} onNextClick={nextStep} />
     </Funnel.Step>
   </Funnel>
-);
+)
 ```
 
 이 부분은 내부적으로 에러를 던져서 막아주긴 했는데, 더 나아가서 리터럴 타입으로 추론이 되도록 하고 싶었다.
@@ -36,7 +34,11 @@ return (
 
 토스의 `useFunnel`은 `as const`로 타입 단언해서 리터럴 타입으로 추론이 가능하게 했다.
 
-<img width="897" alt="image" src="https://github.com/Self-Driven-Development/TIL/assets/23312485/6969c24b-e2b9-404e-a1c3-6ab05aabd03a" />
+<img
+  width="897"
+  alt="image"
+  src="https://github.com/Self-Driven-Development/TIL/assets/23312485/6969c24b-e2b9-404e-a1c3-6ab05aabd03a"
+/>
 
 타입 단언 안하면 추론 못한다는 것이다. 나는 내부적으로 처리해서 타입 단언을 안해도 되도록 만들고 싶었다.
 
@@ -70,8 +72,8 @@ readonly는 배열과 튜플 리터럴 타입에만 허용된다고 한다. Step
 
 ```ts
 type Readonly<T> = {
-  readonly [P in keyof T]: T[P];
-};
+  readonly [P in keyof T]: T[P]
+}
 ```
 
 `Readonly`는 제네릭 T의 모든 프로퍼티를 readonly로 변환하는 타입이다.
@@ -124,7 +126,7 @@ export default function MateComponent({ onPrevClick, onNextClick }: MateComponen
   const {
     handleSubmit,
     formState: { isDirty, isValid },
-  } = useFeedbackContext();
+  } = useFeedbackContext()
 
   return (
     <main>
@@ -149,7 +151,7 @@ export default function MateComponent({ onPrevClick, onNextClick }: MateComponen
         disabled={!isDirty || !isValid}
       />
     </main>
-  );
+  )
 }
 ```
 

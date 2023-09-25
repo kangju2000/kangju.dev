@@ -1,5 +1,3 @@
-# 23.06.01
-
 ## 오늘 한 일
 
 - [x] 알고리즘 문제 풀이
@@ -10,7 +8,7 @@
 
 ---
 
-# 카공실록 작성 바텀시트 구현
+## 카공실록 작성 바텀시트 구현
 
 작업 마무리 해서 [PR](https://github.com/kagong-sillok/kagong-sillok-client/pull/14) 올렸다.
 
@@ -20,23 +18,23 @@
 
 ```tsx
 // components/common/Tab.tsx
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react'
 
 interface TabProps {
-  children: React.ReactNode;
-  id: number;
-  isSelected: boolean;
-  setSelectedTab: Dispatch<SetStateAction<number>>;
+  children: React.ReactNode
+  id: number
+  isSelected: boolean
+  setSelectedTab: Dispatch<SetStateAction<number>>
 }
 
 export default function Tab({ children, id, isSelected, setSelectedTab }: TabProps) {
   function handleClick() {
-    setSelectedTab(id);
+    setSelectedTab(id)
   }
 
   return (
     <button
-      type='button'
+      type="button"
       className={`${
         isSelected
           ? 'bg-bk100 text-white active:bg-bk80'
@@ -46,7 +44,7 @@ export default function Tab({ children, id, isSelected, setSelectedTab }: TabPro
     >
       {children}
     </button>
-  );
+  )
 }
 ```
 
@@ -56,30 +54,30 @@ Tab 컴포넌트는 탭을 하나만 선택할 수 있는 경우에 사용할 �
 
 ```tsx
 // components/place/Tabs.tsx
-import Tab from '@/components/common/Tab';
-import { INITIAL_TABS } from '@/constants/place';
-import { useEffect, useState } from 'react';
+import Tab from '@/components/common/Tab'
+import { INITIAL_TABS } from '@/constants/place'
+import { useEffect, useState } from 'react'
 
-import type { TabType } from '@/types/place';
-import type { Dispatch, SetStateAction } from 'react';
+import type { TabType } from '@/types/place'
+import type { Dispatch, SetStateAction } from 'react'
 
 interface TabsProps {
-  selectedTabIds: number[];
-  setSelectedTabIds: Dispatch<SetStateAction<number[]>>;
+  selectedTabIds: number[]
+  setSelectedTabIds: Dispatch<SetStateAction<number[]>>
 }
 
 export default function Tabs({ selectedTabIds, setSelectedTabIds }: TabsProps) {
-  const [Tabs, setTabs] = useState<TabType[]>(INITIAL_TABS);
+  const [Tabs, setTabs] = useState<TabType[]>(INITIAL_TABS)
 
   const handleSelectTab = (id: number) => {
     setSelectedTabIds((prev) => {
       if (prev.includes(id)) {
-        return prev.filter((selectedTabId) => selectedTabId !== id);
+        return prev.filter((selectedTabId) => selectedTabId !== id)
       } else {
-        return [...prev, id];
+        return [...prev, id]
       }
-    });
-  };
+    })
+  }
 
   useEffect(() => {
     setTabs((prev) =>
@@ -87,11 +85,11 @@ export default function Tabs({ selectedTabIds, setSelectedTabIds }: TabsProps) {
         ...tab,
         isSelected: selectedTabIds.includes(tab.id),
       }))
-    );
-  }, [selectedTabIds]);
+    )
+  }, [selectedTabIds])
 
   return (
-    <div className='mb-4 grid grid-cols-3 gap-2 p-3'>
+    <div className="mb-4 grid grid-cols-3 gap-2 p-3">
       {Tabs.map((tab) => (
         <Tab
           key={tab.id}
@@ -103,7 +101,7 @@ export default function Tabs({ selectedTabIds, setSelectedTabIds }: TabsProps) {
         </Tab>
       ))}
     </div>
-  );
+  )
 }
 ```
 
@@ -113,23 +111,23 @@ Tab 컴포넌트에서 onClick 핸들러를 prop으로 받아서 사용하도록
 
 ```tsx
 // components/common/Tab.tsx
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react'
 
 interface TabProps {
-  children: React.ReactNode;
-  id: number;
-  isSelected: boolean;
-  onClick: (id: number) => void;
+  children: React.ReactNode
+  id: number
+  isSelected: boolean
+  onClick: (id: number) => void
 }
 
 export default function Tab({ children, id, isSelected, onClick }: TabProps) {
   function handleClick() {
-    onClick(id);
+    onClick(id)
   }
 
   return (
     <button
-      type='button'
+      type="button"
       className={`${
         isSelected
           ? 'bg-bk100 text-white active:bg-bk80'
@@ -139,17 +137,17 @@ export default function Tab({ children, id, isSelected, onClick }: TabProps) {
     >
       {children}
     </button>
-  );
+  )
 }
 ```
 
-# 바닐라 JS로 리액트 만드는 스터디 - SPA
+## 바닐라 JS로 리액트 만드는 스터디 - SPA
 
 [노션](https://www.notion.so/kangju2000/6-SPA-d068b804cf19457fa947b7ce9402be59?pvs=4)에 정리해두었다.
 
 다음 주가 벌써 마지막이다. 지금까지 구현한 걸 써먹은 간단한 프로젝트를 해오는게 다음 주차 과제다.
 
-# 카공실록 회의
+## 카공실록 회의
 
 API 명세서도 어느정도 나왔고, 그에 맞게 작업하면 될 것 같다.
 
@@ -170,4 +168,3 @@ API 구현이 늦어질 것 같아 내가 팀원들에게 프론트엔드에서 
   - MSW 세팅
   - 카공 기록 바텀시트 UI 구현
 - 부스트캠프 자소서 작성
-

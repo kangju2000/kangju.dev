@@ -4,8 +4,6 @@ tags:
   - 프로그라피
 ---
 
-# 23.06.17
-
 ### 오늘 한 일
 
 - [x] 알고리즘 문제 풀이
@@ -24,7 +22,7 @@ tags:
 
 ---
 
-# 기존 TIL을 Docusaurus로 마이그레이션 진행
+## 기존 TIL을 Docusaurus로 마이그레이션 진행
 
 Docusaurus로 마이그레이션을 진행했다.
 
@@ -44,8 +42,8 @@ eslint, prettier 랑 `docusaurus.config.js`를 세팅했다.
 
 ```js
 /* eslint-disable @typescript-eslint/no-var-requires */
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightCodeTheme = require('prism-react-renderer/themes/github')
+const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -127,9 +125,9 @@ const config = {
         darkTheme: darkCodeTheme,
       },
     }),
-};
+}
 
-module.exports = config;
+module.exports = config
 ```
 
 공식 문서로는 조금 부족한 것 같아서 다른 레포([SLASH](https://github.com/toss/slash/tree/main/docs), [extracranial](https://github.com/anaclumos/extracranial))들을 참고했다.
@@ -150,7 +148,7 @@ Module build failed (from ./node*modules/.pnpm/@docusaurus+mdx-loader@2.4.1*@doc
 
 그래서 찾아보니 node 버전과 관련이 있는 것 같았다.
 
-<br/>
+<br />
 
 그럼 혹시?? 해서 `package.json`의 이 부분을 지워봤더니 해결했다.
 
@@ -206,7 +204,7 @@ Docusaurus는 파일명이 곧 라우팅 경로이다. 그래서 오류가 발�
 Github actions를 사용해서 배포했다.
 
 ```yml
-# .github/workflows/deploy.yml
+## .github/workflows/deploy.yml
 name: Deploy to GitHub Pages
 
 on:
@@ -245,7 +243,7 @@ jobs:
 
 `pnpm`으로 사용하고 있어서 `uses: pnpm/action-setup@v2`를 써서 pnpm을 설치했다.
 
-<br/>
+<br />
 
 [여기](https://self-driven-development.github.io/Dogsounds-TIL/)로 들어가면 배포된 것을 확인할 수 있다.
 

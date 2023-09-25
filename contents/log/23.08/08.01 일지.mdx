@@ -3,8 +3,6 @@ description: zustand를 Context로 사용해서 범위 제한하기
 tags: [zustand, context, 범위제한]
 ---
 
-# 23.08.01
-
 ## 오늘 한 일
 
 - gloddy 개발
@@ -53,20 +51,20 @@ const createImpl = <T>(createState: StateCreator<T, [], []>) => {
   if (import.meta.env?.MODE !== 'production' && typeof createState !== 'function') {
     console.warn(
       "[DEPRECATED] Passing a vanilla store will be unsupported in a future version. Instead use `import { useStore } from 'zustand'`."
-    );
+    )
   }
-  const api = typeof createState === 'function' ? createStore(createState) : createState;
+  const api = typeof createState === 'function' ? createStore(createState) : createState
 
   const useBoundStore: any = (selector?: any, equalityFn?: any) =>
-    useStore(api, selector, equalityFn);
+    useStore(api, selector, equalityFn)
 
-  Object.assign(useBoundStore, api);
+  Object.assign(useBoundStore, api)
 
-  return useBoundStore;
-};
+  return useBoundStore
+}
 
 export const create = (<T>(createState: StateCreator<T, [], []> | undefined) =>
-  createState ? createImpl(createState) : createImpl) as Create;
+  createState ? createImpl(createState) : createImpl) as Create
 ```
 
 반환 타입을 보면 이렇다.
@@ -82,62 +80,62 @@ export const create = (<T>(createState: StateCreator<T, [], []> | undefined) =>
 
 ```tsx
 // createStore ver.
-import { createContext, useContext } from 'react';
-import { createStore, useStore } from 'zustand';
+import { createContext, useContext } from 'react'
+import { createStore, useStore } from 'zustand'
 
 type State = {
-  bears: number;
-  increasePopulation: () => void;
-  removeAllBears: () => void;
-};
+  bears: number
+  increasePopulation: () => void
+  removeAllBears: () => void
+}
 
-const store = createStore<State>(set => ({
+const store = createStore<State>((set) => ({
   bears: 0,
-  increasePopulation: () => set(state => ({ bears: state.bears + 1 })),
+  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
   removeAllBears: () => set({ bears: 0 }),
-}));
+}))
 
-const MyContext = createContext<typeof store | null>(null);
+const MyContext = createContext<typeof store | null>(null)
 
 export const Provider = ({ children }: { children: React.ReactNode }) => (
   <MyContext.Provider value={store}>{children}</MyContext.Provider>
-);
+)
 
 export const useMyStore = (selector: (state: State) => unknown) => {
-  const store = useContext(MyContext);
-  if (!store) throw new Error('useMyStore must be used within a Provider');
+  const store = useContext(MyContext)
+  if (!store) throw new Error('useMyStore must be used within a Provider')
 
-  return useStore(store, selector);
-};
+  return useStore(store, selector)
+}
 
 // create ver.
-import { createContext, useContext } from 'react';
-import { create, useStore } from 'zustand';
+import { createContext, useContext } from 'react'
+import { create, useStore } from 'zustand'
 
 type State = {
-  bears: number;
-  increasePopulation: () => void;
-  removeAllBears: () => void;
-};
+  bears: number
+  increasePopulation: () => void
+  removeAllBears: () => void
+}
 
-const store = create<State>(set => ({
+const store = create<State>((set) => ({
   bears: 0,
-  increasePopulation: () => set(state => ({ bears: state.bears + 1 })),
+  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
   removeAllBears: () => set({ bears: 0 }),
-}));
+}))
 
-const MyContext = createContext<typeof store | null>(null);
+const MyContext = createContext<typeof store | null>(null)
 
 export const Provider = ({ children }: { children: React.ReactNode }) => (
   <MyContext.Provider value={store}>{children}</MyContext.Provider>
-);
+)
 
 export const useMyStore = (selector: (state: State) => unknown) => {
-  const store = useContext(MyContext);
-  if (!store) throw new Error('useMyStore must be used within a Provider');
+  const store = useContext(MyContext)
+  if (!store) throw new Error('useMyStore must be used within a Provider')
 
-  return store(selector);
-};
+  return store(selector)
+}
 ```
 
 ### 결론

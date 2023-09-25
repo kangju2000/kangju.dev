@@ -1,5 +1,3 @@
-# 23.05.14
-
 ## 오늘 한 일
 
 - 알고리즘 문제 풀이
@@ -37,9 +35,9 @@ Express는 라우터 위주의 설계라면, Nest.js는 모듈 위주의 설계�
 
 ```ts
 // app.module.ts
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Module } from '@nestjs/common'
+import { AppController } from './app.controller'
+import { AppService } from './app.service'
 
 @Module({
   imports: [],
@@ -49,8 +47,8 @@ import { AppService } from './app.service';
 export class AppModule {}
 
 // app.controller.ts
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get } from '@nestjs/common'
+import { AppService } from './app.service'
 
 @Controller()
 export class AppController {
@@ -58,17 +56,17 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    return this.appService.getHello();
+    return this.appService.getHello()
   }
 }
 
 // app.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class AppService {
   getHello(): string {
-    return 'Hello World!';
+    return 'Hello World!'
   }
 }
 ```
@@ -87,10 +85,10 @@ dotenv 모듈 써도 되지만, 어차피 Nest의 모듈로 만들어서 사용�
 
 ```ts
 // app.module.ts
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { AppController } from './app.controller'
+import { AppService } from './app.service'
 
 @Module({
   imports: [ConfigModule.forRoot()],
@@ -110,10 +108,10 @@ Logger 객체를 사용하면 로그를 찍는 곳을 알 수 있다.
 
 ```ts
 // app.module.ts
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { LoggerMiddleware } from './logger.middleware';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
+import { AppController } from './app.controller'
+import { AppService } from './app.service'
+import { LoggerMiddleware } from './logger.middleware'
 
 @Module({
   imports: [],
@@ -122,33 +120,33 @@ import { LoggerMiddleware } from './logger.middleware';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*');
+    consumer.apply(LoggerMiddleware).forRoutes('*')
   }
 }
 
 // logger.middleware.ts
-import { Injectable, NestMiddleware } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
-import { Logger } from './logger.service';
+import { Injectable, NestMiddleware } from '@nestjs/common'
+import { Request, Response, NextFunction } from 'express'
+import { Logger } from './logger.service'
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
   constructor(private readonly logger: Logger) {}
 
   use(req: Request, res: Response, next: NextFunction) {
-    const { ip, method, originalUrl } = req;
-    const userAgent = req.get('user-agent') || '';
+    const { ip, method, originalUrl } = req
+    const userAgent = req.get('user-agent') || ''
 
     res.on('finish', () => {
-      const { statusCode } = res;
-      const contentLength = res.get('content-length');
+      const { statusCode } = res
+      const contentLength = res.get('content-length')
 
       this.logger.log(
         `${method} ${originalUrl} ${statusCode} ${contentLength} - ${userAgent} ${ip}`
-      );
-    });
+      )
+    })
 
-    next();
+    next()
   }
 }
 ```
@@ -166,6 +164,7 @@ DI를 해주면 직접 new를 사용해서 객체를 생성하지 않고 생성�
 ---
 
 ## 내일 할 일
+
 - 알고리즘 문제 풀이
 - Nest.js 공식 문서 읽기
 - 익스텐션 개발(에러처리, UI 구현)

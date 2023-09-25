@@ -1,5 +1,3 @@
-# 23.06.15
-
 ### 오늘 한 일
 
 - [x] 알고리즘 문제 풀이
@@ -11,7 +9,7 @@
 
 알고리즘 2문제 풀고, vanilla-react를 TS로 마이그레이션 진행했다.
 
-이번에 테오 스프린트 15기가 올라왔다! 작년에 13기 했었는데, 이번에 또 신청했다. 친구들도 같이 신청해서 스프린트 같이 하면 
+이번에 테오 스프린트 15기가 올라왔다! 작년에 13기 했었는데, 이번에 또 신청했다. 친구들도 같이 신청해서 스프린트 같이 하면
 
 ### 주저리 주저리
 
@@ -106,23 +104,23 @@ resolve: {
 function useState<S>(
   initialState: S | (() => S)
 ): [S, (newState: S | ((prevState: S) => S)) => void] {
-  let stateIndex = _stateIndex++;
+  let stateIndex = _stateIndex++
 
   if (_states[stateIndex] === undefined) {
-    if (initialState instanceof Function) initialState = initialState();
-    _states[stateIndex] = initialState;
+    if (initialState instanceof Function) initialState = initialState()
+    _states[stateIndex] = initialState
   }
-  let state = _states[stateIndex];
+  let state = _states[stateIndex]
 
   const setState = (newState: S) => {
-    if (typeof newState === 'function') newState = newState(state);
-    if (Object.is(_states[stateIndex], newState)) return;
-    _states[stateIndex] = newState;
-    _stateIndex = 0;
-    _render();
-  };
+    if (typeof newState === 'function') newState = newState(state)
+    if (Object.is(_states[stateIndex], newState)) return
+    _states[stateIndex] = newState
+    _stateIndex = 0
+    _render()
+  }
 
-  return [state, setState];
+  return [state, setState]
 }
 ```
 
@@ -133,24 +131,24 @@ function useState<S>(
 
 declare namespace Kreact {
   interface KreactElement {
-    type: any;
+    type: any
     props: {
-      children: KreactElement[];
-      key?: any;
-      ref?: KreactRef;
-      nodeValue?: any;
-    };
+      children: KreactElement[]
+      key?: any
+      ref?: KreactRef
+      nodeValue?: any
+    }
   }
 
   interface KreactFragment {
-    type: 'FRAGMENT';
+    type: 'FRAGMENT'
     props: {
-      children: KreactElement[];
-      key?: any;
-    };
+      children: KreactElement[]
+      key?: any
+    }
   }
 
-  type KreactNode = ReactElement | string | number | KreactFragment | boolean | null | undefined;
+  type KreactNode = ReactElement | string | number | KreactFragment | boolean | null | undefined
 
   //...
 }
@@ -194,7 +192,7 @@ core에서 처리를 해두어서 실제로는 문제가 없지만, ts에서는 
 
 ```js
 // webpack.config.js
-const webpack = require('webpack');
+const webpack = require('webpack')
 
 module.exports = {
   plugins: [
@@ -204,7 +202,7 @@ module.exports = {
   ],
 
   //...
-};
+}
 ```
 
 이렇게 하면 빌드될 때 자동으로 Kreact를 import 해서 `import Kreact from 'kreact'`를 안해줘도 된다!

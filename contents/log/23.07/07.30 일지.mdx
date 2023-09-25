@@ -3,8 +3,6 @@ description: ky 라이브러리 세팅하기 / 서버 컴포넌트에서 prefetc
 tags: [react-query, ky, prefetch, server component, RSC, 서버컴포넌트, ky hook]
 ---
 
-# 23.07.30
-
 ## 오늘 한 일
 
 - 카공실록 ky 세팅
@@ -19,9 +17,9 @@ tags: [react-query, ky, prefetch, server component, RSC, 서버컴포넌트, ky 
 
 ```ts {11-14}
 // instance.ts
-import { retryRequest } from './retryRequest';
-import { setHeader } from './setHeader';
-import ky from 'ky';
+import { retryRequest } from './retryRequest'
+import { setHeader } from './setHeader'
+import ky from 'ky'
 
 const api = ky.create({
   prefixUrl: process.env.NEXT_PUBLIC_API_URL,
@@ -32,9 +30,9 @@ const api = ky.create({
     beforeRequest: [setHeader], // 토큰을 헤더에 추가
     afterResponse: [retryRequest], // 토큰이 만료되었다면 재발급 or 로그인 페이지로 이동
   },
-});
+})
 
-export default api;
+export default api
 ```
 
 ## 서버 컴포넌트에서 prefetch하기
@@ -51,27 +49,27 @@ import {
   QueryClient,
   type QueryKey,
   type QueryFunction,
-} from '@tanstack/react-query';
-import { cache, PropsWithChildren } from 'react';
+} from '@tanstack/react-query'
+import { cache, PropsWithChildren } from 'react'
 
 type HydrationProviderProps = {
-  queryKey: QueryKey;
-  queryFn: QueryFunction;
-};
+  queryKey: QueryKey
+  queryFn: QueryFunction
+}
 
 export const HydrationProvider = async ({
   children,
   queryKey,
   queryFn,
 }: PropsWithChildren<HydrationProviderProps>) => {
-  const getQueryClient = cache(() => new QueryClient());
+  const getQueryClient = cache(() => new QueryClient())
 
-  const queryClient = getQueryClient();
-  await queryClient.prefetchQuery(queryKey, queryFn);
-  const dehydratedState = dehydrate(queryClient);
+  const queryClient = getQueryClient()
+  await queryClient.prefetchQuery(queryKey, queryFn)
+  const dehydratedState = dehydrate(queryClient)
 
-  return <Hydrate state={dehydratedState}>{children}</Hydrate>;
-};
+  return <Hydrate state={dehydratedState}>{children}</Hydrate>
+}
 ```
 
 <details>
@@ -79,12 +77,12 @@ export const HydrationProvider = async ({
 
 ```tsx
 // 서버 컴포넌트
-import Child from '../components/Child';
-import { Keys, getPlace } from '@/apis/place';
-import { HydrationProvider } from '@/providers/HydrationProvider';
+import Child from '../components/Child'
+import { Keys, getPlace } from '@/apis/place'
+import { HydrationProvider } from '@/providers/HydrationProvider'
 
 export default async function TestPage({ params: { id } }: { params: { id: string } }) {
-  const placeId = Number(id);
+  const placeId = Number(id)
 
   return (
     <div>
@@ -92,23 +90,23 @@ export default async function TestPage({ params: { id } }: { params: { id: strin
         <Child />
       </HydrationProvider>
     </div>
-  );
+  )
 }
 ```
 
 ```tsx
 // 클라이언트 컴포넌트
-'use client';
-import { useGetPlace } from '@/apis/place';
+'use client'
+import { useGetPlace } from '@/apis/place'
 
 export default function Child() {
-  const { data } = useGetPlace(1);
+  const { data } = useGetPlace(1)
 
   return (
     <div>
       <h1>Child</h1>
     </div>
-  );
+  )
 }
 ```
 

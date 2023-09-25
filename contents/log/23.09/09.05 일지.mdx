@@ -1,5 +1,3 @@
-# 23.09.05
-
 ## 오늘 한 일
 
 - gdsc 회의
@@ -15,7 +13,7 @@
 
 ---
 
-# gloddy
+## gloddy
 
 tailwindcss가 SSR에서 적용이 안되는 이슈가 아직도 해결하지 못하고 있다. 해결방법들이 몇가지 있는데 Next 13 이전 버전들이라 잘 적용이 안된다...
 
@@ -54,10 +52,10 @@ sprite 파일을 만드는 건 **_svgstore_**라는 라이브러리를 사용했
 
 ```tsx
 // Icon.tsx
-import type { SVGProps } from 'react';
+import type { SVGProps } from 'react'
 
 interface IconProps extends SVGProps<SVGSVGElement> {
-  id: string;
+  id: string
 }
 
 export default function Icon({ id, width = 24, height = 24, fill = 'none', ...props }: IconProps) {
@@ -65,7 +63,7 @@ export default function Icon({ id, width = 24, height = 24, fill = 'none', ...pr
     <svg width={width} height={height} fill={fill} {...props}>
       <use href={`/sprite/sprite.svg#${id}`} />
     </svg>
-  );
+  )
 }
 ```
 

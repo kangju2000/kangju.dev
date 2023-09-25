@@ -1,9 +1,8 @@
-# 23.08.02
-
 ## 오늘 한 일
 
 - gloddy 회의 및 개발
 - zustand 오타 수정 [PR](https://github.com/pmndrs/zustand/pull/1969)
+
 ---
 
 ## gloddy - 모임 상세 페이지 api 연결
@@ -15,10 +14,10 @@ export default function GroupingByIdPage({
   params: { id },
 }: {
   params: {
-    id: string;
-  };
+    id: string
+  }
 }) {
-  const groupId = Number(id);
+  const groupId = Number(id)
 
   return (
     <RetryErrorBoundary>
@@ -28,7 +27,7 @@ export default function GroupingByIdPage({
         </HydrationProvider>
       </Suspense>
     </RetryErrorBoundary>
-  );
+  )
 }
 ```
 
@@ -36,9 +35,9 @@ export default function GroupingByIdPage({
 
 ```tsx
 export default function GroupingDetail({ groupId }: GroupingDetailProps) {
-  const { data: groupData } = useGetGroup(groupId);
+  const { data: groupData } = useGetGroup(groupId)
 
-  if (!groupData) return null;
+  if (!groupData) return null
 
   return (
     <>
@@ -49,7 +48,7 @@ export default function GroupingDetail({ groupId }: GroupingDetailProps) {
         boardNode={<BoardContent myGroup={groupData.myGroup} />}
       />
     </>
-  );
+  )
 }
 ```
 

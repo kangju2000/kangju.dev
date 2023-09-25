@@ -1,5 +1,3 @@
-# 23.05.29
-
 ## 오늘 한 일
 
 - [x] 알고리즘 문제 풀이
@@ -12,7 +10,7 @@
 
 ---
 
-# 리액트 SPA 구현
+## 리액트 SPA 구현
 
 > 바닐라 JS로 리액트 만드는 스터디 - 6주차
 
@@ -23,18 +21,18 @@ SPA를 구현하기 위해 리액트에서 사용하는 `react-router-dom`의 �
 ```tsx
 // react-router-dom/index.tsx
 export function BrowserRouter({ basename, children, window }: BrowserRouterProps) {
-  let historyRef = React.useRef<BrowserHistory>();
+  let historyRef = React.useRef<BrowserHistory>()
   if (historyRef.current == null) {
-    historyRef.current = createBrowserHistory({ window, v5Compat: true });
+    historyRef.current = createBrowserHistory({ window, v5Compat: true })
   }
 
-  let history = historyRef.current;
+  let history = historyRef.current
   let [state, setState] = React.useState({
     action: history.action,
     location: history.location,
-  });
+  })
 
-  React.useLayoutEffect(() => history.listen(setState), [history]);
+  React.useLayoutEffect(() => history.listen(setState), [history])
 
   return (
     <Router
@@ -44,7 +42,7 @@ export function BrowserRouter({ basename, children, window }: BrowserRouterProps
       navigationType={state.action}
       navigator={history}
     />
-  );
+  )
 }
 ```
 
@@ -52,21 +50,21 @@ export function BrowserRouter({ basename, children, window }: BrowserRouterProps
 // router/history.ts
 export function createBrowserHistory(options: BrowserHistoryOptions = {}): BrowserHistory {
   function createBrowserLocation(window: Window, globalHistory: Window['history']) {
-    let { pathname, search, hash } = window.location;
+    let { pathname, search, hash } = window.location
     return createLocation(
       '',
       { pathname, search, hash },
       // state defaults to `null` because `window.history.state` does
       (globalHistory.state && globalHistory.state.usr) || null,
       (globalHistory.state && globalHistory.state.key) || 'default'
-    );
+    )
   }
 
   function createBrowserHref(window: Window, to: To) {
-    return typeof to === 'string' ? to : createPath(to);
+    return typeof to === 'string' ? to : createPath(to)
   }
 
-  return getUrlBasedHistory(createBrowserLocation, createBrowserHref, null, options);
+  return getUrlBasedHistory(createBrowserLocation, createBrowserHref, null, options)
 }
 ```
 
@@ -83,12 +81,12 @@ export function createBrowserHistory(options: BrowserHistoryOptions = {}): Brows
 다음은 `react-router-dom`의 `CreateBrowserRouter`의 예시이다.
 
 ```tsx
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-import Root, { rootLoader } from './routes/root';
-import Team, { teamLoader } from './routes/team';
+import Root, { rootLoader } from './routes/root'
+import Team, { teamLoader } from './routes/team'
 
 const router = createBrowserRouter([
   {
@@ -103,45 +101,45 @@ const router = createBrowserRouter([
       },
     ],
   },
-]);
+])
 
-ReactDOM.createRoot(document.getElementById('root')).render(<RouterProvider router={router} />);
+ReactDOM.createRoot(document.getElementById('root')).render(<RouterProvider router={router} />)
 ```
 
 나는 인자로 `path`와 `element`를 받는 객체를 배열로 넘겨주는 방식으로 구현했다.
 
 ```js
-import { render } from '../Kreact';
+import { render } from '../Kreact'
 
 export default function createRouter(root, routes = []) {
-  const history = window.history;
-  const routeMap = new Map();
+  const history = window.history
+  const routeMap = new Map()
 
   routes.forEach(({ pathname, element }) => {
-    routeMap.set(pathname, element);
-  });
+    routeMap.set(pathname, element)
+  })
 
   function push(pathname, state) {
-    history.pushState(state, null, pathname);
+    history.pushState(state, null, pathname)
 
-    _render(root, pathname);
+    _render(root, pathname)
   }
 
   window.addEventListener('popstate', () => {
-    _render(root, window.location.pathname);
-  });
+    _render(root, window.location.pathname)
+  })
 
   function _render(root, pathname) {
-    const element = routeMap.get(pathname);
-    if (!element) throw new Error('NOT FOUND');
+    const element = routeMap.get(pathname)
+    if (!element) throw new Error('NOT FOUND')
 
-    root.innerHTML = '';
-    render(root, element);
+    root.innerHTML = ''
+    render(root, element)
   }
 
   return {
     push,
-  };
+  }
 }
 ```
 
@@ -149,11 +147,11 @@ export default function createRouter(root, routes = []) {
 
 ```jsx
 // src/index.js
-import Kreact, { render } from './Kreact';
-import createRouter from './Kreact-router';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import Home from './pages/Home';
+import Kreact, { render } from './Kreact'
+import createRouter from './Kreact-router'
+import About from './pages/About'
+import Contact from './pages/Contact'
+import Home from './pages/Home'
 
 export const router = createRouter(document.getElementById('root'), [
   {
@@ -168,18 +166,18 @@ export const router = createRouter(document.getElementById('root'), [
     pathname: '/contact',
     element: Contact,
   },
-]);
+])
 
-const root = document.getElementById('root');
-render(root, Home);
+const root = document.getElementById('root')
+render(root, Home)
 ```
 
 `createBrowserRouter`에서는 Provider로 `router`를 넘겨주었지만, 나는 일단 `router` 객체를 export해서 사용해보았다.
 
 ```jsx
 // src/components/NavBar.js
-import Kreact from '../Kreact';
-import { router } from '..';
+import Kreact from '../Kreact'
+import { router } from '..'
 
 export default function NavBar() {
   return (
@@ -197,13 +195,13 @@ export default function NavBar() {
       <li onClick={() => router.push('/about')}>about</li>
       <li onClick={() => router.push('/contact')}>contact</li>
     </div>
-  );
+  )
 }
 ```
 
 이렇게 해서 각 페이지마다 NavBar를 넣어주어서 라우팅을 구현해보았다.
 
-# 익스텐션 오류 해결
+## 익스텐션 오류 해결
 
 사용자분들이 피드백을 남겨주셨다.
 

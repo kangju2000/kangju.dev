@@ -1,5 +1,3 @@
-# 23.08.11
-
 ## 오늘 한 일
 
 - 카공실록 리뷰 등록 api 연결 완료
@@ -49,13 +47,13 @@ const cn = (...inputs: ClassValue[]) => {
 <summary>Button 코드</summary>
 
 ```tsx
-import cn from '@/utils/cn';
+import cn from '@/utils/cn'
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * 버튼의 크기를 설정합니다. small: 48px, medium: 56px (default: medium)
    */
-  size?: 'small' | 'medium';
+  size?: 'small' | 'medium'
   /**
    * 버튼의 색상을 설정합니다. (default: solid-primary)
    */
@@ -64,8 +62,8 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     | 'solid-default'
     | 'solid-secondary'
     | 'outline-warning'
-    | 'solid-warning';
-  children: React.ReactNode;
+    | 'solid-warning'
+  children: React.ReactNode
 }
 
 export default function Button({
@@ -99,7 +97,7 @@ export default function Button({
     >
       {children}
     </button>
-  );
+  )
 }
 ```
 
@@ -138,14 +136,14 @@ ButtonGroup 컴포넌트는 Button 컴포넌트를 감싸는 역할을 한다.
 
 ```tsx
 const validChildren = Children.toArray(children).filter(
-  child =>
+  (child) =>
     isValidElement(child) &&
     (
       child.type as {
-        name: string;
+        name: string
       }
     ).name === 'Button'
-) as ReactElement[];
+) as ReactElement[]
 ```
 
 ### 2. Button 컴포넌트라면 props를 전달하기
@@ -155,28 +153,28 @@ const validChildren = Children.toArray(children).filter(
 ```tsx
 const renderElements = (elements: ReactElement[]) => {
   if (elements.length === 1) {
-    const props = elements[0].props as ButtonProps;
+    const props = elements[0].props as ButtonProps
     return cloneElement(elements[0], {
       className: cn('w-full', props.className),
-    });
+    })
   }
 
   return (
     <div className="flex gap-8">
       {elements.map((element, index) => {
-        const props = elements[index].props as ButtonProps;
+        const props = elements[index].props as ButtonProps
 
         if (index === 0) {
           return cloneElement(element, {
             className: cn('flex-shrink-0', props.className),
             variant: props.variant ?? 'solid-default',
-          });
+          })
         }
-        return cloneElement(element, { className: cn('w-full', props.className) });
+        return cloneElement(element, { className: cn('w-full', props.className) })
       })}
     </div>
-  );
-};
+  )
+}
 ```
 
 ### 최종 코드
@@ -185,7 +183,11 @@ const renderElements = (elements: ReactElement[]) => {
 
 > 하나인 경우
 
-<img width="436" alt="image" src="https://github.com/Self-Driven-Development/TIL/assets/23312485/4bc1f9d8-0142-45a9-baba-c146dccdd66a"/>
+<img
+  width="436"
+  alt="image"
+  src="https://github.com/Self-Driven-Development/TIL/assets/23312485/4bc1f9d8-0142-45a9-baba-c146dccdd66a"
+/>
 
 ```tsx
 <ButtonGroup>
@@ -195,7 +197,12 @@ const renderElements = (elements: ReactElement[]) => {
 
 > 두 개인 경우
 
- <img width="442" alt="image" src="https://github.com/Self-Driven-Development/TIL/assets/23312485/c835920a-2162-4ba6-907a-ee7012a12d92"/>
+{' '}
+<img
+  width="442"
+  alt="image"
+  src="https://github.com/Self-Driven-Development/TIL/assets/23312485/c835920a-2162-4ba6-907a-ee7012a12d92"
+/>
 
 ```tsx
 <ButtonGroup>
@@ -208,54 +215,54 @@ const renderElements = (elements: ReactElement[]) => {
 <summary>ButtonGroup 코드</summary>
 
 ```tsx
-import cn from '@/utils/cn';
-import { Children, type ReactElement, cloneElement, isValidElement } from 'react';
+import cn from '@/utils/cn'
+import { Children, type ReactElement, cloneElement, isValidElement } from 'react'
 
-import type { ButtonProps } from './Button';
+import type { ButtonProps } from './Button'
 
 interface ButtonGroupProps {
   /**
    * 버튼 그룹의 위치를 설정합니다. (default: bottom)
    */
-  position?: 'bottom' | 'contents';
-  children: React.ReactNode;
+  position?: 'bottom' | 'contents'
+  children: React.ReactNode
 }
 
 export default function ButtonGroup({ position = 'bottom', children }: ButtonGroupProps) {
   const validChildren = Children.toArray(children).filter(
-    child =>
+    (child) =>
       isValidElement(child) &&
       (
         child.type as {
-          name: string;
+          name: string
         }
       ).name === 'Button'
-  ) as ReactElement[];
+  ) as ReactElement[]
 
   const renderElements = (elements: ReactElement[]) => {
     if (elements.length === 1) {
-      const props = elements[0].props as ButtonProps;
+      const props = elements[0].props as ButtonProps
       return cloneElement(elements[0], {
         className: cn('w-full', props.className),
-      });
+      })
     }
 
     return (
       <div className="flex gap-8">
         {elements.map((element, index) => {
-          const props = elements[index].props as ButtonProps;
+          const props = elements[index].props as ButtonProps
 
           if (index === 0) {
             return cloneElement(element, {
               className: cn('flex-shrink-0', props.className),
               variant: props.variant ?? 'solid-default',
-            });
+            })
           }
-          return cloneElement(element, { className: cn('w-full', props.className) });
+          return cloneElement(element, { className: cn('w-full', props.className) })
         })}
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <div
@@ -265,7 +272,7 @@ export default function ButtonGroup({ position = 'bottom', children }: ButtonGro
     >
       {renderElements(validChildren)}
     </div>
-  );
+  )
 }
 ```
 

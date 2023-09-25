@@ -1,5 +1,3 @@
-# 23.05.03
-
 ## 오늘 한 일
 
 - gachon-extension 개발
@@ -83,9 +81,9 @@ pipe(
 ));
 ```
 
-<br/>
-<hr/>
-<br/>
+<br />
+<hr />
+<br />
 
 ### 개발 중 겪은 오류
 
@@ -121,14 +119,19 @@ export default function customDynamicImport(): PluginOption {
 
 ```js
 __vitePreload(
-  () => import('../../../assets/js/main.d077a1b9.js').then(n => n.m),
+  () => import('../../../assets/js/main.d077a1b9.js').then((n) => n.m),
   true ? ['assets/js/main.d077a1b9.js', 'assets/js/client.10179973.js'] : void 0
-);
+)
 ```
 
 그래서 플러그인을 지우고 빌드하면 잘 된다.
 하지만 또 한 가지 문제가 있다. `React.lazy`를 사용했을 때 익스텐션 테스트 시 브라우저 콘솔에서 `export`를 읽을 수 없다는 에러가 뜬다.
-<img width="587" alt="image" src="https://user-images.githubusercontent.com/23312485/235969357-6f03de25-ed3d-4ff7-a205-9bffc7a5f583.png" />
+
+<img
+  width="587"
+  alt="image"
+  src="https://user-images.githubusercontent.com/23312485/235969357-6f03de25-ed3d-4ff7-a205-9bffc7a5f583.png"
+/>
 
 이 오류 때문에 7시간 정도 헤맸다. 하지만 결국 해결하진 못했다.
 

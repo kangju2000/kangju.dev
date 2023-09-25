@@ -3,8 +3,6 @@ description: Suspensive 라이브러리 사용기
 tags: ['react-query', 'suspensive', 'next13', 'ErrorBoundary']
 ---
 
-# 23.08.03
-
 ## 오늘 한 일
 
 - 카공실록 장소 상세페이지 서버 컴포넌트 분리
@@ -29,7 +27,7 @@ gloddy와 카공실록 두 프로젝트에서 Suspensive 라이브러리를 도�
 ```tsx
 // apis/place/queries.ts
 export function useGetPlace(id: number) {
-  return useSuspenseQuery(Keys.place(id), () => getPlace(id));
+  return useSuspenseQuery(Keys.place(id), () => getPlace(id))
 }
 ```
 
@@ -49,13 +47,13 @@ react-query에서 [`QueryErrorResetBoundary`](https://tanstack.com/query/v4/docs
 결국 `QueryAsyncBoundary`는 `QueryErrorBoundary + AsyncBoundary`이다.
 
 ```tsx
-import PlaceDetail from './components/PlaceDetail';
-import { Keys, getPlace } from '@/apis/place';
-import { HydrationProvider } from '@/providers/HydrationProvider';
-import { QueryAsyncBoundary } from '@suspensive/react-query';
+import PlaceDetail from './components/PlaceDetail'
+import { Keys, getPlace } from '@/apis/place'
+import { HydrationProvider } from '@/providers/HydrationProvider'
+import { QueryAsyncBoundary } from '@suspensive/react-query'
 
 export default async function PlacePage({ params }: { params: { id: string } }) {
-  const placeId = Number(params.id);
+  const placeId = Number(params.id)
   return (
     <QueryAsyncBoundary
       pendingFallback={<div>로딩중</div>}
@@ -71,14 +69,19 @@ export default async function PlacePage({ params }: { params: { id: string } }) 
         <PlaceDetail placeId={placeId} />
       </HydrationProvider>
     </QueryAsyncBoundary>
-  );
+  )
 }
 ```
 
 <br />
 
 이제 데이터를 가져올 때 별다른 분기처리 없이 data를 가져오면 된다.
-<img width="619" alt="image" src="https://github.com/Self-Driven-Development/TIL/assets/23312485/59d2befc-809d-4e81-8eb4-74fab0628d87"/>
+
+<img
+  width="619"
+  alt="image"
+  src="https://github.com/Self-Driven-Development/TIL/assets/23312485/59d2befc-809d-4e81-8eb4-74fab0628d87"
+/>
 
 ```tsx
 // components/PlaceDetail.tsx
@@ -117,7 +120,7 @@ fallback 클라이언트 컴포넌트를 만들어서 `rejectedFallback`에 전�
 >   experimental: {
 >     serverActions: true,
 >   },
-> };
+> }
 > ```
 
 <br />

@@ -1,14 +1,13 @@
-# 23.09.15
-
 ## 오늘 한 일
 
 - gloddy 개발
   - 무한 요청 이슈 해결
 - 블로그 만들기
   - 헤더에 있는 링크 클릭 시 애니메이션 추가
+
 ---
 
-# 무한 요청 이슈 해결
+## 무한 요청 이슈 해결
 
 천천히 원인을 추적해보았다.
 
@@ -41,8 +40,8 @@ Hydration이 제대로 되고 있지 않은 듯하다.
 
 //...
 queryMultipleFn.forEach(async (queryFn, index) => {
-  await queryClient.prefetchQuery(queryMultipleKey[index], queryFn);
-});
+  await queryClient.prefetchQuery(queryMultipleKey[index], queryFn)
+})
 ```
 
 forEach는 비동기 콜백함수를 기다려주지 않는다고 한다. 그래서 hydrate가 예상과 달리 동작하고 있었다.
@@ -53,13 +52,13 @@ forEach는 비동기 콜백함수를 기다려주지 않는다고 한다. 그래
 // Promise.all
 await Promise.all(
   queryMultipleFn.map((queryFn, index) => {
-    return queryClient.prefetchQuery(queryMultipleKey[index], queryFn);
+    return queryClient.prefetchQuery(queryMultipleKey[index], queryFn)
   })
-);
+)
 
 // for...of
 for (const [index, queryFn] of queryMultipleFn.entries()) {
-  await queryClient.prefetchQuery(queryMultipleKey[index], queryFn);
+  await queryClient.prefetchQuery(queryMultipleKey[index], queryFn)
 }
 ```
 

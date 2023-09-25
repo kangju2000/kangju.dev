@@ -3,8 +3,6 @@ description: 토스의 useFunnel 훅을 직접 구현해보기
 tags: [useFunnel, react-hook-form 에러]
 ---
 
-# 23.07.21
-
 ## 오늘 한 일
 
 - [x] Gloddy 개발
@@ -35,100 +33,100 @@ tags: [useFunnel, react-hook-form 에러]
 
 ```tsx
 /* eslint-disable react/jsx-no-useless-fragment */
-'use client';
+'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Children, isValidElement, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Children, isValidElement, useEffect, useState } from 'react'
 
-type NonEmptyArray<T> = [T, ...T[]];
+type NonEmptyArray<T> = [T, ...T[]]
 
 interface FunnelProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 interface StepProps<Steps extends NonEmptyArray<string>> {
-  name: Steps[number];
-  children: React.ReactNode;
+  name: Steps[number]
+  children: React.ReactNode
 }
 
 export function useFunnel<Steps extends NonEmptyArray<string>>(
   steps: Steps,
   options?: { initialStep?: Steps[number]; stepQueryKey?: string }
 ) {
-  const initialStep = options?.initialStep ?? steps[0];
-  const queryKey = options?.stepQueryKey ?? 'step';
-  const [step, setStep] = useState<Steps[number]>(initialStep);
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const initialStep = options?.initialStep ?? steps[0]
+  const queryKey = options?.stepQueryKey ?? 'step'
+  const [step, setStep] = useState<Steps[number]>(initialStep)
+  const router = useRouter()
+  const searchParams = useSearchParams()
 
   const nextStep = () => {
-    const currentIndex = steps.indexOf(step);
+    const currentIndex = steps.indexOf(step)
     if (currentIndex < steps.length - 1) {
-      setStep(steps[currentIndex + 1]);
+      setStep(steps[currentIndex + 1])
       window.history.pushState(
         null,
         '',
         `${window.location.pathname}?${queryKey}=${steps[currentIndex + 1]}`
-      );
+      )
     }
-  };
+  }
 
   const prevStep = () => {
-    const currentIndex = steps.indexOf(step);
+    const currentIndex = steps.indexOf(step)
     if (currentIndex > 0) {
-      setStep(steps[currentIndex - 1]);
+      setStep(steps[currentIndex - 1])
     }
 
-    router.back();
-  };
+    router.back()
+  }
 
   const Funnel = ({ children }: FunnelProps) => {
     const childrenArray = Children.toArray(children)
       .filter(isValidElement)
-      .filter(child => {
-        return (child.props as StepProps<Steps>).name !== undefined;
-      });
+      .filter((child) => {
+        return (child.props as StepProps<Steps>).name !== undefined
+      })
 
-    childrenArray.forEach(child => {
+    childrenArray.forEach((child) => {
       if (!steps.includes((child.props as StepProps<Steps>).name)) {
-        throw new Error('스텝 이름이 잘못되었습니다.');
+        throw new Error('스텝 이름이 잘못되었습니다.')
       }
-    });
+    })
 
-    return <>{children}</>;
-  };
+    return <>{children}</>
+  }
 
   const Step = ({ name, children }: StepProps<Steps>) => {
-    return step === name ? <>{children}</> : null;
-  };
+    return step === name ? <>{children}</> : null
+  }
 
-  Funnel.Step = Step;
+  Funnel.Step = Step
 
   window.addEventListener('popstate', () => {
-    const currentStep = searchParams.get(queryKey) as Steps[number];
-    console.log('pop', currentStep);
+    const currentStep = searchParams.get(queryKey) as Steps[number]
+    console.log('pop', currentStep)
     if (currentStep) {
-      setStep(currentStep);
+      setStep(currentStep)
     }
-  });
+  })
 
   window.addEventListener('pushstate', () => {
-    const currentStep = searchParams.get(queryKey) as Steps[number];
-    console.log('push', currentStep);
-  });
+    const currentStep = searchParams.get(queryKey) as Steps[number]
+    console.log('push', currentStep)
+  })
 
   useEffect(() => {
-    const currentStep = searchParams.get(queryKey) as Steps[number];
+    const currentStep = searchParams.get(queryKey) as Steps[number]
     if (!currentStep) {
       window.history.replaceState(
         null,
         '',
         `${window.location.pathname}?${queryKey}=${initialStep}`
-      );
+      )
     }
-  }, [initialStep, queryKey, searchParams]);
+  }, [initialStep, queryKey, searchParams])
 
-  return { currentStep: step, Funnel, nextStep, prevStep } as const;
+  return { currentStep: step, Funnel, nextStep, prevStep } as const
 }
 ```
 
@@ -139,12 +137,12 @@ export function useFunnel<Steps extends NonEmptyArray<string>>(
 
 ```tsx
 export default function FeedbackWrapper() {
-  const { Funnel, prevStep, nextStep } = useFunnel(['praise', 'mate']);
-  const { handleSubmit } = useFeedbackContext();
+  const { Funnel, prevStep, nextStep } = useFunnel(['praise', 'mate'])
+  const { handleSubmit } = useFeedbackContext()
 
   const onSubmit = (data: FeedbackRequestType) => {
-    console.log(data);
-  };
+    console.log(data)
+  }
 
   return (
     <Funnel>
@@ -155,7 +153,7 @@ export default function FeedbackWrapper() {
         <MateComponent onPrevClick={prevStep} onNextClick={handleSubmit(onSubmit)} />
       </Funnel.Step>
     </Funnel>
-  );
+  )
 }
 ```
 
@@ -173,7 +171,11 @@ export default function FeedbackWrapper() {
 
 근데 이런 에러가 떴다.
 
-<img width="440" alt="image" src="https://github.com/Self-Driven-Development/TIL/assets/23312485/266e06e8-c3ea-43d7-8a65-b58dfef532a3"/>
+<img
+  width="440"
+  alt="image"
+  src="https://github.com/Self-Driven-Development/TIL/assets/23312485/266e06e8-c3ea-43d7-8a65-b58dfef532a3"
+/>
 
 `useFormContext`로 formState를 가져오니까 생긴 문제였다.
 

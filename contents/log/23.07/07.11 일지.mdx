@@ -3,8 +3,6 @@ description: 어떻게 추상화 수준을 나눌 것인가?
 tags: [추상화 수준, 함수형 프로그래밍, 클린 코드, 계층형 설계]
 ---
 
-# 23.07.11
-
 ## 오늘 한 일
 
 - Gloddy 개발(상세 페이지)
@@ -55,9 +53,17 @@ tags: [추상화 수준, 함수형 프로그래밍, 클린 코드, 계층형 설
 
 다음은 진유림님의 `토스ㅣSLASH 21 - 실무에서 바로 쓰는 Frontend Clean Code` 에서 나왔던 예시다.
 
-<img width="500" alt="image" src="https://github.com/Self-Driven-Development/TIL/assets/23312485/8a3fbb0e-bc81-4f63-b354-555ad37cb559" />
+<img
+  width="500"
+  alt="image"
+  src="https://github.com/Self-Driven-Development/TIL/assets/23312485/8a3fbb0e-bc81-4f63-b354-555ad37cb559"
+/>
 
-<img width="500" alt="image" src="https://github.com/Self-Driven-Development/TIL/assets/23312485/62a7f1e3-c3c5-44e5-9b86-ad31bc7221f0" />
+<img
+  width="500"
+  alt="image"
+  src="https://github.com/Self-Driven-Development/TIL/assets/23312485/62a7f1e3-c3c5-44e5-9b86-ad31bc7221f0"
+/>
 
 ### Gloddy 프로젝트에서도 적용해보자
 
@@ -68,10 +74,10 @@ export default function DetailPage({
   params: { id },
 }: {
   params: {
-    id: string;
-  };
+    id: string
+  }
 }) {
-  const { image, title, description, location, time } = DETAIL_DUMMY_DATA;
+  const { image, title, description, location, time } = DETAIL_DUMMY_DATA
 
   return (
     <main>
@@ -86,7 +92,7 @@ export default function DetailPage({
       </div>
       <ApplyButton />
     </main>
-  );
+  )
 }
 ```
 

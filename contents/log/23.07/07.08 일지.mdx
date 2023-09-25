@@ -3,8 +3,6 @@ description: 나만의 철학을 가지며 코드를 작성하자
 tags: [좋은 코드, 추상화, 추상화 수준, 당위성, 추상화 벽, 추상화 수준을 나누는 방법]
 ---
 
-# 23.07.08
-
 ## 오늘 한 일
 
 - [x] 프로그라피 세션 참여
@@ -40,7 +38,7 @@ tags: [좋은 코드, 추상화, 추상화 수준, 당위성, 추상화 벽, 추
 
 ---
 
-# Gloddy 개발
+## Gloddy 개발
 
 ## ConfirmModal 컴포넌트 수정
 
@@ -55,7 +53,7 @@ Compound Component 패턴을 사용하지 않고 구현했다.
 그리고 모달의 뒷 배경을 클릭 했을 때 닫히게 하기 위해 `useOnClickOutside` 훅을 만들었다.
 
 ```ts
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 
 export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
   ref: React.RefObject<T>,
@@ -63,22 +61,22 @@ export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
 ) {
   useEffect(() => {
     const listener = (event: MouseEvent | TouchEvent) => {
-      event.stopPropagation();
+      event.stopPropagation()
       if (!ref.current || ref.current.contains(event.target as Node)) {
-        return;
+        return
       }
 
-      handler(event);
-    };
+      handler(event)
+    }
 
-    document.addEventListener('mousedown', listener);
-    document.addEventListener('touchstart', listener);
+    document.addEventListener('mousedown', listener)
+    document.addEventListener('touchstart', listener)
 
     return () => {
-      document.removeEventListener('mousedown', listener);
-      document.removeEventListener('touchstart', listener);
-    };
-  }, [ref, handler]);
+      document.removeEventListener('mousedown', listener)
+      document.removeEventListener('touchstart', listener)
+    }
+  }, [ref, handler])
 }
 ```
 
@@ -88,15 +86,15 @@ export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
 
 ```tsx
 // ModalWrapper.tsx
-import { useRef } from 'react';
-import { motion } from 'framer-motion';
-import { useOnClickOutside } from '@/hooks/useOnClickOutside';
-import PortalWrapper from '../PortalWrapper';
-import type { StrictPropsWithChildren } from '@/types';
+import { useRef } from 'react'
+import { motion } from 'framer-motion'
+import { useOnClickOutside } from '@/hooks/useOnClickOutside'
+import PortalWrapper from '../PortalWrapper'
+import type { StrictPropsWithChildren } from '@/types'
 
 interface ModalWrapperProps {
-  isOpen: boolean;
-  onClose?: () => void;
+  isOpen: boolean
+  onClose?: () => void
 }
 
 export default function ModalWrapper({
@@ -104,9 +102,9 @@ export default function ModalWrapper({
   onClose = () => {},
   children,
 }: StrictPropsWithChildren<ModalWrapperProps>) {
-  const modalRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null)
 
-  useOnClickOutside(modalRef, onClose);
+  useOnClickOutside(modalRef, onClose)
 
   return (
     <PortalWrapper isShow={isOpen}>
@@ -121,24 +119,24 @@ export default function ModalWrapper({
         </div>
       </motion.div>
     </PortalWrapper>
-  );
+  )
 }
 ```
 
 ```tsx
 // ConfirmModal.tsx
-import Button, { ButtonProps } from '@/components/common/Button';
-import ModalWrapper from './ModalWrapper';
-import type { PropsWithChildren } from 'react';
+import Button, { ButtonProps } from '@/components/common/Button'
+import ModalWrapper from './ModalWrapper'
+import type { PropsWithChildren } from 'react'
 
 interface ConfirmModalProps {
-  isOpen: boolean;
-  okText: ButtonProps['text'];
-  cancelText: ButtonProps['text'];
-  okColor?: ButtonProps['color'];
-  cancelColor?: ButtonProps['color'];
-  onClickOk?: () => void;
-  onClickCancel?: () => void;
+  isOpen: boolean
+  okText: ButtonProps['text']
+  cancelText: ButtonProps['text']
+  okColor?: ButtonProps['color']
+  cancelColor?: ButtonProps['color']
+  onClickOk?: () => void
+  onClickCancel?: () => void
 }
 
 export default function ConfirmModal({
@@ -161,7 +159,7 @@ export default function ConfirmModal({
         </div>
       </div>
     </ModalWrapper>
-  );
+  )
 }
 ```
 

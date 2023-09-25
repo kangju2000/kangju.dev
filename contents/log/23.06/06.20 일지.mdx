@@ -1,5 +1,3 @@
-# 23.06.20
-
 ### 오늘 한 일
 
 - [x] 알고리즘 문제 풀이
@@ -12,7 +10,7 @@
 
 ---
 
-# Excution Context (실행 컨텍스트)
+## Excution Context (실행 컨텍스트)
 
 > 자바스크립트 코드가 실행되고 연산되는 범위를 나타내는 추상적인 개념
 
@@ -94,9 +92,9 @@ ExecutionContext: {
 
 ```ts
 interface EnvironmentRecord {
-  DeclarativeEnvironmentRecord: FunctionEnvironmentRecord & ModuleEnvironmentRecord;
-  ObjectEnvironmentRecord: ObjectEnvironmentRecord;
-  GlobalEnvironmentRecord: GlobalEnvironmentRecord;
+  DeclarativeEnvironmentRecord: FunctionEnvironmentRecord & ModuleEnvironmentRecord
+  ObjectEnvironmentRecord: ObjectEnvironmentRecord
+  GlobalEnvironmentRecord: GlobalEnvironmentRecord
 }
 ```
 
@@ -106,42 +104,42 @@ interface EnvironmentRecord {
 
   ```ts
   type DeclarativeEnvironmentRecord = {
-    HasBinding(N: string): boolean; //Determines if an environment record has a binding for the string N.
-    CreateMutableBinding(N: string, D: boolean): void; //Creates a new mutable binding in an environment record.
-    CreateImmutableBinding(N: string, S: boolean): void; //Creates a new immutable binding in an environment record.
-    InitializeBinding(N: string, V: any): void; //Initializes an immutable binding in an environment record.
-    SetMutableBinding(N: string, V: any, S: boolean): void; //Sets the value of an existing mutable binding in an environment record.
-    GetBindingValue(N: string, S: boolean): any; //Retrieves the value of an existing binding from an environment record.
-    DeleteBinding(N: string): boolean; //Removes a binding from an environment record.
-    HasThisBinding(): boolean; //Determines if an environment record establishes a this binding.
-    HasSuperBinding(): boolean; //Determines if an environment record establishes a super binding.
-    WithBaseObject(): Object; //Returns the binding object for environments that provide ThisBinding.
-  };
+    HasBinding(N: string): boolean //Determines if an environment record has a binding for the string N.
+    CreateMutableBinding(N: string, D: boolean): void //Creates a new mutable binding in an environment record.
+    CreateImmutableBinding(N: string, S: boolean): void //Creates a new immutable binding in an environment record.
+    InitializeBinding(N: string, V: any): void //Initializes an immutable binding in an environment record.
+    SetMutableBinding(N: string, V: any, S: boolean): void //Sets the value of an existing mutable binding in an environment record.
+    GetBindingValue(N: string, S: boolean): any //Retrieves the value of an existing binding from an environment record.
+    DeleteBinding(N: string): boolean //Removes a binding from an environment record.
+    HasThisBinding(): boolean //Determines if an environment record establishes a this binding.
+    HasSuperBinding(): boolean //Determines if an environment record establishes a super binding.
+    WithBaseObject(): Object //Returns the binding object for environments that provide ThisBinding.
+  }
 
   type FunctionEnvironmentRecord = {
-    [[ThisValue]]: any; //This is the this value used for this invocation of the function.
-    [[ThisBindingStatus]]: LexicalEnvironment | initialized | uninitialized; //ThisBindingStatus is either lexicalEnvironment, initialized, or uninitialized.
-    [[FunctionObject]]: Function; //The function object whose invocation caused this Environment Record to be created.
-    [[NewTarget]]: Object | undefined; //If this Environment Record was created by the [[Construct]] internal method, [[NewTarget]] is the value of the [[Construct]] newTarget parameter. Otherwise, its value is undefined.
+    [[ThisValue]]: any //This is the this value used for this invocation of the function.
+    [[ThisBindingStatus]]: LexicalEnvironment | initialized | uninitialized //ThisBindingStatus is either lexicalEnvironment, initialized, or uninitialized.
+    [[FunctionObject]]: Function //The function object whose invocation caused this Environment Record to be created.
+    [[NewTarget]]: Object | undefined //If this Environment Record was created by the [[Construct]] internal method, [[NewTarget]] is the value of the [[Construct]] newTarget parameter. Otherwise, its value is undefined.
 
-    BindThisValue(V: any): void; //Set the [[ThisValue]] and record that it has been initialized.
-    GetThisBinding(): any; //Return the value of this Environment Record's this binding. Throws a ReferenceError if the this binding has not been initialized.
-    GetSuperBase(): Object | undefined; //Return the object that is the base for super property accesses bound in this Environment Record. The value undefined indicates that such accesses will produce runtime errors.
-  };
+    BindThisValue(V: any): void //Set the [[ThisValue]] and record that it has been initialized.
+    GetThisBinding(): any //Return the value of this Environment Record's this binding. Throws a ReferenceError if the this binding has not been initialized.
+    GetSuperBase(): Object | undefined //Return the object that is the base for super property accesses bound in this Environment Record. The value undefined indicates that such accesses will produce runtime errors.
+  }
 
   type ModuleEnvironmentRecord = {
-    CreateImportBinding(N: string, M: Module, N2: string): void; //Create an immutable indirect binding in a Module Environment Record. The String value N is the text of the bound name. M is a Module Record, and N2 is a binding that exists in M's Module Environment Record.
-    GetThisBinding(): undefined; //Return the value of this Environment Record's this binding.
-  };
+    CreateImportBinding(N: string, M: Module, N2: string): void //Create an immutable indirect binding in a Module Environment Record. The String value N is the text of the bound name. M is a Module Record, and N2 is a binding that exists in M's Module Environment Record.
+    GetThisBinding(): undefined //Return the value of this Environment Record's this binding.
+  }
   ```
 
 - Object Environment Record (객체 환경 레코드)
 
   ```ts
   type ObjectEnvironmentRecord = {
-    BindingObject: Object; //The binding object of this Environment Record.
-    isWithEnvironment: boolean; //Indicates whether this Environment Record is created for a with statement
-  };
+    BindingObject: Object //The binding object of this Environment Record.
+    isWithEnvironment: boolean //Indicates whether this Environment Record is created for a with statement
+  }
   ```
 
   - BindingObject(전역 객체)와 연결됨
@@ -200,15 +198,15 @@ var로 선언한 변수들의 경우 스코프가 function scope이다.
 예시
 
 ```js
-var a = 3;
-let b = 4;
+var a = 3
+let b = 4
 
 function func(num) {
-  var t = 9;
-  console.log(a + b + num + t);
+  var t = 9
+  console.log(a + b + num + t)
 }
 
-var r = func(4);
+var r = func(4)
 ```
 
 <table>

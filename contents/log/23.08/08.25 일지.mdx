@@ -1,5 +1,3 @@
-# 23.08.25
-
 ## 오늘 한 일
 
 - 데모데이 전 카공실록 개발
@@ -7,7 +5,7 @@
 
 ---
 
-# 카공실록
+## 카공실록
 
 내일 데모데이를 앞두고 카공실록을 개발했다. 프론트 윤지 누나랑 오후 9시부터 새벽 4시까지 같이 개발했다.
 
@@ -21,7 +19,7 @@ Suspense를 걸어두어 폴백이 렌더링되는 상황에서 요청이 실패
 
 하지만 실패해도 렌더링이 되어야하는 경우에는 번거로워진다.
 
-<br/>
+<br />
 
 카공실록에서는 유저 정보를 가져와서 그 정보가 존재하면 유저 정보를 렌더링하고, 존재하지 않으면 그 자리에 다른 UI를 렌더링한다.
 
@@ -30,17 +28,17 @@ Suspense를 걸어두어 폴백이 렌더링되는 상황에서 요청이 실패
 처음에는 이런 방식으로 쿼리 훅을 구현했었다.
 
 ```tsx
-import { getUserInfo } from './apis';
-import { Keys } from './keys';
-import { isLogin } from '@/utils/isLogin';
-import { useSuspenseQuery } from '@suspensive/react-query';
+import { getUserInfo } from './apis'
+import { Keys } from './keys'
+import { isLogin } from '@/utils/isLogin'
+import { useSuspenseQuery } from '@suspensive/react-query'
 
-import type { UserInfoParams } from './types';
+import type { UserInfoParams } from './types'
 
 export function useGetUserInfo(params: UserInfoParams) {
   return useSuspenseQuery(Keys.userInfo(params), () => getUserInfo(params), {
     enabled: isLogin(),
-  });
+  })
 }
 ```
 
@@ -51,14 +49,14 @@ export function useGetUserInfo(params: UserInfoParams) {
 그래서 `useSuspenseQuery`를 사용하지 않고 `useQuery`를 사용했다.
 
 ```tsx
-import { getUserInfo } from './apis';
-import { Keys } from './keys';
-import { useQuery } from 'react-query';
+import { getUserInfo } from './apis'
+import { Keys } from './keys'
+import { useQuery } from 'react-query'
 
-import type { UserInfoParams } from './types';
+import type { UserInfoParams } from './types'
 
 export function useGetUserInfo(params: UserInfoParams) {
-  return useQuery(Keys.userInfo(params), () => getUserInfo(params));
+  return useQuery(Keys.userInfo(params), () => getUserInfo(params))
 }
 ```
 
@@ -74,7 +72,7 @@ textarea에 입력할 때마다 썸네일 컴포넌트가 리렌더링되면서 
 
 그래서 그 컴포넌트를 `memo`로 감싸서 리렌더링을 방지하고, prop으로 들어가는 핸들러 함수들도 `useCallback`으로 감싸서 리렌더링을 방지했다.
 
-# gatsby 블로그 세팅
+## gatsby 블로그 세팅
 
 오늘 어느정도 세팅이 마무리된 것 같다.
 

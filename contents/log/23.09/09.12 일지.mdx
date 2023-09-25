@@ -1,5 +1,3 @@
-# 23.09.12
-
 ## 오늘 한 일
 
 - gloddy 개발
@@ -9,7 +7,7 @@
 
 ---
 
-# 다국어 추가
+## 다국어 추가
 
 드디어 미루고 미루던 다국어를 추가했다.
 
@@ -122,10 +120,10 @@
 해당하는 곳에 `useTranslation`을 import하고 `t`를 사용하면 된다.
 
 ```tsx
-const { t } = useTranslation('grouping');
+const { t } = useTranslation('grouping')
 
 // ...
-<div className="px-20 pb-8 pt-20">
+;<div className="px-20 pb-8 pt-20">
   <p className="px-4 text-subtitle-3 text-sign-secondary">{t('create.title.label')}</p>
   <Spacing size={4} />
   <TextFieldController
@@ -137,29 +135,29 @@ const { t } = useTranslation('grouping');
     })}
     maxCount={30}
   />
-</div>;
+</div>
 ```
 
 ## 개선할 점
 
 `t`에 들어가는 key값을 타입 추론을 통해 자동으로 생성할 수 있을 것 같다. 추후에 개선해보자.
 
-# 블로그 다크모드 추가
+## 블로그 다크모드 추가
 
 ## 첫번 째 시도
 
 `next-themes` 라이브러리를 사용했다.
 
 ```tsx
-import { useTheme } from 'next-themes';
+import { useTheme } from 'next-themes'
 
-const { theme, setTheme } = useTheme();
+const { theme, setTheme } = useTheme()
 
 // ...
 
-<button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+;<button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
   {theme === 'dark' ? 'Light' : 'Dark'}
-</button>;
+</button>
 ```
 
 ### 문제점
@@ -171,7 +169,7 @@ const { theme, setTheme } = useTheme();
 ```tsx
 // app/layout.jsx
 
-import { Providers } from './providers';
+import { Providers } from './providers'
 
 export default function Layout({ children }) {
   return (
@@ -181,7 +179,7 @@ export default function Layout({ children }) {
         <Providers>{children}</Providers>
       </body>
     </html>
-  );
+  )
 }
 ```
 
@@ -197,29 +195,29 @@ export default function Layout({ children }) {
 
 ```tsx
 // utils/colorScheme.ts
-import { getCookie, setCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next'
 
 export const getCurrentScheme = async () => {
   if (typeof window === 'undefined') {
-    const { cookies } = await import('next/headers');
+    const { cookies } = await import('next/headers')
 
-    return cookies().has('scheme') ? cookies().get('scheme')?.value : 'dark';
+    return cookies().has('scheme') ? cookies().get('scheme')?.value : 'dark'
   }
 
-  return getCookie('scheme', { path: '/' });
-};
+  return getCookie('scheme', { path: '/' })
+}
 
 export const toggleScheme = async () => {
-  const scheme = await getCurrentScheme();
+  const scheme = await getCurrentScheme()
 
-  const newScheme = scheme === 'dark' ? 'light' : 'dark';
+  const newScheme = scheme === 'dark' ? 'light' : 'dark'
 
   setCookie('scheme', newScheme, {
     path: '/',
-  });
+  })
 
-  return newScheme;
-};
+  return newScheme
+}
 ```
 
 그 다음 darkMode/lightMode 스타일을 만들어준다.
@@ -228,17 +226,17 @@ export const toggleScheme = async () => {
 const colors = createThemeContract({
   background: null,
   text: null,
-});
+})
 
 export const lightTheme = createTheme(colors, {
   background: 'white',
   text: 'black',
-});
+})
 
 export const darkTheme = createTheme(colors, {
   background: 'black',
   text: 'white',
-});
+})
 ```
 
 마지막으로 Layout에 적용해준다.
@@ -247,7 +245,7 @@ export const darkTheme = createTheme(colors, {
 // app/layout.tsx
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const scheme = await getCurrentScheme();
+  const scheme = await getCurrentScheme()
 
   return (
     <html
@@ -262,7 +260,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <main className={styles.content}>{children}</main>
       </body>
     </html>
-  );
+  )
 }
 ```
 

@@ -1,6 +1,5 @@
-# 23.08.09
-
 ## 오늘 한 일
+
 - 카공실록 개발 및 회의
 
 ---
@@ -17,17 +16,17 @@
 export const getUserInfo = async (params: UserInfoParams) => {
   const { data } = await api.get<User>('api/v1/members', {
     searchParams: { ...params },
-  });
+  })
 
-  return data;
-};
+  return data
+}
 ```
 
 그리고 커스텀 쿼리 훅은 다음과 같다.
 
 ```ts
 export function useGetUserInfo(params: UserInfoParams) {
-  return useSuspenseQuery(Keys.userInfo(params), () => getUserInfo(params));
+  return useSuspenseQuery(Keys.userInfo(params), () => getUserInfo(params))
 }
 ```
 
@@ -43,14 +42,11 @@ export function useGetUserInfo(params: UserInfoParams) {
 
 대신 훅을 사용하는 쪽에서 `status`로 판단해서 에러를 처리하면 된다.
 
-
 일단 커스텀 쿼리 훅 내부에서 처리는 힘들 것 같고, `enabled` 옵션으로 애초에 쿼리를 호출하지 않는 방법이 있을 것 같다.
 
 3. 호출하는 함수에서 에러를 처리한다.
 
 try / catch로 에러를 처리할 수 있겠지만, 이렇게 하면 커스텀 쿼리 훅에서 에러를 처리할 수 없다.
-
-
 
 ### 그럼 어떻게 하지?🤔🤔
 
@@ -61,13 +57,13 @@ try / catch로 에러를 처리할 수 있겠지만, 이렇게 하면 커스텀 
 ```ts
 // isLogin.ts
 export function isLogin() {
-  const { accessToken, refreshToken } = getCookies();
+  const { accessToken, refreshToken } = getCookies()
 
   if (accessToken && refreshToken) {
-    return true;
+    return true
   }
 
-  return false;
+  return false
 }
 ```
 
@@ -76,7 +72,7 @@ export function isLogin() {
 export function useGetUserInfo(params: UserInfoParams) {
   return useSuspenseQuery(Keys.userInfo(params), () => getUserInfo(params), {
     enabled: isLogin(),
-  });
+  })
 }
 ```
 
@@ -109,7 +105,7 @@ export function useGetUserInfo(params: UserInfoParams) {
 7. ky hook에서 에러코드가 401일 때 `refreshToken`을 갖고 새로운 `accessToken`을 발급받는다.
 8. `accessToken`이 발급되면 재요청을 한다.
 
-
 ## 내일 할 일
+
 - 카공실록 개발
 - gloddy 개발

@@ -1,5 +1,3 @@
-# 23.07.07
-
 ## 오늘 한 일
 
 - Gloddy
@@ -14,11 +12,15 @@
 
 ---
 
-# Gloddy
+## Gloddy
 
 ## 코드 리뷰
 
-<img width="1203" alt="image" src="https://github.com/Self-Driven-Development/TIL/assets/23312485/3897bf9b-520e-4b0e-aa35-06130b8f4a3d" />
+<img
+  width="1203"
+  alt="image"
+  src="https://github.com/Self-Driven-Development/TIL/assets/23312485/3897bf9b-520e-4b0e-aa35-06130b8f4a3d"
+/>
 
 코드 리뷰하는데 꽤 시간을 많이 썼다. 코드를 보니 컨벤션을 맞춰봐야 할 것들이 많아서 꼼꼼하게 리뷰 남겼다. 그리고 직접 회의를 통해 어느정도 컨벤션을 맞출 수 있었다.
 
@@ -72,45 +74,45 @@
 <div>
 
 ```tsx
-import { forwardRef } from 'react';
-import ModalWrapper from './ModalWrapper';
-import Button, { type ButtonProps } from '@/components/common/Button';
+import { forwardRef } from 'react'
+import ModalWrapper from './ModalWrapper'
+import Button, { type ButtonProps } from '@/components/common/Button'
 
 interface ConfirmModalProps {
-  isModalOpen: boolean;
-  forwardedRef?: React.Ref<HTMLDivElement>;
-  children?: React.ReactNode;
+  isModalOpen: boolean
+  forwardedRef?: React.Ref<HTMLDivElement>
+  children?: React.ReactNode
 }
 
 function ConfirmModal({ isModalOpen, forwardedRef, children }: ConfirmModalProps) {
-  if (!isModalOpen) return null;
+  if (!isModalOpen) return null
 
   return (
     <>
       <ModalWrapper />
-      <div ref={forwardedRef} className='absolute z-10 w-300 rounded-10 bg-white px-16 pb-15 pt-30'>
+      <div ref={forwardedRef} className="absolute z-10 w-300 rounded-10 bg-white px-16 pb-15 pt-30">
         {children}
       </div>
     </>
-  );
+  )
 }
 
 interface ModalContentProps {
-  okButtonProps: ButtonProps;
-  cancelButtonProps: ButtonProps;
-  children?: React.ReactNode;
+  okButtonProps: ButtonProps
+  cancelButtonProps: ButtonProps
+  children?: React.ReactNode
 }
 
 function ModalContent({ okButtonProps, cancelButtonProps, children }: ModalContentProps) {
   return (
-    <div className='p-25'>
+    <div className="p-25">
       {children}
-      <div className='mt-25 flex flex-col gap-8'>
+      <div className="mt-25 flex flex-col gap-8">
         <Button {...okButtonProps} />
         <Button {...cancelButtonProps} />
       </div>
     </div>
-  );
+  )
 }
 
 const confirmModalRef = forwardRef<HTMLDivElement, ConfirmModalProps>(
@@ -119,11 +121,11 @@ const confirmModalRef = forwardRef<HTMLDivElement, ConfirmModalProps>(
       {props.children}
     </ConfirmModal>
   )
-);
+)
 
 export default Object.assign(confirmModalRef, {
   Content: ModalContent,
-});
+})
 ```
 
 </div>
@@ -142,7 +144,7 @@ const confirmModalRef = forwardRef<HTMLDivElement, ConfirmModalProps>(
       {props.children}
     </ConfirmModal>
   )
-);
+)
 ```
 
 ## Rust

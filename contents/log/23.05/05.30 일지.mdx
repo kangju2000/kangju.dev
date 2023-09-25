@@ -1,5 +1,3 @@
-# 23.05.30
-
 ## 오늘 한 일
 
 - [x] 알고리즘 문제 풀이
@@ -10,7 +8,7 @@
 
 ---
 
-# 카공실록 프로젝트
+## 카공실록 프로젝트
 
 ## 바텀시트 컴포넌트 구현
 
@@ -19,25 +17,25 @@
 추가적으로 커스텀해야되는 부분이 있어서 따로 `BottomSheet` 컴포넌트로 분리했다.
 
 ```tsx
-import { useOnClickOutside } from '@/hooks/useOnClickOutside';
-import { forwardRef, useRef } from 'react';
-import Sheet from 'react-modal-sheet';
+import { useOnClickOutside } from '@/hooks/useOnClickOutside'
+import { forwardRef, useRef } from 'react'
+import Sheet from 'react-modal-sheet'
 
-import type { SheetRef } from 'react-modal-sheet';
-import type { SheetProps } from 'react-modal-sheet/dist/types';
+import type { SheetRef } from 'react-modal-sheet'
+import type { SheetProps } from 'react-modal-sheet/dist/types'
 
 interface BottomSheetProps extends SheetProps {
-  className?: string;
-  hasBackDropOpacity?: boolean;
+  className?: string
+  hasBackDropOpacity?: boolean
 }
 
 function BottomSheet(
   { isOpen, onClose, children, className, hasBackDropOpacity = false, ...props }: BottomSheetProps,
   ref: React.ForwardedRef<SheetRef | undefined | null>
 ) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  useOnClickOutside(containerRef, onClose);
+  useOnClickOutside(containerRef, onClose)
 
   return (
     <Sheet
@@ -59,16 +57,16 @@ function BottomSheet(
         className={`${hasBackDropOpacity ? '!bg-[rgba(0,0,0,0.6)]' : '!bg-[rgba(0,0,0,0)]'}`}
       />
     </Sheet>
-  );
+  )
 }
 
-export default forwardRef(BottomSheet);
+export default forwardRef(BottomSheet)
 ```
 
 바텀시트의 밖을 클릭하면 닫히게 하기 위해 `useOnClickOutside` 훅을 만들었다.
 
 ```tsx
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 
 export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
   ref: React.RefObject<T>,
@@ -76,20 +74,20 @@ export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
 ) {
   useEffect(() => {
     const listener = (event: MouseEvent | TouchEvent) => {
-      event.stopPropagation();
+      event.stopPropagation()
       if (!ref.current || ref.current.contains(event.target as Node)) {
-        return;
+        return
       }
-      handler(event);
-    };
+      handler(event)
+    }
 
-    document.addEventListener('mousedown', listener);
-    document.addEventListener('touchstart', listener);
+    document.addEventListener('mousedown', listener)
+    document.addEventListener('touchstart', listener)
     return () => {
-      document.removeEventListener('mousedown', listener);
-      document.removeEventListener('touchstart', listener);
-    };
-  }, [ref, handler]);
+      document.removeEventListener('mousedown', listener)
+      document.removeEventListener('touchstart', listener)
+    }
+  }, [ref, handler])
 }
 ```
 
@@ -116,8 +114,16 @@ export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
 
 처음 올라올 때는 평가하는 이모티콘 5개가 보여야하고, 하나를 클릭하면 바텀시트가 위로 올라가면서 리뷰 작성 폼이 보여야한다.
 
-<img width="300" alt="image" src="https://github.com/Self-Driven-Development/TIL/assets/23312485/bfab70e0-2457-4b8c-8944-443d3b081b4b"/>
-<img width="300" alt="image" src="https://github.com/Self-Driven-Development/TIL/assets/23312485/457306e6-7712-47af-a284-0b3850d1d5de"/>
+<img
+  width="300"
+  alt="image"
+  src="https://github.com/Self-Driven-Development/TIL/assets/23312485/bfab70e0-2457-4b8c-8944-443d3b081b4b"
+/>
+<img
+  width="300"
+  alt="image"
+  src="https://github.com/Self-Driven-Development/TIL/assets/23312485/457306e6-7712-47af-a284-0b3850d1d5de"
+/>
 
 이렇게 구현하기 위해 `react-modal-sheet` 라이브러리에서 제공하는 props를 사용했다.
 
@@ -137,11 +143,11 @@ export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
 `initialSnap`으로 처음에는 280px이 올라오고, 이모티콘을 클릭하면 onClick으로 `ref.current?.snapTo(0)`을 호출해서 0.9로 올라오게 했다. 여기서 0.9는 90%를 의미한다.
 
 ```tsx
-const ref = useRef<SheetRef>(null);
+const ref = useRef<SheetRef>(null)
 
 const onClick = () => {
-  ref.current?.snapTo(0);
-};
+  ref.current?.snapTo(0)
+}
 ```
 
 ### 문제점 1
@@ -154,10 +160,10 @@ const onClick = () => {
 const SheetContainer = React.forwardRef<any, SheetContainerProps>(
   ({ children, style = {}, className = '', ...rest }, ref) => {
     // ...
-    const initialY = snapPoints ? snapPoints[0] - snapPoints[initialSnap] : 0;
-    const maxSnapHeight = snapPoints ? snapPoints[0] : null;
+    const initialY = snapPoints ? snapPoints[0] - snapPoints[initialSnap] : 0
+    const maxSnapHeight = snapPoints ? snapPoints[0] : null
 
-    const height = maxSnapHeight !== null ? `min(${maxSnapHeight}px, ${MAX_HEIGHT})` : MAX_HEIGHT;
+    const height = maxSnapHeight !== null ? `min(${maxSnapHeight}px, ${MAX_HEIGHT})` : MAX_HEIGHT
 
     return (
       <motion.div
@@ -175,9 +181,9 @@ const SheetContainer = React.forwardRef<any, SheetContainerProps>(
       >
         {children}
       </motion.div>
-    );
+    )
   }
-);
+)
 ```
 
 여기서 `height`를 계산하는 부분을 보면 `snapPoints`의 첫번째 값이 `maxSnapHeight`로 들어가고, `maxSnapHeight`가 `null`이 아니면 `min(${maxSnapHeight}px, ${MAX_HEIGHT})`로 계산된다.
@@ -185,7 +191,7 @@ const SheetContainer = React.forwardRef<any, SheetContainerProps>(
 MAX_HEIGHT는 아래처럼 정의되어있다.
 
 ```ts
-export const MAX_HEIGHT = 'calc(100% - env(safe-area-inset-top) - 34px)';
+export const MAX_HEIGHT = 'calc(100% - env(safe-area-inset-top) - 34px)'
 ```
 
 `env(safe-area-inset-top)`은 아이폰 상단 노치의 높이를 의미한다.
@@ -199,27 +205,27 @@ maxSnapHeight로 들어가야할 값이 `윈도우의 높이 - 70px`이면 된�
 `react-modal-sheet`도 해당 훅을 만들어서 사용하고 있어서 그대로 가져와서 사용했다.
 
 ```tsx
-import { useIsomorphicLayoutEffect } from 'framer-motion';
-import { useState } from 'react';
+import { useIsomorphicLayoutEffect } from 'framer-motion'
+import { useState } from 'react'
 
 export function useWindowHeight() {
-  const [windowHeight, setWindowHeight] = useState(0);
+  const [windowHeight, setWindowHeight] = useState(0)
 
   useIsomorphicLayoutEffect(() => {
-    const updateHeight = () => setWindowHeight(window.innerHeight);
-    window.addEventListener('resize', updateHeight);
-    updateHeight();
-    return () => window.removeEventListener('resize', updateHeight);
-  }, []);
+    const updateHeight = () => setWindowHeight(window.innerHeight)
+    window.addEventListener('resize', updateHeight)
+    updateHeight()
+    return () => window.removeEventListener('resize', updateHeight)
+  }, [])
 
-  return windowHeight;
+  return windowHeight
 }
 ```
 
 > 적용 결과
 
 ```tsx
-const windowHeight = useWindowHeight();
+const windowHeight = useWindowHeight()
 
 return (
   <BottomSheet
@@ -232,7 +238,7 @@ return (
   >
     ...
   </BottomSheet>
-);
+)
 ```
 
 > TIL 쓰다가 알게 됐는데, 이렇게 안해도 그냥 `snapPoints={[-70, 280]}`으로 해도 된다...  

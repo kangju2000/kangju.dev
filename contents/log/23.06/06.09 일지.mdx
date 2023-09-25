@@ -1,5 +1,3 @@
-# 23.06.09
-
 ## 오늘 한 일
 
 - [ ] 알고리즘 문제 풀이
@@ -28,8 +26,8 @@
 회원가입 상태를 전역이 아닌 지역 상태로 바꾸고, step 또한 지역 상태로 두어 step에 따라 조건부 렌더링 되도록 했다.
 
 ```tsx
-const [registerData, setRegisterData] = useState();
-const [step, setStep] = useState<'가입방식' | '주민번호' | '집주소' | '가입성공'>('가입방식');
+const [registerData, setRegisterData] = useState()
+const [step, setStep] = useState<'가입방식' | '주민번호' | '집주소' | '가입성공'>('가입방식')
 
 return (
   <main>
@@ -38,7 +36,7 @@ return (
     {step === '집주소' && <집주소 onNext={(data) => setStep('가입성공')} />}
     {step === '가입성공' && <가입성공 />}
   </main>
-);
+)
 ```
 
 이로써 UI의 흐름을 한 공간에서 관리할 수 있게 되었다.
@@ -51,18 +49,18 @@ return (
 ```tsx
 // useFunnel.tsx
 function useFunnel() {
-  const [step, setStep] = useState();
+  const [step, setStep] = useState()
 
   const Step = (props) => {
-    return <>{props.children}</>;
-  };
+    return <>{props.children}</>
+  }
 
   const Funnel = ({ children }) => {
     //name이 현재 step 상태와 동일한 Step만 렌더링
-    const targetStep = children.find((childStep) => childStep.props.name === step);
-    return Object.assign(targetStep, { Step });
-  };
-  return [Funnel, setStep];
+    const targetStep = children.find((childStep) => childStep.props.name === step)
+    return Object.assign(targetStep, { Step })
+  }
+  return [Funnel, setStep]
 }
 ```
 
@@ -71,20 +69,20 @@ function useFunnel() {
 > 변경 후
 
 ```tsx
-const [registerData, setRegisterData] = useState();
-const [step, setStep] = useState<'가입방식' | '주민번호' | '집주소' | '가입성공'>('가입방식');
+const [registerData, setRegisterData] = useState()
+const [step, setStep] = useState<'가입방식' | '주민번호' | '집주소' | '가입성공'>('가입방식')
 
 return (
   <Funnel>
-    <Funnel.step name='가입방식'>
+    <Funnel.step name="가입방식">
       <가입방식 onNext={(data) => setStep('주민번호')} />
     </Funnel.step>
-    <Funnel.step name='주민번호'>
+    <Funnel.step name="주민번호">
       <주민번호 onNext={(data) => setStep('집주소')} />
     </Funnel.step>
     // ...
   </Funnel>
-);
+)
 ```
 
 다양한 상황에서 일관적으로 개발할 수 있다! -> 라이브러리화 가능
@@ -136,29 +134,29 @@ graph TD
 
 ```tsx
 function getGraph(step: string, children: ReactElement[]) {
-  const result: string[] = ['graph TD'];
+  const result: string[] = ['graph TD']
 
   children.map((stepElement) => {
-    const stepName = stepElement.props.name;
-    const children = stepElement.props.children;
+    const stepName = stepElement.props.name
+    const children = stepElement.props.children
 
-    const childrenProps = children?.props as [string, unknown];
+    const childrenProps = children?.props as [string, unknown]
     Object.entries(childrenProps).map((el) => {
-      const [functionName, value] = el;
+      const [functionName, value] = el
       if (typeof value === 'function') {
         value
           .toString()
           .match(/ setStep\(.+\)/g)
           ?.map((matchedSetStep) => {
-            const matchedStepName = matchedSetStep.match(/setStep\((?:'|")(.+)(?:'|")\)/)?.[1];
-            const graphNode = `${stepName}[${stepName}] -->|${functionName}| ${matchedStepName}[${matchedStepName}]`;
-            result.push(graphNode);
-          });
+            const matchedStepName = matchedSetStep.match(/setStep\((?:'|")(.+)(?:'|")\)/)?.[1]
+            const graphNode = `${stepName}[${stepName}] -->|${functionName}| ${matchedStepName}[${matchedStepName}]`
+            result.push(graphNode)
+          })
       }
-    });
-  });
+    })
+  })
 
-  return result.join('\n');
+  return result.join('\n')
 }
 ```
 
@@ -203,34 +201,34 @@ function getGraph(step: string, children: ReactElement[]) {
 
 ```tsx
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
-'use client';
+'use client'
 
-import { DEFAULT_COORDINATES } from '@/constants/map';
-import useGeoLocation from '@/hooks/useGeolocation';
-import { usePlacesStore } from '@/store/PlacesState';
-import Script from 'next/script';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { DEFAULT_COORDINATES } from '@/constants/map'
+import useGeoLocation from '@/hooks/useGeolocation'
+import { usePlacesStore } from '@/store/PlacesState'
+import Script from 'next/script'
+import { Map, MapMarker } from 'react-kakao-maps-sdk'
 
-const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_API_KEY}&autoload=false`;
+const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_API_KEY}&autoload=false`
 
 const KakaoMap = () => {
-  const { loaded, error, coordinates } = useGeoLocation();
-  const { places } = usePlacesStore();
+  const { loaded, error, coordinates } = useGeoLocation()
+  const { places } = usePlacesStore()
 
   if (loaded) {
-    <div>loading..</div>;
+    ;<div>loading..</div>
   }
 
   if (error) {
-    <div>에러</div>;
+    ;<div>에러</div>
   }
 
   return (
     <>
-      <Script src={KAKAO_SDK_URL} strategy='beforeInteractive' />
+      <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" />
       <Map
         center={coordinates ? { lat: coordinates.lat, lng: coordinates.lng } : DEFAULT_COORDINATES}
-        className='h-screen w-full min-w-[360px]'
+        className="h-screen w-full min-w-[360px]"
       >
         {places.map((place) => (
           <MapMarker
@@ -250,26 +248,26 @@ const KakaoMap = () => {
         ))}
       </Map>
     </>
-  );
-};
+  )
+}
 
-export default KakaoMap;
+export default KakaoMap
 ```
 
 > 변경 후 `KakaoMap` 컴포넌트
 
 ```tsx
-import { DEFAULT_COORDINATES } from '@/constants/map';
+import { DEFAULT_COORDINATES } from '@/constants/map'
 // import useGeoLocation from '@/hooks/useGeolocation';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Map, MapMarker } from 'react-kakao-maps-sdk'
 
-import type { Coordinates } from '@/types/coordinates';
-import type { PlaceType } from '@/types/place';
+import type { Coordinates } from '@/types/coordinates'
+import type { PlaceType } from '@/types/place'
 
 interface KakaoMapProps {
-  className?: string;
-  customCoordinates?: Coordinates;
-  places?: PlaceType[];
+  className?: string
+  customCoordinates?: Coordinates
+  places?: PlaceType[]
 }
 
 const KakaoMap = ({ className, customCoordinates, places }: KakaoMapProps) => {
@@ -294,10 +292,10 @@ const KakaoMap = ({ className, customCoordinates, places }: KakaoMapProps) => {
         ))}
       </Map>
     </>
-  );
-};
+  )
+}
 
-export default KakaoMap;
+export default KakaoMap
 ```
 
 places를 외부에서 받아오도록 변경했고, `customCoordinates`를 받아서 `center`로 설정할 수 있도록 변경했다.
@@ -311,17 +309,17 @@ places를 외부에서 받아오도록 변경했고, `customCoordinates`를 받�
 우측 하단 버튼 누르면 Loading Lottie가 나오도록 구현했다.
 
 ```tsx
-'use client';
+'use client'
 
-import * as animationData from '../../public/assets/lotties/prography_motion_loading.json';
-import Lottie from 'lottie-react';
+import * as animationData from '../../public/assets/lotties/prography_motion_loading.json'
+import Lottie from 'lottie-react'
 
 export default function Loading() {
   return (
-    <div className='fixed top-0 z-50 flex h-screen w-full min-w-[360px] max-w-[448px] items-center justify-center bg-black bg-opacity-40'>
-      <Lottie animationData={animationData} loop={true} className='h-16 w-16' />
+    <div className="fixed top-0 z-50 flex h-screen w-full min-w-[360px] max-w-[448px] items-center justify-center bg-black bg-opacity-40">
+      <Lottie animationData={animationData} loop={true} className="h-16 w-16" />
     </div>
-  );
+  )
 }
 ```
 

@@ -1,5 +1,3 @@
-# 23.06.03
-
 ## 오늘 한 일
 
 - [x] 알고리즘 문제 풀이
@@ -11,7 +9,7 @@
 
 ---
 
-# 학림이가 진행하는 프로젝트에서의 웹뷰 테스트 진행
+## 학림이가 진행하는 프로젝트에서의 웹뷰 테스트 진행
 
 ## 1. 웹뷰 -> 모바일
 
@@ -23,8 +21,8 @@ const handleClick = () => {
     JSON.stringify({
       loginSuccess: true,
     })
-  );
-};
+  )
+}
 ```
 
 타입스크립트를 사용하는 경우에는 LoginToaster의 타입을 정의해주어야 한다.
@@ -32,7 +30,7 @@ const handleClick = () => {
 ```ts
 // LoginToaster.d.ts
 declare namespace LoginToaster {
-  function postMessage(message: string): void;
+  function postMessage(message: string): void
 }
 ```
 
@@ -56,7 +54,7 @@ declare namespace LoginToaster {
 // index.d.ts
 declare global {
   interface Window {
-    flutterWebView: (message: string) => void;
+    flutterWebView: (message: string) => void
   }
 }
 ```
@@ -71,14 +69,14 @@ const handleClick = () => {
     JSON.stringify({
       loginSuccess: true,
     })
-  );
-};
+  )
+}
 
 useEffect(() => {
   window.flutterWebView = (message) => {
     // message를 파싱해서 사용
-  };
-}, []);
+  }
+}, [])
 ```
 
 ### 주의할 점
@@ -89,7 +87,7 @@ window 객체는 브라우저에서만 사용할 수 있기 때문에, 서버사
 if (typeof window !== 'undefined') {
   window.flutterWebView = (message) => {
     // message를 파싱해서 사용
-  };
+  }
 }
 ```
 
@@ -99,27 +97,27 @@ if (typeof window !== 'undefined') {
 
 ```jsx
 // useFlutterWebView.ts
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 
 const useFlutterWebView = (callback) => {
   // 대충 필요한 코드들
 
   useEffect(() => {
-    window.flutterWebView = callback;
-  }, [callback]);
-};
+    window.flutterWebView = callback
+  }, [callback])
+}
 
-export default useFlutterWebView;
+export default useFlutterWebView
 
 // 컴포넌트에서 사용
 useFlutterWebView((message) => {
   // message를 파싱해서 사용
-});
+})
 ```
 
 상황에 맞게 사용하면 될 것 같다.
 
-# 카공실록 갤러리 페이지 구현
+## 카공실록 갤러리 페이지 구현
 
 ![Jun-03-2023 20-47-34](https://github.com/kagong-sillok/kagong-sillok-client/assets/23312485/c3d9a7dc-dcb7-4697-9509-deb70bb20fa5)
 
@@ -130,7 +128,7 @@ useFlutterWebView((message) => {
 `images` 필드가 배열이기 때문에 `map`을 두 번 사용했다. 그리고 `flat`을 사용해서 2차원 배열을 1차원 배열로 만들어주었다.
 
 ```jsx
-const { data: reviews } = useGetReviews(params.id);
+const { data: reviews } = useGetReviews(params.id)
 
 const images = reviews
   ?.map((review) =>
@@ -140,10 +138,10 @@ const images = reviews
       userNickname: review.userNickname,
     }))
   )
-  .flat();
+  .flat()
 ```
 
-# 카공실록 코드리뷰
+## 카공실록 코드리뷰
 
 드디어 우리 팀원들의 PR이 올라왔다! 하나하나 꼼꼼히 보고 코드리뷰를 진행했다.
 

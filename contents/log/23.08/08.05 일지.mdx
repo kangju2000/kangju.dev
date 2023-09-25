@@ -3,8 +3,6 @@ description: ky instance의 response 타입 바꾸기, 자식 컴포넌트에게
 tags: [ky, react-query, kyInstance]
 ---
 
-# 23.08.05
-
 ## 오늘 한 일
 
 - 프로그라피 세션 참여
@@ -20,19 +18,19 @@ tags: [ky, react-query, kyInstance]
 
 ```tsx
 export const getPlace = async (id: number) => {
-  const { data } = await api.get(`api/v1/places/${id}`).json<APIResponse<Place>>();
+  const { data } = await api.get(`api/v1/places/${id}`).json<APIResponse<Place>>()
 
-  return data;
-};
+  return data
+}
 ```
 
 APIResponse 타입은 이렇다.
 
 ```tsx
 interface APIResponse<T> {
-  result?: string;
-  message?: string;
-  data: T;
+  result?: string
+  message?: string
+  data: T
 }
 ```
 
@@ -43,11 +41,11 @@ interface APIResponse<T> {
 get, post, put, delete 메서드를 만들어서 json 메서드까지 호출하도록 했다.
 
 ```ts {18-24}
-import { retryRequest } from './retryRequest';
-import { setHeader } from './setHeader';
-import ky from 'ky';
+import { retryRequest } from './retryRequest'
+import { setHeader } from './setHeader'
+import ky from 'ky'
 
-import type { Input, Options } from 'ky/distribution/types/options';
+import type { Input, Options } from 'ky/distribution/types/options'
 
 const instance = ky.create({
   prefixUrl: process.env.NEXT_PUBLIC_API_URL,
@@ -58,7 +56,7 @@ const instance = ky.create({
     beforeRequest: [setHeader],
     afterResponse: [retryRequest],
   },
-});
+})
 
 const api = {
   get: <T>(url: Input, options?: Options) => instance.get(url, options).json<APIResponse<T>>(),
@@ -66,9 +64,9 @@ const api = {
   put: <T>(url: Input, options?: Options) => instance.put(url, options).json<APIResponse<T>>(),
   delete: <T>(url: Input, options?: Options) =>
     instance.delete(url, options).json<APIResponse<T>>(),
-};
+}
 
-export default api;
+export default api
 ```
 
 ### 결과
@@ -86,14 +84,14 @@ export default api;
 
 ```tsx
 function Parent() {
-  const { data } = useGetData();
+  const { data } = useGetData()
 
   return (
     <>
       <Child1 data={data} />
       <Child2 data={data} />
     </>
-  );
+  )
 }
 ```
 
@@ -101,26 +99,26 @@ function Parent() {
 
 ```tsx
 function Parent() {
-  const { data } = useGetData();
+  const { data } = useGetData()
 
   return (
     <>
       <Child1 />
       <Child2 />
     </>
-  );
+  )
 }
 
 function Child1() {
-  const { data } = useGetData();
+  const { data } = useGetData()
 
-  return <div>{data}</div>;
+  return <div>{data}</div>
 }
 
 function Child2() {
-  const { data } = useGetData();
+  const { data } = useGetData()
 
-  return <div>{data}</div>;
+  return <div>{data}</div>
 }
 ```
 

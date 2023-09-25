@@ -1,5 +1,3 @@
-# 23.07.03
-
 ### 오늘 한 일
 
 - [x] Rust 스터디 준비
@@ -13,7 +11,7 @@
 
 ---
 
-# Dogsounds-TIL
+## Dogsounds-TIL
 
 ## meta 태그 추가
 
@@ -43,7 +41,7 @@ presets: [
       },
     },
   ],
-];
+]
 ```
 
 ## 상단 바 이름 탭 추가
@@ -92,7 +90,7 @@ themeConfig: {
         sidebarId: '박규성',
         label: '박규성',
       },
-    ];
+    ]
   }
 }
 ```
@@ -132,7 +130,7 @@ module.exports = {
       dirName: '.',
     },
   ],
-};
+}
 ```
 
 적용은 됐지만 문제점이 있었다.
@@ -149,24 +147,24 @@ presets: [
       docs: {
         //...
         sidebarItemsGenerator: async function ({ defaultSidebarItemsGenerator, ...args }) {
-          const sidebarItems = await defaultSidebarItemsGenerator(args);
+          const sidebarItems = await defaultSidebarItemsGenerator(args)
           sidebarItems.map((item) => {
             if (item.label !== '개요' && item.type === 'category') {
-              item.collapsed = true;
+              item.collapsed = true
             }
 
             if (/^(강주혁|이학림|송은수|민세림|박규성)$/.test(item.label)) {
-              item.items = item.items.reverse();
+              item.items = item.items.reverse()
             }
-            return item;
-          });
+            return item
+          })
 
-          return sidebarItems;
+          return sidebarItems
         },
       },
     },
   ],
-];
+]
 ```
 
 그런데 이렇게 하면 각자의 이름 탭에서는 적용이 되지 않았다. 그리고 각자의 이름 탭을 클릭했을 때 이름의 Intro로 이동시키고 싶었는데 이것도 적용이 되지 않았다.
@@ -211,7 +209,7 @@ themeConfig: {
         label: '박규성',
         position: 'left',
       },
-    ];
+    ]
   }
 }
 ```

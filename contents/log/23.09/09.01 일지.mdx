@@ -1,5 +1,3 @@
-# 23.09.01
-
 ## 오늘 한 일
 
 - GDSC Gachon 1기 core member 면접
@@ -9,7 +7,7 @@
 
 ---
 
-# gloddy
+## gloddy
 
 ## render props 패턴 활용하기 (ItemList)
 
@@ -35,10 +33,10 @@ groupMember가 아니더라도 `Article`, `Grouping` 등 다른 데이터가 들
 ```tsx
 // ItemList.tsx
 interface ItemListProps<T> extends Omit<ComponentProps<typeof Flex>, 'children'> {
-  data: T[];
-  renderItem: (data: T) => JSX.Element;
-  direction?: 'row' | 'column';
-  hasDivider?: boolean;
+  data: T[]
+  renderItem: (data: T) => JSX.Element
+  direction?: 'row' | 'column'
+  hasDivider?: boolean
 }
 
 export default function ItemList<T>({
@@ -56,10 +54,10 @@ export default function ItemList<T>({
             {renderItem(item)}
             {hasDivider && index !== data.length - 1 && <Divider />}
           </Fragment>
-        );
+        )
       })}
     </Flex>
-  );
+  )
 }
 ```
 
@@ -68,7 +66,7 @@ export default function ItemList<T>({
 이제 `ItemList` 컴포넌트를 사용하면 이렇게 작성할 수 있다.
 
 ```tsx
-<ItemList data={groupMembers} renderItem={member => <MemberItem member={member} />} />
+<ItemList data={groupMembers} renderItem={(member) => <MemberItem member={member} />} />
 ```
 
 한줄 컷!
@@ -92,7 +90,7 @@ export default function CreateGroupPage() {
         <CreateFunnel />
       </ModalProvider>
     </CreateGroupContextProvider>
-  );
+  )
 }
 ```
 
@@ -105,11 +103,11 @@ export default function CreateGroupPage() {
 ```tsx
 // CreateFunnel.tsx
 export default function CreateFunnel() {
-  const { Funnel, currentStep, setStep, prevStep } = useFunnel(['main', 'meetDate']);
+  const { Funnel, currentStep, setStep, prevStep } = useFunnel(['main', 'meetDate'])
 
-  const handleSubmit: SubmitHandler<CreateGroupContextValue> = data => {
+  const handleSubmit: SubmitHandler<CreateGroupContextValue> = (data) => {
     // ...
-  };
+  }
 
   return (
     <Funnel>
@@ -121,7 +119,7 @@ export default function CreateFunnel() {
         <MeetDateStep onDone={prevStep} />
       </Funnel.Step>
     </Funnel>
-  );
+  )
 }
 ```
 
@@ -132,12 +130,12 @@ export default function CreateFunnel() {
 ```tsx
 // MainStep.tsx
 interface MainStepProps {
-  onSelectMeetDate: () => void;
-  onSubmit: SubmitHandler<CreateGroupContextValue>;
+  onSelectMeetDate: () => void
+  onSubmit: SubmitHandler<CreateGroupContextValue>
 }
 
 export default function MainStep({ onSelectMeetDate, onSubmit }: MainStepProps) {
-  const { handleSubmit } = useCreateGroupContext();
+  const { handleSubmit } = useCreateGroupContext()
 
   return (
     <>
@@ -150,14 +148,14 @@ export default function MainStep({ onSelectMeetDate, onSubmit }: MainStepProps) 
         <Button onClick={handleSubmit(onSubmit)}>완료</Button>
       </ButtonGroup>
     </>
-  );
+  )
 }
 ```
 
 ```tsx
 // MeetDateStep.tsx
 interface MeetDateStepProps {
-  onDone: () => void;
+  onDone: () => void
 }
 
 export default function MeetDateStep({ onDone }: MeetDateStepProps) {
@@ -172,7 +170,7 @@ export default function MeetDateStep({ onDone }: MeetDateStepProps) {
         <Button onClick={onDone}>완료</Button>
       </ButtonGroup>
     </>
-  );
+  )
 }
 ```
 
@@ -182,13 +180,17 @@ react-datepicker 라이브러리를 사용해서 캘린더를 구현했다.
 
 다행히 기존에 캘린더를 구현한 코드가 있어서 스타일만 변경했다. 스타일 주는 게 어려울 줄 알았는데 생각보다 금방 구현했다 ㅎㅎ
 
-<img width="448" alt="image" src="https://github.com/Self-Driven-Development/TIL/assets/23312485/68c82ab9-69ca-4d99-b726-cd05a41c6307"/>
+<img
+  width="448"
+  alt="image"
+  src="https://github.com/Self-Driven-Development/TIL/assets/23312485/68c82ab9-69ca-4d99-b726-cd05a41c6307"
+/>
 
 ```tsx
 // Calendar.tsx
 interface CalendarProps {
-  dateValue: Date | null;
-  setDateValue: (date: Date) => void;
+  dateValue: Date | null
+  setDateValue: (date: Date) => void
 }
 
 export default function Calendar({ dateValue, setDateValue }: CalendarProps) {
@@ -196,7 +198,7 @@ export default function Calendar({ dateValue, setDateValue }: CalendarProps) {
     <DatePicker
       locale={ko}
       dateFormat="yyyy-MM-dd"
-      formatWeekDay={nameOfDay => nameOfDay.substring(0, 1)}
+      formatWeekDay={(nameOfDay) => nameOfDay.substring(0, 1)}
       minDate={new Date()}
       selected={dateValue}
       onChange={(date: Date) => setDateValue(date)}
@@ -221,7 +223,7 @@ export default function Calendar({ dateValue, setDateValue }: CalendarProps) {
         </Flex>
       )}
     />
-  );
+  )
 }
 ```
 

@@ -1,5 +1,3 @@
-# 23.09.11
-
 ## 오늘 한 일
 
 - gloddy 개발
@@ -8,7 +6,7 @@
 
 ---
 
-# tailwind SSR에서 스타일 안먹는 이슈 해결
+## tailwind SSR에서 스타일 안먹는 이슈 해결
 
 드디어 해결했다.
 
@@ -28,8 +26,8 @@ npx tailwindcss-cli build -o ./style/tailwind.css --minify
 
 ```tsx
 function Layout({ children }: StrictPropsWithChildren) {
-  const filePath = `src/style/tailwindSSR.css`;
-  const styleSheetContent = readFileSync(filePath, 'utf8');
+  const filePath = `src/style/tailwindSSR.css`
+  const styleSheetContent = readFileSync(filePath, 'utf8')
 
   return (
     <html lang="ko">
@@ -42,13 +40,13 @@ function Layout({ children }: StrictPropsWithChildren) {
         </div>
       </body>
     </html>
-  );
+  )
 }
 ```
 
 👍👍👍
 
-# vanilla-extract
+## vanilla-extract
 
 ## selector
 
@@ -56,7 +54,7 @@ function Layout({ children }: StrictPropsWithChildren) {
 
 ```tsx
 // styles.css.ts
-import { style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css'
 
 const link = style({
   selectors: {
@@ -67,15 +65,15 @@ const link = style({
       textDecoration: 'underline',
     },
   },
-});
+})
 ```
 
 이렇게도 가능하다.
 
 ```tsx
-import { style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css'
 
-export const parent = style({});
+export const parent = style({})
 
 export const child = style({
   selectors: {
@@ -83,19 +81,19 @@ export const child = style({
       background: '#fafafa',
     },
   },
-});
+})
 ```
 
 특정 클래스가 아닌 일반적인 a 태그를 선택하는 방법은 다음과 같다.
 
 ```tsx
-import { style, globalStyle } from '@vanilla-extract/css';
+import { style, globalStyle } from '@vanilla-extract/css'
 
-export const parent = style({});
+export const parent = style({})
 
 globalStyle(`${parent} a[href]`, {
   color: 'pink',
-});
+})
 ```
 
 ## 내일 할 일

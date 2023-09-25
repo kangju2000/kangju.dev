@@ -3,8 +3,6 @@ description: polymorphic한 컴포넌트 개발, yarn berry 모노레포 구축
 tags: [polymorphic, 모노레포, yarn berry]
 ---
 
-# 23.08.13
-
 ## 오늘 한 일
 
 - gloddy 공통 컴포넌트 개발
@@ -13,7 +11,7 @@ tags: [polymorphic, 모노레포, yarn berry]
 
 ---
 
-# gloddy
+## gloddy
 
 ## polymorphic한 컴포넌트 개발
 
@@ -36,7 +34,7 @@ tags: [polymorphic, 모노레포, yarn berry]
 
 ```tsx
 interface ButtonProps<T extends React.ElementType> extends React.HTMLAttributes<T> {
-  as?: T;
+  as?: T
   // ...
 }
 ```
@@ -52,7 +50,7 @@ export default function Button<T extends React.ElementType>({
   children,
   ...props
 }: StrictPropsWithChildren<ButtonProps<T> & React.ComponentPropsWithoutRef<T>>) {
-  const Element = as ?? 'button';
+  const Element = as ?? 'button'
 
   return (
     <Element
@@ -61,7 +59,7 @@ export default function Button<T extends React.ElementType>({
     >
       {children}
     </Element>
-  );
+  )
 }
 ```
 

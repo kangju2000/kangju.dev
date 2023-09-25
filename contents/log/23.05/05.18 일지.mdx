@@ -1,5 +1,3 @@
-# 23.05.18
-
 ## 오늘 한 일
 
 - [x] 알고리즘 문제 풀이
@@ -38,17 +36,17 @@ function solution(lottos, win_nums) {
     2: 5,
     1: 6,
     0: 6,
-  };
+  }
 
-  let zero = 0;
-  let winCount = 0;
+  let zero = 0
+  let winCount = 0
 
-  lottos.forEach(lotto => {
-    if (lotto === 0) return (zero += 1);
-    if (win_nums.some(win_num => win_num === lotto)) winCount += 1;
-  });
+  lottos.forEach((lotto) => {
+    if (lotto === 0) return (zero += 1)
+    if (win_nums.some((win_num) => win_num === lotto)) winCount += 1
+  })
 
-  return [winCountToRank[winCount + zero], winCountToRank[winCount]];
+  return [winCountToRank[winCount + zero], winCountToRank[winCount]]
 }
 ```
 
@@ -79,60 +77,60 @@ x2도 y1~y2 까지
 */
 function solution(rows, columns, queries) {
   //행렬 세팅
-  const arr = [];
-  let num = 1;
+  const arr = []
+  let num = 1
   for (let row = 0; row <= rows; row++) {
-    arr.push([]);
+    arr.push([])
     for (let col = 0; col <= columns; col++) {
       if (row === 0 || col === 0) {
-        arr[row][col] = 0;
-        continue;
+        arr[row][col] = 0
+        continue
       }
-      arr[row][col] = num++;
+      arr[row][col] = num++
     }
   }
 
-  const result = [];
+  const result = []
 
-  queries.forEach(query => {
-    const [x1, y1, x2, y2] = query;
+  queries.forEach((query) => {
+    const [x1, y1, x2, y2] = query
     let directionArr = [
       [0, 1],
       [1, 0],
       [0, -1],
       [-1, 0],
-    ]; // 우 하 좌 상
-    let dIndex = 0;
-    const rotateArr = [];
+    ] // 우 하 좌 상
+    let dIndex = 0
+    const rotateArr = []
 
-    let [x, y] = [x1, y1];
-    let temp = arr[x][y];
-    let min = arr[x][y];
+    let [x, y] = [x1, y1]
+    let temp = arr[x][y]
+    let min = arr[x][y]
     while (true) {
-      const [dx, dy] = directionArr[dIndex];
-      const [newX, newY] = [x + dx, y + dy];
+      const [dx, dy] = directionArr[dIndex]
+      const [newX, newY] = [x + dx, y + dy]
 
       // 범위 벗어났을 때 방향 바꾸기
       if (newX < x1 || newX > x2 || newY < y1 || newY > y2) {
-        if (dIndex === 3) break;
-        dIndex += 1;
-        continue;
+        if (dIndex === 3) break
+        dIndex += 1
+        continue
       }
 
-      let cur = temp;
-      let nxt = arr[newX][newY];
-      arr[newX][newY] = cur;
-      temp = nxt;
+      let cur = temp
+      let nxt = arr[newX][newY]
+      arr[newX][newY] = cur
+      temp = nxt
 
-      if (min > temp) min = temp;
-      x = newX;
-      y = newY;
+      if (min > temp) min = temp
+      x = newX
+      y = newY
     }
 
-    result.push(min);
-  });
+    result.push(min)
+  })
 
-  return result;
+  return result
 }
 ```
 
@@ -146,9 +144,9 @@ function solution(rows, columns, queries) {
 
 ```js
 const activities = await allProgress(
-  courses.map(course => getActivities(course.id)),
-  progress => setPos(progress)
-).then(activities => activities.flat());
+  courses.map((course) => getActivities(course.id)),
+  (progress) => setPos(progress)
+).then((activities) => activities.flat())
 ```
 
 그리고 tailwindCSS가 잘 안 먹어서 제공하는 클래스 전부 important 처리를 해주도록 설정했다.
@@ -158,7 +156,7 @@ const activities = await allProgress(
 module.exports = {
   important: true,
   // ...
-};
+}
 ```
 
 그러고 1.0.6 버전을 배포했는데, 버튼 hover할 때 애니메이션이 작동하지 않는 버그가 있었다. 위에서 important 처리한 것 때문에 그런 것 같다. 그래서 애니메이션 작동하도록 설정을 추가했다.
@@ -170,7 +168,7 @@ initial과 whileHover에서 width, height를 설정해주었다.
   initial={{ width: '40px', height: '40px' }}
   whileHover={{ width: '100px', height: '50px' }}
   className=" rounded-[50px] bg-[#2F6EA2] shadow-md shadow-[#2F6EA2] cursor-pointer"
-  onClick={() => setIsModalOpen(prev => !prev)}
+  onClick={() => setIsModalOpen((prev) => !prev)}
 ></motion.div>
 ```
 
@@ -247,7 +245,7 @@ export { expect };
 
 ```ts
 // src/pages/content/main.tsx
-import * as Sentry from '@sentry/react';
+import * as Sentry from '@sentry/react'
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -259,7 +257,7 @@ Sentry.init({
   tracesSampleRate: 1.0,
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
-});
+})
 ```
 
 하지만 걱정되는게 하나 있었다. 이렇게 로그를 수집하는게 사용자의 개인정보를 수집하는 것은 아닐까? 약간 조심스러워져서 배포 전에 한 번 더 확인해봐야겠다.
@@ -267,15 +265,15 @@ Sentry.init({
 Sentry에서 ErrorBoundary도 제공해주고 있다. 에러가 throw되면 그대로 익스텐션이 터져버리는게 아니라, ErrorBoundary가 이를 확인하고 에러를 잡아주면서 fallback 컴포넌트를 보여준다.
 
 ```tsx
-import { ErrorBoundary } from '@sentry/react';
+import { ErrorBoundary } from '@sentry/react'
 
 const App = () => {
   return (
     <ErrorBoundary fallback={<Fallback />}>
       <Main />
     </ErrorBoundary>
-  );
-};
+  )
+}
 ```
 
 try/catch 문과 같은 느낌이다. 근데 try/catch 문을 사용하면 코드가 지저분해진다.  
@@ -287,7 +285,7 @@ try/catch 문과 같은 느낌이다. 근데 try/catch 문을 사용하면 코�
 
 선언형 프로그래밍을 통해 어떻게 보여줄지에 대해서는 이미 메서드가 해주고 있기 때문에 개발자는 무엇을 보여줄지에 대해서만 집중하면 된다. 그래서 코드가 깔끔해진다. 추상화를 하여 신경써야할 부분을 줄여준다.
 
-<br/>
+<br />
 
 `ErrorBoundary`도 마찬가지다. 에러가 발생하면 어떻게 처리할지를 직접 작성해주는 것이 아니라, 에러가 발생하면 어떤 컴포넌트를 보여줄지를 작성해주는 것이다. 그래서 코드가 깔끔해진다.
 
@@ -360,13 +358,13 @@ export default User;
 
 ```tsx
 // 선언형으로 짠 코드
-import { Suspense } from 'react';
+import { Suspense } from 'react'
 
-import Banner from '../Banner';
-import BannerSkeleton from '../Banner/index.skeleton';
-import CustomMenu from '../CustomMenu';
-import CustomMenuSkeleton from '../CustomMenu/index.skeleton';
-import User from '../User/index';
+import Banner from '../Banner'
+import BannerSkeleton from '../Banner/index.skeleton'
+import CustomMenu from '../CustomMenu'
+import CustomMenuSkeleton from '../CustomMenu/index.skeleton'
+import User from '../User/index'
 
 const User = () => (
   <section className="user__container">
@@ -381,16 +379,16 @@ const User = () => (
       </Suspense>
     </RetryErrorBoundary>
   </section>
-);
+)
 
-export default User;
+export default User
 ```
 
 무엇을 보여줄지에 대해서만 집중할 수 있어서 굉장히 깔끔해진 것을 볼 수 있다.
 
 이렇게 선언형 프로그래밍을 통해 추상화를 하면서 코드를 깔끔하게 작성할 수 있다는 것을 알게 되었다.
 
-<br/>
+<br />
 
 나도 Sentry에서 제공하는 ErrorBoundary를 사용해서 선언적으로 작성해야겠다. 그럴려면 일단 예외처리를 꼼꼼하게 해야겠다!
 
