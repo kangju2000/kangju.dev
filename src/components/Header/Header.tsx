@@ -1,7 +1,7 @@
 'use client'
 import { Link } from '@chakra-ui/next-js'
 import { chakra, Box, Center, Flex, useColorMode } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
+import { LayoutGroup, motion } from 'framer-motion'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
@@ -50,31 +50,33 @@ const Header = () => {
           />
         </Link>
         <Center as="ul" gap="24px">
-          {links.map(({ href, label }) => (
-            <chakra.li key={`${href}${label}`} pos="relative" p="8px 16px" cursor="pointer">
-              <Link
-                href={href}
-                fontWeight="bold"
-                color="gray.500"
-                _hover={{ textDecoration: 'none' }}
-              >
-                {label}
-              </Link>
-              {currentType === href && (
-                <chakra.span
-                  as={motion.span}
-                  pos="absolute"
-                  bottom="0"
-                  left="0"
-                  w="100%"
-                  h="1px"
-                  bg="gray.500"
-                  borderRadius="4px"
-                  layoutId="underline"
-                />
-              )}
-            </chakra.li>
-          ))}
+          <LayoutGroup>
+            {links.map(({ href, label }) => (
+              <chakra.li key={`${href}${label}`} pos="relative" p="8px 16px" cursor="pointer">
+                <Link
+                  href={href}
+                  fontWeight="bold"
+                  color="gray.500"
+                  _hover={{ textDecoration: 'none' }}
+                >
+                  {label}
+                </Link>
+                {currentType === href && (
+                  <chakra.span
+                    as={motion.span}
+                    pos="absolute"
+                    bottom="0"
+                    left="0"
+                    w="100%"
+                    h="1px"
+                    bg="gray.500"
+                    borderRadius="4px"
+                    layoutId="underline"
+                  />
+                )}
+              </chakra.li>
+            ))}
+          </LayoutGroup>
         </Center>
         <Center w="24px" h="24px" cursor="pointer" onClick={toggleColorMode}>
           {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
