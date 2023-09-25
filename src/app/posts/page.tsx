@@ -1,5 +1,6 @@
-import { Link, Stack } from '@chakra-ui/react'
+import { Stack } from '@chakra-ui/react'
 import { allPosts } from 'contentlayer/generated'
+import Link from 'next/link'
 
 export default function PostsPage() {
   return (
