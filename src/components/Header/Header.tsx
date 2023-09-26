@@ -1,7 +1,7 @@
 'use client'
 import { Link } from '@chakra-ui/next-js'
 import { chakra, Box, Center, Flex, useColorMode } from '@chakra-ui/react'
-import { LayoutGroup, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
@@ -54,44 +54,51 @@ const Header = () => {
             }}
           />
         </Link>
-        <LayoutGroup>
-          <List
-            direction="row"
-            alignItems="center"
-            gap="24px"
-            items={links}
-            renderItem={(link) => (
-              <chakra.li
-                key={`${link.href}${link.label}`}
-                pos="relative"
-                p="8px 16px"
-                cursor="pointer"
+        <List
+          direction="row"
+          alignItems="center"
+          gap="24px"
+          items={links}
+          renderItem={(link) => (
+            <chakra.li
+              as={motion.li}
+              key={`${link.href}${link.label}`}
+              pos="relative"
+              p="8px 16px"
+              cursor="pointer"
+              whileHover={{
+                scale: 1.1,
+              }}
+            >
+              <Link
+                href={link.href}
+                fontWeight={currentType === link.href ? '700' : '300'}
+                _hover={{ textDecoration: 'none' }}
               >
-                <Link
-                  href={link.href}
-                  fontWeight="bold"
-                  color="gray.500"
-                  _hover={{ textDecoration: 'none' }}
-                >
-                  {link.label}
-                </Link>
-                {currentType === link.href && (
-                  <chakra.span
-                    as={motion.span}
-                    pos="absolute"
-                    bottom="0"
-                    left="0"
-                    w="100%"
-                    h="1px"
-                    bg="gray.500"
-                    borderRadius="4px"
-                    layoutId="underline"
-                  />
-                )}
-              </chakra.li>
-            )}
-          />
-        </LayoutGroup>
+                {link.label}
+              </Link>
+              {currentType === link.href && (
+                <chakra.span
+                  as={motion.span}
+                  pos="absolute"
+                  bottom="0"
+                  left="0"
+                  w="100%"
+                  h="2px"
+                  bg="gray.500"
+                  borderRadius="2px"
+                  initial={{
+                    scaleX: 0,
+                  }}
+                  animate={{
+                    scaleX: 1,
+                  }}
+                />
+              )}
+            </chakra.li>
+          )}
+        />
+
         <Center w="24px" h="24px" cursor="pointer" onClick={toggleColorMode}>
           {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
         </Center>
@@ -116,14 +123,14 @@ const SunIcon = () => (
     <path
       d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"
       stroke="white"
-      stroke-width="2"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinejoin="round"
     />
     <path
       d="M20 12H21M3 12H4M12 20V21M12 3V4M17.657 17.657L18.364 18.364M5.636 5.636L6.343 6.343M6.343 17.657L5.636 18.364M18.364 5.636L17.657 6.343"
       stroke="white"
-      stroke-width="2"
-      stroke-linecap="round"
+      strokeWidth="2"
+      strokeLinecap="round"
     />
   </svg>
 )
