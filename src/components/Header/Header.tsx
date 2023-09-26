@@ -5,6 +5,8 @@ import { LayoutGroup, motion } from 'framer-motion'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
+import List from '@/components/List/List'
+
 const links = [
   { href: '/', label: 'Home' },
   { href: '/posts', label: 'Posts' },
@@ -47,21 +49,33 @@ const Header = () => {
             src="https://avatars.githubusercontent.com/u/23312485?v=4"
             alt="kangjuhyeok"
             fill
+            style={{
+              objectFit: 'cover',
+            }}
           />
         </Link>
-        <Center as="ul" gap="24px">
-          <LayoutGroup>
-            {links.map(({ href, label }) => (
-              <chakra.li key={`${href}${label}`} pos="relative" p="8px 16px" cursor="pointer">
+        <LayoutGroup>
+          <List
+            direction="row"
+            alignItems="center"
+            gap="24px"
+            items={links}
+            renderItem={(link) => (
+              <chakra.li
+                key={`${link.href}${link.label}`}
+                pos="relative"
+                p="8px 16px"
+                cursor="pointer"
+              >
                 <Link
-                  href={href}
+                  href={link.href}
                   fontWeight="bold"
                   color="gray.500"
                   _hover={{ textDecoration: 'none' }}
                 >
-                  {label}
+                  {link.label}
                 </Link>
-                {currentType === href && (
+                {currentType === link.href && (
                   <chakra.span
                     as={motion.span}
                     pos="absolute"
@@ -75,9 +89,9 @@ const Header = () => {
                   />
                 )}
               </chakra.li>
-            ))}
-          </LayoutGroup>
-        </Center>
+            )}
+          />
+        </LayoutGroup>
         <Center w="24px" h="24px" cursor="pointer" onClick={toggleColorMode}>
           {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
         </Center>
