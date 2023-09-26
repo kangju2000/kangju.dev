@@ -30,8 +30,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
             maxW="700px"
             m="0 auto"
             p={{
-              base: '80px 16px',
-              md: '80px 24px',
+              base: '50px 16px',
+              md: '50px 24px',
             }}
           >
             {children}
