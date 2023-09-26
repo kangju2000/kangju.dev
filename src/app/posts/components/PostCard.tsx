@@ -22,8 +22,8 @@ const PostCard = ({ post }: PostCardProps) => {
         }}
       >
         <Box
-          w="150px"
-          h="150px"
+          w="180px"
+          h="180px"
           pos="relative"
           flexShrink={0}
           borderRadius="16px"
@@ -38,18 +38,11 @@ const PostCard = ({ post }: PostCardProps) => {
             }}
           />
         </Box>
-        <Box>
+        <Box overflow="hidden">
           <Heading as="h3" size="lg" mb="12px">
             {post.title}
           </Heading>
-          <Text
-            as="p"
-            mb="12px"
-            color="gray.700"
-            textOverflow="ellipsis"
-            overflow="hidden"
-            noOfLines={2}
-          >
+          <Text as="p" mb="12px" _dark={{ color: 'gray.400' }} _light={{ color: 'gray.600' }}>
             {post.description}
           </Text>
           <Text fontSize="sm" color="gray.500">
