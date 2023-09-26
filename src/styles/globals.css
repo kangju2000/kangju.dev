@@ -28,7 +28,6 @@ code[class*='language-'] {
   -moz-hyphens: none;
   -ms-hyphens: none;
   hyphens: none;
-  background: var(--chakra-colors-gray-900);
 }
 
 pre[class*='language-']::selection,
@@ -50,7 +49,7 @@ pre[class*='language-'] {
   padding: 1em;
   margin: 0.5em 0;
   overflow: auto;
-  background: var(--chakra-colors-gray-900);
+  background: var(--chakra-colors-gray-900) !important;
   border-radius: 0.5rem;
 }
 
@@ -58,7 +57,7 @@ pre[class*='language-'] {
   padding: 0.1em 0.3em;
   border-radius: 0.3em;
   color: #db4c69;
-  background: var(--chakra-colors-gray-900);
+  background: var(--chakra-colors-red-900);
 }
 /*********************************************************
 * Tokens
