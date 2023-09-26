@@ -1,0 +1,100 @@
+## 오늘 한 일
+
+- 블로그 개발
+- GDSC 중앙대 오프라인 세션 참여
+
+### 국가사업 개발?
+
+저번에 친구한테 연락이 왔었다. 친구 연구실에 계신 교수님께서 국가사업에 참여하시는데, 리액트 개발자가 필요한 상황이라 친구가 나한테 할 생각 있냐고 카톡이 왔다.
+
+그래서 교수님에게 이메일을 보냈고, 오늘 연락이 왔다. 근데 교수님이 아닌 담당자 분에게 연락이 왔다. 근데 나는 정확이 어떤 사업이고 어느정도 시간을 투자해야하는지 모르고 있었어서 전화하면서 이야기를 들어보았다.
+
+알고보니 풀타임으로 월급 받으면서 서울대병원 연구실에 출퇴근하면서 일을 하게 된다고 한다. 파트 타임으로도 한다고 해도 직접 가야한다고 한다.
+시간 투자를 많이 해야할 것 같고, 무엇보다도 담당자 분이 말씀하시기에는 내가 지금 하고있는 것들이 많아서 이 일에 열정적으로 참여할 수 있을 지 모르겠다고 하셨다. 나도 내가 얼만큼 시간을 쓸 수 있는지 확실하지 않아서 안하겠다고 말씀드렸다.
+
+괜히 참여했다가 이 일에 집중하지 못하게 되면 좋지 않을 것 같아서 안하기로 했다. 그래도 연락을 주셔서 감사했다.
+
+---
+
+## GDSC 중앙대 오프라인 세션
+
+오늘 중앙대학교 GDSC에서 오프라인으로 세션에 참여했다. 3기를 운영하고 있고 실제로 세션 이루어지는 것들을 직접 눈으로 볼 수 있어서 좋은 경험이었다.
+
+여기는 스터디를 세션 때 파트 별로 모여 자율적으로 주제를 정했다. 멘토링 느낌보다는 `커뮤니티`의 느낌이 강했다.
+GDSC가 추구하는 방향이 `커뮤니티`이기 때문에 이런 방식이 더 적합하다고 생각한다.
+
+하지만 지금 GDSC Gachon은 1기라서 자율적으로 진행하는데 어려움이 있다. 초반에는 전 멤버가 스터디를 참여하도록 강제성을 부여하고, 후에 어느정도 우리만의 스타일이 생길 때 자율적으로 진행하면 좋을 것 같다.
+
+## 블로그 개발
+
+### 어떻게 마크다운을 커스텀하지?
+
+나는 `Chakra UI`를 쓰고 있는데, `next-contentlayer`에서 제공하는 `useMDXComponent`로 마크다운을 띄우면 스타일이 초기화된 상태로 띄워진다. props로 `components`를 넘겨주어 하나하나 커스텀할 수는 있지만 너무 많아서 라이브러리의 힘을 빌리고 싶었다.
+
+그래서 찾아보니 tailwindcss를 쓰는 블로그들은 대부분 `@tailwindcss/typography`를 쓰고 있었다. 이 라이브러리를 쓰면 클래스에 `prose`가 추가되고, 이 클래스를 가진 태그들에 대해 기본적인 스타일이 적용된다.
+
+chakra UI에도 뭐 없나싶어 찾아보니 역시나 [있었다](https://chakra-ui.com/community/recipes/prose). 그래서 다음과 같이 설정해주었다.
+
+```tsx:Providers.tsx
+//...
+import { withProse } from '@nikolovlazar/chakra-ui-prose'
+
+const theme = extendTheme(
+  {
+    //...
+  },
+  withProse({
+    baseStyle: {
+      //...
+    },
+  })
+)
+
+const Providers = ({ children }: PropsWithChildren) => {
+  return (
+    <CacheProvider>
+      <ChakraProvider theme={theme}>{children}</ChakraProvider>
+    </CacheProvider>
+  )
+}
+```
+
+```tsx:MDXLayout.tsx
+//...
+import { Prose } from '@nikolovlazar/chakra-ui-prose'
+
+const components: MDXComponents = {
+  Youtube,
+  code: (props) => <chakra.span fontWeight="bold" {...props} />,
+  a: (props) => <chakra.a target="_blank" {...props} />,
+}
+
+interface MDXLayoutProps {
+  content: DocumentTypes
+}
+
+const MDXLayout = ({ content }: MDXLayoutProps) => {
+  const MDXComponent = useMDXComponent(content.body.code)
+
+  return (
+    <div>
+      <Heading as="h1" fontSize="5xl" fontWeight="bold" mb="24px">
+        {content.title}
+      </Heading>
+      <Prose>
+        <MDXComponent components={components} />
+      </Prose>
+    </div>
+  )
+}
+```
+
+---
+
+## 내일 할 일
+
+- gloddy 개발
+  - develop, release 브랜치 분리 작업
+- 블로그 개발
+  - post 헤더에 날짜 추가
+  - post에 toc 추가
