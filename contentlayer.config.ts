@@ -73,6 +73,10 @@ export const Log = defineDocumentType(() => ({
         return format(new Date(dateString), 'yy.MM.dd')
       },
     },
+    yearMonth: {
+      type: 'string',
+      resolve: (post) => post._raw.sourceFileDir.replace(/log\//, ''),
+    },
   },
 }))
 
