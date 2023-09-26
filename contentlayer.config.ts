@@ -86,15 +86,10 @@ export default makeSource({
   mdx: {
     remarkPlugins: [remarkGfm, remarkBreaks, remarkToc],
     rehypePlugins: [
+      //@ts-ignore
+      rehypePrism,
       rehypeSlug,
       rehypeCodeTitles,
-      [
-        //@ts-ignore
-        rehypePrism,
-        {
-          showLineNumbers: true,
-        },
-      ],
       [
         rehypeAutoLinkHeadings,
         {

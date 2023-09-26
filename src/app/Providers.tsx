@@ -33,6 +33,9 @@ const theme = extendTheme(
       li: {
         listStyleType: 'disc',
       },
+      a: {
+        color: 'teal.500',
+      },
     },
   })
 )

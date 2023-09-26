@@ -1,6 +1,6 @@
 'use client'
 
-import { Heading } from '@chakra-ui/react'
+import { Heading, chakra } from '@chakra-ui/react'
 import { Prose } from '@nikolovlazar/chakra-ui-prose'
 import { MDXComponents } from 'mdx/types'
 import { useMDXComponent } from 'next-contentlayer/hooks'
@@ -11,6 +11,8 @@ import type { DocumentTypes } from '.contentlayer/generated/types'
 
 const components: MDXComponents = {
   Youtube,
+  code: (props) => <chakra.span fontWeight="bold" {...props} />,
+  a: (props) => <chakra.a target="_blank" {...props} />,
 }
 
 interface MDXLayoutProps {
