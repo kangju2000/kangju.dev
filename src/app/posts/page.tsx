@@ -1,18 +1,17 @@
 import { Stack } from '@chakra-ui/react'
 import { allPosts } from 'contentlayer/generated'
-import Link from 'next/link'
+
+import PostCard from '@/components/Card/PostCard'
+import List from '@/components/List/List'
 
 export default function PostsPage() {
   return (
     <Stack>
-      {allPosts.map((post) => {
-        return (
-          <Link key={post.slug} href={`posts/${post.slug}`}>
-            <h1>{post.title}</h1>
-            <p>{post.dateFormatted}</p>
-          </Link>
-        )
-      })}
+      <List
+        items={allPosts}
+        renderItem={(post) => <PostCard key={post.slug} post={post} />}
+        renderEmpty={() => <div>포스트가 없습니다.</div>}
+      />
     </Stack>
   )
 }
