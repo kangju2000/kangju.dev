@@ -17,9 +17,6 @@ dependencies:
   '@emotion/styled':
     specifier: ^11.11.0
     version: 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.22)(react@18.2.0)
-  '@next/font':
-    specifier: ^13.5.2
-    version: 13.5.2
   contentlayer:
     specifier: ^0.3.4
     version: 0.3.4(esbuild@0.19.3)
@@ -1926,10 +1923,6 @@ packages:
     dependencies:
       glob: 7.1.7
     dev: true
-
-  /@next/font@13.5.2:
-    resolution: {integrity: sha512-c9EXqdXMEErMLrC71wZvpcOnNVkEEufZOO3EjgQJcKQUwPISvnkgIj9GKFIop0rX2dLNdzL3OC/4nrcAqWqUsg==}
-    dev: false
 
   /@next/swc-darwin-arm64@13.5.2:
     resolution: {integrity: sha512-7eAyunAWq6yFwdSQliWMmGhObPpHTesiKxMw4DWVxhm5yLotBj8FCR4PXGkpRP2tf8QhaWuVba+/fyAYggqfQg==}

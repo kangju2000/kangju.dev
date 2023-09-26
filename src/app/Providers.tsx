@@ -1,7 +1,7 @@
 'use client'
 import { CacheProvider } from '@chakra-ui/next-js'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
-import { Noto_Sans_KR } from '@next/font/google'
+import { Noto_Sans_KR } from 'next/font/google'
 
 import type { PropsWithChildren } from 'react'
 
