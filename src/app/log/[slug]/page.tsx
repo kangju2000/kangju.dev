@@ -1,9 +1,18 @@
 import { Box, Stack } from '@chakra-ui/react'
 import { allLogs } from 'contentlayer/generated'
+import fs from 'fs'
 import Link from 'next/link'
 
 import Empty from './components/Empty'
 import List from '@/components/List/List'
+
+export function generateStaticParams() {
+  const monthList = fs.readdirSync('contents/log')
+
+  return monthList.map((month) => ({
+    slug: month,
+  }))
+}
 
 interface MonthPageProps {
   params: {
