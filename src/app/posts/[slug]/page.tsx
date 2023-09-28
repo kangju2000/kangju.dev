@@ -1,6 +1,6 @@
 import { allPosts } from 'contentlayer/generated'
 
-import MDXPost from '@/layouts/MDXLayout'
+import MDXPost from '@/layouts/MDXPost'
 
 export function generateStaticParams() {
   return allPosts.map((post) => ({
@@ -13,5 +13,5 @@ export default function PostPage({ params }: { params: { slug: string } }) {
 
   if (!post) return <div>not found</div>
 
-  return <MDXPost content={post} />
+  return <MDXPost post={post} />
 }

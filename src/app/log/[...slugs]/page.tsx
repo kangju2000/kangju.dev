@@ -1,6 +1,6 @@
 import { allLogs } from 'contentlayer/generated'
 
-import MDXLayout from '@/layouts/MDXLayout'
+import MDXLog from '@/layouts/MDXLog'
 
 export function generateStaticParams() {
   return allLogs.map((log) => ({
@@ -13,5 +13,5 @@ export default function LogtPage({ params: { slugs } }: { params: { slugs: strin
 
   if (!log) return <div>not found</div>
 
-  return <MDXLayout content={log} />
+  return <MDXLog log={log} />
 }
