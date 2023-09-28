@@ -1,6 +1,6 @@
 'use client'
 import { Link } from '@chakra-ui/next-js'
-import { chakra, Box, Center, Flex, useColorMode } from '@chakra-ui/react'
+import { chakra, Box, Center, Flex, useColorMode, Text } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -60,12 +60,7 @@ const Header = () => {
           gap="24px"
           items={links}
           renderItem={(link) => (
-            <Link
-              href={link.href}
-              fontWeight={currentType === link.href ? '700' : '300'}
-              _hover={{ textDecoration: 'none' }}
-              pos="relative"
-            >
+            <Link href={link.href} _hover={{ textDecoration: 'none' }} pos="relative">
               <chakra.li
                 as={motion.li}
                 key={`${link.href}${link.label}`}
@@ -75,7 +70,7 @@ const Header = () => {
                   scale: 1.1,
                 }}
               >
-                {link.label}
+                <Text fontWeight={currentType === link.href ? '700' : '500'}>{link.label}</Text>
               </chakra.li>
               {currentType === link.href && (
                 <chakra.span
@@ -85,7 +80,7 @@ const Header = () => {
                   left="0"
                   w="100%"
                   h="2px"
-                  bg="gray.500"
+                  bg="teal.600"
                   borderRadius="2px"
                   initial={{
                     scaleX: 0,
