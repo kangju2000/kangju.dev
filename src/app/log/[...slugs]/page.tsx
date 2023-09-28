@@ -3,10 +3,8 @@ import { allLogs } from 'contentlayer/generated'
 import MDXLayout from '@/layouts/MDXLayout'
 
 export function generateStaticParams() {
-  const paths = allLogs.map((log) => encodeURI(log._raw.flattenedPath).split('/').slice(1))
-
-  return paths.map((slugs) => ({
-    slugs,
+  return allLogs.map((log) => ({
+    slugs: log.slug.split('/').slice(1),
   }))
 }
 
