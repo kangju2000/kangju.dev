@@ -60,23 +60,23 @@ const Header = () => {
           gap="24px"
           items={links}
           renderItem={(link) => (
-            <chakra.li
-              as={motion.li}
-              key={`${link.href}${link.label}`}
+            <Link
+              href={link.href}
+              fontWeight={currentType === link.href ? '700' : '300'}
+              _hover={{ textDecoration: 'none' }}
               pos="relative"
-              p="8px 16px"
-              cursor="pointer"
-              whileHover={{
-                scale: 1.1,
-              }}
             >
-              <Link
-                href={link.href}
-                fontWeight={currentType === link.href ? '700' : '300'}
-                _hover={{ textDecoration: 'none' }}
+              <chakra.li
+                as={motion.li}
+                key={`${link.href}${link.label}`}
+                p="8px 16px"
+                cursor="pointer"
+                whileHover={{
+                  scale: 1.1,
+                }}
               >
                 {link.label}
-              </Link>
+              </chakra.li>
               {currentType === link.href && (
                 <chakra.span
                   as={motion.span}
@@ -95,7 +95,7 @@ const Header = () => {
                   }}
                 />
               )}
-            </chakra.li>
+            </Link>
           )}
         />
 
