@@ -57,7 +57,7 @@ export const Log = defineDocumentType(() => ({
   computedFields: {
     slug: {
       type: 'string',
-      resolve: (post) => post._raw.sourceFileName.replace(/\.mdx$/, ''),
+      resolve: (post) => post._raw.sourceFilePath.split(' ')[0],
     },
     title: {
       type: 'string',

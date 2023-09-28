@@ -21,7 +21,6 @@ interface MonthPageProps {
 }
 
 export default function MonthPage({ params: { slug } }: MonthPageProps) {
-  console.log('slug', slug)
   const monthLogs = allLogs.filter((log) => log.yearMonth === slug)
 
   return (
@@ -31,7 +30,7 @@ export default function MonthPage({ params: { slug } }: MonthPageProps) {
         items={monthLogs}
         renderItem={(log) => (
           <Box as="li" borderRadius="16px">
-            <Link href={`/log/${log.yearMonth}/${log.slug}`}>{log.title}</Link>
+            <Link href={`/${log.slug}`}>{log.title}</Link>
           </Box>
         )}
         renderEmpty={() => <Empty />}
