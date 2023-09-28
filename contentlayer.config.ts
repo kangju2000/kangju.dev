@@ -33,7 +33,7 @@ export const Post = defineDocumentType(() => ({
   computedFields: {
     dateFormatted: {
       type: 'string',
-      resolve: (post) => format(new Date(post.date), 'yyyy.MM.dd'),
+      resolve: (post) => format(new Date(post.date), 'yy.MM.dd'),
     },
     slug: {
       type: 'string',
