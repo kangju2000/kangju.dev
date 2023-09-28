@@ -21,6 +21,7 @@ interface MonthPageProps {
 }
 
 export default function MonthPage({ params: { slug } }: MonthPageProps) {
+  console.log('slug', slug)
   const monthLogs = allLogs.filter((log) => log.yearMonth === slug)
 
   return (

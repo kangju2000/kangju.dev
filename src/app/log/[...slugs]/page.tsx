@@ -11,6 +11,9 @@ export function generateStaticParams() {
 }
 
 export default function PostPage({ params: { slugs } }: { params: { slugs: string[] } }) {
+  console.log('slugs', slugs)
+  console.log(allLogs[0])
+  console.log(encodeURI(allLogs[0]._raw.flattenedPath))
   const log = allLogs.find((log) => encodeURI(log._raw.flattenedPath) === 'log/' + slugs.join('/'))
 
   if (!log) return <div>not found</div>
