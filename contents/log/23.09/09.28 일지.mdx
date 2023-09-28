@@ -1,0 +1,143 @@
+## 오늘 한 일
+
+- 블로그 개발
+  - 배포 환경에서 개발 로그글 안 보이는 문제 수정
+  - MDXPost 구현
+
+---
+
+## 블로그 개발
+
+### 배포 환경에서 개발 로그글 안 보이는 문제 수정
+
+배포 환경에서 개발 로그글이 안 보이는 문제가 있었다. 그래서 두 가지 방법으로 해결했다.
+
+1. `[...slug]` -> `[...slugs]` 로 수정
+2. `log/23.05/05.01 일지`에서 `log/23.05/05.01`로 수정
+
+아마 한글을 인코딩하는 과정에서 문제가 생긴 것 같다. 그래서 한글을 제거했다.
+
+### 🤔 ul > li의 `list-style-type`
+
+마크다운에서 `-`을 들여쓰기 하면 `ul > li`가 된다. (이때 `list-style-type`은 `disc`)
+여기서 한 번 더 들여쓰기를 하면 `ul > li > ul > li`가 된다. (이때 `list-style-type`은 `circle`)
+또 한 번 더 들여쓰기를 하면 `ul > li > ul > li > ul > li`가 된다. (이때 `list-style-type`은 `square`)
+
+그 다음부터는 계속 disc, circle, square, disc, circle, square... 순으로 반복된다.
+
+이걸 css로 구현할 수는 없는 것 같다. css는 반복문을 돌릴 수 없어서 scss같은 전처리기를 사용해서 구현해야 한다.
+
+하지만! 지금 상황은 조금 다르다. css로 구현하는게 아닌 js 객체 형식으로 theme을 주입해서 구현하고 있기 때문에 js로 구현할 수 있다.
+
+일단 이전의 방식이다.
+
+```tsx
+const proseOverrides: ComponentSingleStyleConfig = {
+  baseStyle: {
+    'ul > li': {
+      listStyleType: 'disc',
+    },
+    'ul > li > ul > li': {
+      listStyleType: 'circle',
+    },
+    'ul > li > ul > li > ul > li': {
+      listStyleType: 'square',
+    },
+    'ul > li > ul > li > ul > li > ul > li': {
+      listStyleType: 'disc',
+    },
+    'ul > li > ul > li > ul > li > ul > li > ul > li': {
+      listStyleType: 'circle',
+    },
+    'ul > li > ul > li > ul > li > ul > li > ul > li > ul > li': {
+      listStyleType: 'square',
+    },
+  },
+}
+```
+
+이걸 반복문으로 구현하면 이렇게 된다.
+
+```tsx
+const UlLiStyle = ({ repeatCount }: { repeatCount: number }) => {
+  const listStyleTypes = ['disc', 'circle', 'square']
+
+  const style: { [key: string]: ComponentSingleStyleConfig['baseStyle'] } = {
+    'ul > li::marker': {
+      color: 'teal.600',
+    },
+  }
+
+  Array.from({ length: repeatCount }).forEach((_, i) => {
+    style[`ul > li ${'> ul > li'.repeat(i)}`] = {
+      listStyleType: listStyleTypes[i % listStyleTypes.length],
+    }
+  })
+
+  return style
+}
+```
+
+#### 적용
+
+```tsx
+const proseOverrides: ComponentSingleStyleConfig = {
+  baseStyle: {
+    ...UlLiStyle({ repeatCount: 6 }),
+  },
+}
+```
+
+### MDXPost 구현
+
+처음에는 Post와 Log 둘다 `MDXLayout`이라는 컴포넌트를 써서 Layout 내부에서 분기 처리하려고 했다.
+하지만 post와 log 레이아웃이 겹치는 부분이 별로 없어서 그냥 분기처리해서 새로운 컴포넌트를 렌더링하는 꼴이 되어버린다. 그래서 `MDXPost`와 `MDXLog`로 나누기로 했다.
+
+대신에 마크다운을 보여주는 로직은 `MDXContent` 컴포넌트에 감싸서 재사용할 수 있게 했다.
+
+```tsx:MDXContent.tsx
+'use client'
+
+import { chakra } from '@chakra-ui/react'
+import { Prose } from '@nikolovlazar/chakra-ui-prose'
+import { useMDXComponent } from 'next-contentlayer/hooks'
+
+import Youtube from '@/components/Youtube/Youtube'
+
+import type { MDXComponents } from 'mdx/types'
+
+const components: MDXComponents = {
+  Youtube,
+  code: (props) => <chakra.span fontWeight="bold" {...props} />,
+  a: (props) => <chakra.a {...props} />,
+}
+
+interface MDXContentProps {
+  code: string
+}
+
+const MDXContent = ({ code }: MDXContentProps) => {
+  const MDXComponent = useMDXComponent(code)
+
+  return (
+    <Prose>
+      <MDXComponent components={components} />
+    </Prose>
+  )
+}
+
+export default MDXContent
+```
+
+#### 사용법
+
+```tsx
+<MDXContent code={post.body.code} />
+```
+
+---
+
+## 내일 할 일
+
+- 블로그 개발
+- GDSC 발표 준비
