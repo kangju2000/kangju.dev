@@ -11,7 +11,7 @@ import type { MDXComponents } from 'mdx/types'
 const components: MDXComponents = {
   Youtube,
   code: (props) => <chakra.span fontWeight="bold" {...props} />,
-  a: (props) => <chakra.a target="_blank" {...props} />,
+  a: (props) => <chakra.a {...props} />,
 }
 
 interface MDXContentProps {
