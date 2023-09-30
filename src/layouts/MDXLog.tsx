@@ -1,4 +1,5 @@
 import { Center, Heading } from '@chakra-ui/react'
+import { format } from 'date-fns'
 
 import MDXContent from './MDXContent'
 
@@ -13,7 +14,7 @@ const MDXLog = ({ log }: MDXLogProps) => {
     <div>
       <Center>
         <Heading as="h1" fontSize="5xl" fontWeight="bold" mb="24px">
-          {log.title}
+          {format(new Date(log.date), 'yyyy년 MM월 dd일')}
         </Heading>
       </Center>
       <MDXContent code={log.body.code} />

@@ -52,6 +52,7 @@ export const Log = defineDocumentType(() => ({
   filePathPattern: `log/**/*.mdx`,
   contentType: 'mdx',
   fields: {
+    description: { type: 'string' },
     tags: { type: 'list', of: { type: 'string' } },
   },
   computedFields: {
@@ -59,8 +60,8 @@ export const Log = defineDocumentType(() => ({
       type: 'string',
       resolve: (post) => post._raw.sourceFilePath.split(' ')[0],
     },
-    title: {
-      type: 'string',
+    date: {
+      type: 'date',
       resolve: (post) => {
         const splitPath = post._raw.flattenedPath.match(/(\d{2}\.\d{2})\/(\d{2}\.\d{2})/)
 
@@ -70,7 +71,7 @@ export const Log = defineDocumentType(() => ({
 
         const dateString = '20' + splitPath[1].split('.')[0] + '.' + splitPath[2]
 
-        return format(new Date(dateString), 'yy.MM.dd')
+        return new Date(dateString)
       },
     },
     yearMonth: {

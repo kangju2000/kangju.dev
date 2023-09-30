@@ -1,5 +1,6 @@
 import { Box, Stack } from '@chakra-ui/react'
 import { allLogs } from 'contentlayer/generated'
+import { format } from 'date-fns'
 import fs from 'fs'
 import Link from 'next/link'
 
@@ -30,7 +31,7 @@ export default function MonthPage({ params: { slug } }: MonthPageProps) {
         items={monthLogs}
         renderItem={(log) => (
           <Box as="li" borderRadius="16px">
-            <Link href={`/${log.slug}`}>{log.title}</Link>
+            <Link href={`/${log.slug}`}>{format(new Date(log.date), 'yy.MM.dd')}</Link>
           </Box>
         )}
         renderEmpty={() => <Empty />}
