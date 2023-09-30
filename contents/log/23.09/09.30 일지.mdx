@@ -1,0 +1,113 @@
+> 오늘도 뭔가 하려고 했지만 제대로 한게 없는 날이다.
+> 연휴라 몸이 놀기를 원하는 것 같다.
+
+## 블로그 - 캘린더 추가
+
+개발 로그 페이지에 캘린더를 추가했다.
+나중에 애니메이션도 추가할 예정이다.
+
+내가 생각한 애니메이션은 처음에는 캘린더가 크게 보이다가, 하나를 선택하면 캘린더가 우측 하단에 작게 보이면서 선택한 날짜의 로그를 보여주는 것이다.
+
+이렇게 하려면 페이지 이동 시 애니메이션이 유지되어야 하는데, 다른 예제들 보면서 구현해봐야겠다.
+
+## framer-motion은 클라이언트 컴포넌트에서만 사용 가능
+
+하지만 나는 서버 컴포넌트에서도 사용하고 싶다.
+그러기 위해서는 클라이언트 컴포넌트로 한 번 감싸주어 사용하면 된다.
+
+### div, span, p 등등 태그에 맞게 사용하고 싶어!
+
+나는 chakra UI를 사용하고 있기에 chakra의 prop들 또한 사용하고 싶다.
+
+일단 chakra UI에 framer-motion을 적용하는 방법은 다음과 같다. ([공식문서 참조](https://chakra-ui.com/getting-started/with-framer))
+
+```tsx
+import { chakra } from '@chakra-ui/react'
+import { motion, isValidMotionProp } from 'framer-motion'
+
+const ChakraBox = chakra(motion.div, {
+  shouldForwardProp: isValidMotionProp,
+})
+```
+
+또는
+
+```tsx
+import { chakra } from '@chakra-ui/react';
+
+<chakra.div
+  as={motion.div}
+  animate={{ scale: 2 }}
+  //...
+>
+```
+
+이렇게 사용하면 된다.
+
+### Polymorphic하게 컴포넌트를 만들어보자
+
+```tsx
+'use client'
+
+import { Box } from '@chakra-ui/react'
+import { motion, type MotionProps } from 'framer-motion'
+import type { ComponentPropsWithoutRef } from 'react'
+
+const ChakraMotion = <C extends React.ElementType = 'div'>({
+  as,
+  children,
+  ...props
+}: ComponentPropsWithoutRef<C> & { as?: C } & MotionProps) => {
+  const Component = as || 'div'
+
+  return (
+    <Box
+      // @ts-ignore
+      as={motion[Component]}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ ease: 'easeInOut', duration: 0.2 }}
+      {...props}
+    >
+      {children}
+    </Box>
+  )
+}
+
+export default ChakraMotion
+```
+
+`chakra`를 사용하여 구현할 수도 있다.
+
+```tsx
+const ChakraMotion = <C extends React.ElementType>({
+  as,
+  children,
+  ...props
+}: ComponentPropsWithoutRef<C> & { as?: C } & MotionProps): ReactElement => {
+  const Component = as || 'div'
+
+  const MotionComponent = chakra(motion(Component), {
+    shouldForwardProp: (prop) => isValidMotionProp(prop) || shouldForwardProp(prop),
+  })
+
+  return <MotionComponent {...props}>{children}</MotionComponent>
+}
+```
+
+이렇게 하면 다음과 같이 사용할 수 있다.
+
+```tsx
+<ChakraMotion
+  as="span"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  exit={{ opacity: 0 }}
+  transition={{ ease: 'easeInOut', duration: 0.2 }}
+>
+  Hello
+</ChakraMotion>
+```
+
+이제 Chakra UI의 prop을 사용하면서 framer-motion까지 함께 사용할 수 있게 되었다!
