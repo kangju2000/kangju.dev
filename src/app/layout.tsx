@@ -7,6 +7,7 @@ import type { Metadata } from 'next'
 import type { PropsWithChildren } from 'react'
 
 import '@/styles/globals.css'
+import '@/styles/calendar.css'
 
 export const metadata: Metadata = {
   title: 'kangju.dev',
