@@ -13,6 +13,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 const Calendar = () => {
   const router = useRouter()
+  const minDate = useMemo(() => new Date('2023-05-01'), [])
   const today = useMemo(() => new Date(), [])
   const tommorow = useMemo(() => new Date(today.setDate(today.getDate() + 1)), [today])
 
@@ -22,14 +23,12 @@ const Calendar = () => {
     <DatePicker
       locale={ko}
       selected={selectedDate ? new Date(selectedDate) : today}
-      minDate={new Date('2023-05-01')}
+      minDate={minDate}
       maxDate={tommorow}
       filterDate={(date) => {
-        const isExist = allLogs.find((log) => {
-          return new Date(log.date).getTime() === date.getTime()
-        })
-
-        return !!isExist
+        const dateString = 'log/' + format(date, 'yy.MM/MM.dd')
+        const logs = allLogs.find((log) => log.slug === dateString)
+        return !!logs
       }}
       onChange={(date: Date) => {
         setLocalStorage('selectedDate', date.toDateString())
