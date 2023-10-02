@@ -1,5 +1,6 @@
 import { Box, ColorModeScript, type ThemeConfig } from '@chakra-ui/react'
 
+import GoogleAnalytics from './GoogleAnalytics'
 import Providers from './Providers'
 import Header from '@/components/Header/Header'
 
@@ -24,11 +25,13 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html lang="ko" suppressHydrationWarning>
       <body suppressHydrationWarning>
         <ColorModeScript initialColorMode={config.initialColorMode} />
+        {process.env.NODE_ENV === 'production' && <GoogleAnalytics />}
         <Providers>
           <Header />
           <Box
             as="main"
             maxW="700px"
+            minH="100%"
             m="0 auto"
             p={{
               base: '50px 16px',
