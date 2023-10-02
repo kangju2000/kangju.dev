@@ -70,9 +70,10 @@ export const Log = defineDocumentType(() => ({
         return dateString.replace(/\./g, '-')
       },
     },
-    yearMonth: {
-      type: 'string',
-      resolve: (post) => post._raw.sourceFileDir.replace(/log\//, ''),
+    readTime: {
+      type: 'nested',
+      of: ReadTime,
+      resolve: (post) => readingTime(post.body.raw),
     },
   },
 }))
