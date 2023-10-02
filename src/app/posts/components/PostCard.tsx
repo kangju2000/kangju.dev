@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text } from '@chakra-ui/react'
+import { Box, Flex, Heading, Stack, Text } from '@chakra-ui/react'
 import { format } from 'date-fns'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -13,8 +13,18 @@ const PostCard = ({ post }: PostCardProps) => {
   return (
     <Link href={`/posts/${post.slug}`}>
       <Flex
-        align="center"
-        gap="32px"
+        flexDir={{
+          base: 'column',
+          sm: 'row',
+        }}
+        align={{
+          base: 'flex-start',
+          sm: 'center',
+        }}
+        gap={{
+          base: '16px',
+          sm: '24px',
+        }}
         cursor="pointer"
         _hover={{
           opacity: 0.8,
@@ -22,8 +32,11 @@ const PostCard = ({ post }: PostCardProps) => {
         }}
       >
         <Box
-          w="180px"
-          h="180px"
+          w={{
+            base: '100%',
+            sm: '150px',
+          }}
+          h="150px"
           pos="relative"
           flexShrink={0}
           borderRadius="16px"
@@ -32,23 +45,25 @@ const PostCard = ({ post }: PostCardProps) => {
           <Image
             src={post.thumbnail}
             alt="썸네일"
-            fill
             style={{
               objectFit: 'cover',
             }}
+            sizes="(max-width: 480px) 100%, 150px"
+            fill
+            priority
           />
         </Box>
-        <Box overflow="hidden">
-          <Heading as="h3" size="lg" mb="12px">
+        <Stack overflow="hidden">
+          <Text as="h2" fontSize="3xl" fontWeight="bold" lineHeight="1.4" noOfLines={2}>
             {post.title}
-          </Heading>
-          <Text as="p" mb="12px" _dark={{ color: 'gray.400' }} _light={{ color: 'gray.600' }}>
+          </Text>
+          <Text as="p" fontSize="14px" _dark={{ color: 'gray.400' }} _light={{ color: 'gray.600' }}>
             {post.description}
           </Text>
           <Text fontSize="sm" color="gray.500">
             {format(new Date(post.date), 'yy.MM.dd')}
           </Text>
-        </Box>
+        </Stack>
       </Flex>
     </Link>
   )
