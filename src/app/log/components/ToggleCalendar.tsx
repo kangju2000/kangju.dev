@@ -15,7 +15,7 @@ interface ToggleCalendarProps {
 }
 
 const ToggleCalendar = ({ selectedDate }: ToggleCalendarProps) => {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   const ref = useRef(null)
 
   useOnClickOutside(ref, () => setIsOpen(false))
