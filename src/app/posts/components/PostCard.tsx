@@ -12,17 +12,14 @@ interface PostCardProps {
 const PostCard = ({ post }: PostCardProps) => {
   return (
     <Link href={`/posts/${post.slug}`}>
-      <Flex
-        flexDir={{
-          base: 'column',
-          sm: 'row',
+      <Box
+        display={{
+          sm: 'flex',
         }}
-        align={{
-          base: 'flex-start',
+        alignItems={{
           sm: 'center',
         }}
         gap={{
-          base: '16px',
           sm: '24px',
         }}
         cursor="pointer"
@@ -32,11 +29,13 @@ const PostCard = ({ post }: PostCardProps) => {
         }}
       >
         <Box
-          w={{
-            base: '100%',
-            sm: '150px',
+          w={{ sm: '160px' }}
+          h={{ sm: '160px' }}
+          aspectRatio={{
+            base: 16 / 9,
+            sm: 1 / 1,
           }}
-          h="150px"
+          mb={{ base: '16px', sm: '0' }}
           pos="relative"
           flexShrink={0}
           borderRadius="16px"
@@ -48,23 +47,43 @@ const PostCard = ({ post }: PostCardProps) => {
             style={{
               objectFit: 'cover',
             }}
-            sizes="(max-width: 480px) 100%, 150px"
+            sizes="(max-width: 480px) 100%, 160px"
             fill
             priority
           />
         </Box>
         <Stack overflow="hidden">
-          <Text as="h2" fontSize="3xl" fontWeight="bold" lineHeight="1.4" noOfLines={2}>
+          <Heading
+            as="h2"
+            fontSize={{
+              base: 'xl',
+              sm: '2xl',
+            }}
+          >
             {post.title}
-          </Text>
-          <Text as="p" fontSize="14px" _dark={{ color: 'gray.400' }} _light={{ color: 'gray.600' }}>
+          </Heading>
+          <Text
+            as="p"
+            fontSize={{
+              base: 'sm',
+              sm: 'md',
+            }}
+            _dark={{ color: 'gray.400' }}
+            _light={{ color: 'gray.600' }}
+          >
             {post.description}
           </Text>
-          <Text fontSize="sm" color="gray.500">
+          <Text
+            fontSize={{
+              base: 'xs',
+              sm: 'sm',
+            }}
+            color="gray.500"
+          >
             {format(new Date(post.date), 'yy.MM.dd')}
           </Text>
         </Stack>
-      </Flex>
+      </Box>
     </Link>
   )
 }
