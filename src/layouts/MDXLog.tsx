@@ -16,7 +16,7 @@ const MDXLog = ({ log }: MDXLogProps) => {
       <ChakraMotion initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
         <Center>
           <Heading as="h1" fontSize="5xl" fontWeight="bold" mb="24px">
-            {format(new Date(log.date), 'yyyy년 MM월 dd일')}
+            {format(new Date(log.dateFormatted), 'yyyy년 MM월 dd일')}
           </Heading>
         </Center>
       </ChakraMotion>

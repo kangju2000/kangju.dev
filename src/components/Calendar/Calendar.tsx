@@ -1,7 +1,7 @@
 'use client'
 
 import { Link } from '@chakra-ui/next-js'
-import { Center, Flex, Select, Text } from '@chakra-ui/react'
+import { Center, Text } from '@chakra-ui/react'
 import { allLogs } from 'contentlayer/generated'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
@@ -30,8 +30,7 @@ const Calendar = ({ selectedDate: cookieDate }: CalendarProps) => {
       minDate={minDate}
       maxDate={tommorow}
       filterDate={(date) => {
-        const dateString = 'log/' + format(date, 'yy.MM/MM.dd')
-        const log = allLogs.find((log) => log.slug === dateString)
+        const log = allLogs.find((log) => log.dateFormatted === format(date, 'yyyy-MM-dd'))
         return !!log
       }}
       onChange={(date: Date) => {
@@ -40,15 +39,19 @@ const Calendar = ({ selectedDate: cookieDate }: CalendarProps) => {
       }}
       inline
       renderDayContents={(day, date: Date) => {
-        const dateString = 'log/' + format(date, 'yy.MM/MM.dd')
-        const log = allLogs.find((log) => log.slug === dateString)
+        const log = allLogs.find((log) => log.dateFormatted === format(date, 'yyyy-MM-dd'))
 
         if (!log) {
           return <Center>{day}</Center>
         }
 
         return (
-          <Link href={`/${dateString}`} display="flex" alignItems="center" justifyContent="center">
+          <Link
+            href={`/log/${log.dateFormatted}`}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
             {day}
           </Link>
         )

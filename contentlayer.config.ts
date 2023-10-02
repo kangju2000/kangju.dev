@@ -37,7 +37,7 @@ export const Post = defineDocumentType(() => ({
     },
     slug: {
       type: 'string',
-      resolve: (post) => post._raw.sourceFileName.replace(/\.mdx$/, ''),
+      resolve: (post) => post._raw.sourceFileName.replace(/\.mdx$/, '').replace(/ /g, '-'),
     },
     readTime: {
       type: 'nested',
@@ -56,12 +56,8 @@ export const Log = defineDocumentType(() => ({
     tags: { type: 'list', of: { type: 'string' } },
   },
   computedFields: {
-    slug: {
+    dateFormatted: {
       type: 'string',
-      resolve: (post) => post._raw.sourceFilePath.split(' ')[0],
-    },
-    date: {
-      type: 'date',
       resolve: (post) => {
         const splitPath = post._raw.flattenedPath.match(/(\d{2}\.\d{2})\/(\d{2}\.\d{2})/)
 
@@ -71,7 +67,7 @@ export const Log = defineDocumentType(() => ({
 
         const dateString = '20' + splitPath[1].split('.')[0] + '.' + splitPath[2]
 
-        return new Date(dateString)
+        return dateString.replace(/\./g, '-')
       },
     },
     yearMonth: {
