@@ -85,7 +85,7 @@ const ChakraMotion = <C extends React.ElementType>({
   as,
   children,
   ...props
-}: ComponentPropsWithoutRef<C> & { as?: C } & MotionProps): ReactElement => {
+}: ComponentPropsWithoutRef<C> & { as?: C } & MotionProps & ChakraProps) => {
   const Component = as || 'div'
 
   const MotionComponent = chakra(motion(Component), {
