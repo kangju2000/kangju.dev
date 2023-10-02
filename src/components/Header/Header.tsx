@@ -19,7 +19,7 @@ const Header = () => {
   const currentType = `/${pathname.split('/')[1]}`
 
   return (
-    <Box as="header" pos="sticky" top="0" zIndex="10" bg="inherit">
+    <Box as="header" pos="fixed" top="0" w="100%" zIndex="10" bg="inherit">
       <Flex
         as="nav"
         justify="space-between"

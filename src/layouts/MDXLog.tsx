@@ -12,11 +12,11 @@ interface MDXLogProps {
 
 const MDXLog = ({ log }: MDXLogProps) => {
   return (
-    <div>
+    <>
       <ChakraMotion initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
         <Center>
-          <Heading as="h1" fontSize="5xl" fontWeight="bold" mb="24px">
-            {format(new Date(log.dateFormatted), 'yyyy년 MM월 dd일')}
+          <Heading as="h2" mb="24px">
+            {log.description || format(new Date(log.dateFormatted), 'yyyy년 MM월 dd일')}
           </Heading>
         </Center>
       </ChakraMotion>
@@ -28,7 +28,7 @@ const MDXLog = ({ log }: MDXLogProps) => {
       >
         <MDXContent code={log.body.code} />
       </ChakraMotion>
-    </div>
+    </>
   )
 }
 

@@ -32,8 +32,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
             <Box
               as="main"
               maxW="700px"
-              h="calc(100vh - 64px)"
+              minH="calc(100vh - 64px)"
               m="0 auto"
+              mt="64px"
               p={{
                 base: '50px 16px',
                 md: '50px 24px',
