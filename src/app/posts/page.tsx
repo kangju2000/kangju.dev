@@ -17,7 +17,7 @@ export default function PostsPage() {
         </Box>
         <Spacer />
         <List
-          gap="24px"
+          gap="32px"
           items={allPosts}
           renderItem={(post) => <PostCard key={post.slug} post={post} />}
           renderEmpty={() => <div>포스트가 없습니다.</div>}
