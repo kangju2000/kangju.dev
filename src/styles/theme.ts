@@ -9,12 +9,14 @@ const notoSansKr = Noto_Sans_KR({
   subsets: ['latin'],
 })
 
+const fonts = {
+  heading: notoSansKr.style.fontFamily,
+  body: notoSansKr.style.fontFamily,
+}
+
 const theme = extendTheme(
   {
-    fonts: {
-      heading: notoSansKr.style.fontFamily,
-      body: notoSansKr.style.fontFamily,
-    },
+    fonts,
   },
   withProse(proseOverrides)
 )
