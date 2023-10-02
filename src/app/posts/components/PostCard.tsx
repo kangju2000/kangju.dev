@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Stack, Text } from '@chakra-ui/react'
+import { Box, Heading, Stack, Text } from '@chakra-ui/react'
 import { format } from 'date-fns'
 import Image from 'next/image'
 import Link from 'next/link'
