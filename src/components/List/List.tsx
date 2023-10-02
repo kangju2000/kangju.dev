@@ -3,7 +3,7 @@ import { Fragment } from 'react'
 
 interface ListProps<T> extends ChakraProps {
   items: T[]
-  renderItem: (item: T) => React.ReactNode
+  renderItem: (item: T, index: number) => React.ReactNode
   renderEmpty?: () => React.ReactNode
   direction?: 'row' | 'column'
   gap?: string
@@ -21,7 +21,7 @@ const List = <T,>({
     return (
       <Flex as="ul" direction={direction} gap={gap} {...props}>
         {items.map((item, index) => (
-          <Fragment key={index}>{renderItem(item)}</Fragment>
+          <Fragment key={index}>{renderItem(item, index)}</Fragment>
         ))}
       </Flex>
     )

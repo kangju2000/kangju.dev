@@ -1,4 +1,4 @@
-import { Center, Heading } from '@chakra-ui/react'
+import { Center, Heading, Stack, Text } from '@chakra-ui/react'
 import { format } from 'date-fns'
 
 import MDXContent from './MDXContent'
@@ -12,12 +12,15 @@ interface MDXLogProps {
 
 const MDXLog = ({ log }: MDXLogProps) => {
   return (
-    <>
+    <Stack spacing="50px">
       <ChakraMotion initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-        <Center>
+        <Center flexDirection="column">
           <Heading as="h2" mb="24px">
             {log.description || format(new Date(log.dateFormatted), 'yyyy년 MM월 dd일')}
           </Heading>
+          <Text fontSize="sm" color="gray.500">
+            {log.dateFormatted} | {log.readTime.text}
+          </Text>
         </Center>
       </ChakraMotion>
       <ChakraMotion
@@ -28,7 +31,7 @@ const MDXLog = ({ log }: MDXLogProps) => {
       >
         <MDXContent code={log.body.code} />
       </ChakraMotion>
-    </>
+    </Stack>
   )
 }
 

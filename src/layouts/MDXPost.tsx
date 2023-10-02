@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Heading, Stack } from '@chakra-ui/react'
+import { Box, Center, Heading, Stack, Text } from '@chakra-ui/react'
 import Image from 'next/image'
 
 import MDXContent from './MDXContent'
@@ -43,9 +43,9 @@ const MDXPost = ({ post }: MDXPostProps) => {
             >
               {post.title}
             </Heading>
-            <Flex>
+            <Text fontSize="sm" color="gray.300">
               {post.dateFormatted} | {post.readTime.text}
-            </Flex>
+            </Text>
           </Center>
         </Center>
       </ChakraMotion>
