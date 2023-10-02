@@ -34,12 +34,7 @@ const MDXPost = ({ post }: MDXPostProps) => {
           />
           <Center flexDirection="column" zIndex="1" h="100%" color="white" textAlign="center">
             <Heading
-              as="h1"
-              fontSize={{
-                base: '3xl',
-                sm: '5xl',
-              }}
-              fontWeight="bold"
+              as="h2"
               mb={{
                 base: '12px',
                 sm: '18px',
