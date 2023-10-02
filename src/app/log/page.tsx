@@ -1,12 +1,10 @@
-import { Box, Heading, Highlight, Spacer, Stack, Text } from '@chakra-ui/react'
+import { Heading, Highlight, Spacer, Stack, Text } from '@chakra-ui/react'
 import { allLogs } from 'contentlayer/generated'
 import { format } from 'date-fns'
 import Link from 'next/link'
 
 import ChakraMotion from '@/components/ChakraMotion/ChakraMotion'
 import List from '@/components/List/List'
-
-let delayCount = 0
 
 export default function LogPage() {
   const featuredLogs = allLogs.filter((log) => !!log.description)
@@ -39,24 +37,19 @@ export default function LogPage() {
         </Highlight>
       </ChakraMotion>
       <Spacer />
-      <ChakraMotion
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ delay: 0.1 }}
-      >
+      <ChakraMotion initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
         <Heading as="h2" fontSize="2xl" mb="16px">
           Featured Logs
         </Heading>
         <List
           gap="12px"
           items={sortedFeaturedLogs}
-          renderItem={(log) => (
+          renderItem={(log, index) => (
             <ChakraMotion
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ delay: delayCount++ * 0.05 }}
+              transition={{ delay: index++ * 0.08 }}
             >
               <Link href={`/log/${log.dateFormatted}`}>
                 <Text as="h3" fontSize="lg" mb="8px">
