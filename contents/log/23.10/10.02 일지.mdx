@@ -1,0 +1,112 @@
+---
+description: Chakra UI + framer-motion 에서 @ts-ignore 쓰지 않고 transition prop 사용하기
+tags: ['블로그', 'Chakra UI', 'framer-motion', 'Google Analytics']
+---
+
+오늘은 수요일 날 있을 GDSC 발표 준비하고, 블로그를 만들었다.
+
+발표 주제로는 가천 익스텐션을 만든 경험을 공유할 예정이다. 근데 아직 PPT를 초반 부분만 만들어서 내일 이어서 만들어야겠다..
+
+---
+
+## 블로그
+
+### Chakra UI + framer-motion 에서 transition 타입 에러
+
+[공식문서](https://chakra-ui.com/getting-started/with-framer)에서도 이렇게 나온다.
+
+```tsx
+<ChakraBox
+  // @ts-ignore no problem in operation, although type error appears.
+  transition={{
+    duration: 3,
+    ease: 'easeInOut',
+    repeat: Infinity,
+    repeatType: 'loop',
+
+    //...
+  }}
+/>
+```
+
+Chakra UI의 `transition` prop과 framer-motion의 `transition` prop이 겹쳐서 타입 에러가 나는 것 같다.
+
+나는 `ChakraMotion`이라는 컴포넌트를 만들어두었었는데, 여기서도 마찬가지로 타입 에러가 뜬다.
+
+난 저 어노테이션이 찝찝해서 `ChakraMotion`에서 타입 조작을 했다.
+
+```tsx {5}
+const ChakraMotion = <C extends React.ElementType>({
+  as,
+  children,
+  ...props
+}: ComponentPropsWithoutRef<C> & { as?: C } & MotionProps & Omit<ChakraProps, 'transition'>) => {
+  const Component = as || 'div'
+
+  const MotionComponent = chakra(motion(Component), {
+    shouldForwardProp: (prop) => isValidMotionProp(prop) || shouldForwardProp(prop),
+  })
+
+  return <MotionComponent {...props}>{children}</MotionComponent>
+}
+
+export default ChakraMotion
+```
+
+잘 보면 ChakraProps에서 `transition` prop을 제거했다.
+
+이로써 `@ts-ignore` 어노테이션 없이도 `transition` prop을 사용할 수 있게 되었다!
+
+### 23.10/10.02 -> 2023-10-02 로 변경
+
+월별로 보는 페이지가 없어져서, 날짜를 `23.10/10.02 -> 2023-10-02` 이런 식으로 변경했다.
+
+### Google Analytics 추가
+
+Google Analytics를 추가했다.
+
+생각해보니 내가 프로젝트에 직접 GA를 단 적은 처음인 것 같다. TIL 블로그에서도 달긴 했지만 Docusaurus의 플러그인을 사용했었어서 사실상 처음이다..!
+
+여러 문서들 참고하면서 적용할 수 있었다.
+
+### [error] Entire page deopted into client-side rendering
+
+빌드를 하고 보니, 이런 에러가 뜨고 있었다.
+
+```bash
+Entire page /log/[slug] deopted into client-side rendering. https://nextjs.org/docs/messages/deopted-into-client-rendering /log/[slug]
+```
+
+처음에는 저 로그 페이지에서 문제가 있나 싶었지만, 공식문서에 들어가보니 `useSearchParams`를 쓰는 경우에 `Suspense`로 감싸줘야 한다고 한다.
+
+그래서 루트 레이아웃에 `Suspense`를 감싸주었다.
+
+```tsx {5, 23}
+export default function RootLayout({ children }: PropsWithChildren) {
+  return (
+    <html lang="ko" suppressHydrationWarning>
+      <body suppressHydrationWarning>
+        <Suspense fallback={null}>
+          <ColorModeScript initialColorMode={config.initialColorMode} />
+          {process.env.NODE_ENV === 'production' && <GoogleAnalytics />}
+          <Providers>
+            <Header />
+            <Box
+              as="main"
+              maxW="700px"
+              minH="calc(100vh - 64px)"
+              m="0 auto"
+              p={{
+                base: '50px 16px',
+                md: '50px 24px',
+              }}
+            >
+              {children}
+            </Box>
+          </Providers>
+        </Suspense>
+      </body>
+    </html>
+  )
+}
+```
