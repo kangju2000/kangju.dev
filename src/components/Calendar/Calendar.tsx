@@ -33,27 +33,33 @@ const Calendar = ({ slugDate }: CalendarProps) => {
         return !!log
       }}
       onChange={(date: Date) => setSelectedDate(date.toDateString())}
-      renderCustomHeader={({ date, decreaseMonth, increaseMonth }) => (
+      renderCustomHeader={({
+        date,
+        decreaseMonth,
+        increaseMonth,
+        prevMonthButtonDisabled,
+        nextMonthButtonDisabled,
+      }) => (
         <Center _dark={{ color: 'gray.50' }} _light={{ color: 'gray.800' }}>
-          <LeftIcon onClick={decreaseMonth} w="24px" h="24px" cursor="pointer" />
+          <LeftIcon
+            onClick={decreaseMonth}
+            w="24px"
+            h="24px"
+            cursor="pointer"
+            visibility={prevMonthButtonDisabled ? 'hidden' : 'visible'}
+          />
           <Text fontSize="lg" fontWeight="bold" mx="8px">
             {format(date, 'yyyy년 MM월')}
           </Text>
-          <RightIcon onClick={increaseMonth} w="24px" h="24px" cursor="pointer" />
+          <RightIcon
+            onClick={increaseMonth}
+            w="24px"
+            h="24px"
+            cursor="pointer"
+            visibility={nextMonthButtonDisabled ? 'hidden' : 'visible'}
+          />
         </Center>
       )}
-      renderMonthContent={(monthIndex, shortMonthText) => {
-        return (
-          <Text
-            fontSize="lg"
-            fontWeight="bold"
-            _dark={{ color: 'gray.50' }}
-            _light={{ color: 'gray.800' }}
-          >
-            {shortMonthText}
-          </Text>
-        )
-      }}
       renderDayContents={(day, date: Date) => {
         const log = allLogs.find((log) => log.dateFormatted === format(date, 'yyyy-MM-dd'))
         if (!log) {
@@ -66,6 +72,9 @@ const Calendar = ({ slugDate }: CalendarProps) => {
             display="flex"
             alignItems="center"
             justifyContent="center"
+            _hover={{ textDecoration: 'none' }}
+            _dark={{ color: 'gray.50' }}
+            _light={{ color: 'gray.800' }}
           >
             {day}
           </Link>

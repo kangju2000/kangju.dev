@@ -2,6 +2,7 @@
   width: 100%;
   border: none !important;
   background-color: inherit !important;
+  user-select: none;
 }
 
 .react-datepicker__month-container {
@@ -20,6 +21,10 @@
 .react-datepicker__day-names {
   display: flex;
   justify-content: space-between;
+}
+
+.react-datepicker__day-name {
+  color: var(--chakra-colors-chakra-body-text) !important;
 }
 
 .react-datepicker__month {
@@ -42,7 +47,7 @@
 
 .react-datepicker__day.react-datepicker__day--selected {
   background-color: var(--chakra-colors-teal-600) !important;
-  color: var(--chakra-colors-gray-300) !important;
+  /* color: var(--chakra-colors-gray-300) !important; */
 }
 
 .react-datepicker__day--keyboard-selected {
@@ -50,7 +55,6 @@
 }
 
 .react-datepicker__header,
-.react-datepicker__day-name,
 .react-datepicker__day,
 .react-datepicker__time-name,
 .react-datepicker__current-month {
