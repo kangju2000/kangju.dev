@@ -25,7 +25,7 @@
 .react-datepicker__month {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
   margin: 0 !important;
 }
 
@@ -55,7 +55,11 @@
 .react-datepicker__time-name,
 .react-datepicker__current-month {
   /* color: var(--chakra-colors-chakra-body-text) !important; */
-  color: var(--chakra-colors-gray-400) !important;
+  color: inherit;
+}
+
+.react-datepicker__day--outside-month {
+  visibility: hidden;
 }
 
 .react-datepicker__day.react-datepicker__day--disabled {

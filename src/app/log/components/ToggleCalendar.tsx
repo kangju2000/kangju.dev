@@ -2,6 +2,7 @@
 
 import { Box } from '@chakra-ui/react'
 import { AnimatePresence } from 'framer-motion'
+import { useParams } from 'next/navigation'
 import { useRef, useState } from 'react'
 
 import CalButton from '@/components/Calendar/CalButton'
@@ -10,12 +11,9 @@ import ChakraMotion from '@/components/ChakraMotion/ChakraMotion'
 import { CalendarIcon } from '@/components/Icons/CommonIcons'
 import { useOnClickOutside } from '@/hooks/useOnClickOutside'
 
-interface ToggleCalendarProps {
-  selectedDate?: string
-}
-
-const ToggleCalendar = ({ selectedDate }: ToggleCalendarProps) => {
+const ToggleCalendar = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const { slug } = useParams() as { slug?: string }
   const ref = useRef(null)
 
   useOnClickOutside(ref, () => setIsOpen(false))
@@ -34,11 +32,16 @@ const ToggleCalendar = ({ selectedDate }: ToggleCalendarProps) => {
             pos="absolute"
             bottom="100%"
             right="20px"
-            bg="gray.700"
+            // bg={{
+            //   dark: 'gray.800',
+            //   light: 'gray.50',
+            // }}
+            _light={{ bg: 'gray.50' }}
+            _dark={{ bg: 'gray.700' }}
             borderRadius="8px"
             p="8px"
           >
-            <Calendar selectedDate={selectedDate} />
+            <Calendar slugDate={slug} />
           </ChakraMotion>
         )}
       </AnimatePresence>

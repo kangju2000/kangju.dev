@@ -1,13 +1,10 @@
 import { Box } from '@chakra-ui/react'
 
 import ToggleCalendar from './components/ToggleCalendar'
-import { getServerCookie } from '@/utils/cookieStorage'
 
 import type { PropsWithChildren } from 'react'
 
-export default async function LogLayout({ children }: PropsWithChildren) {
-  const selectedDate = await getServerCookie('selectedDate')
-
+export default function LogLayout({ children }: PropsWithChildren) {
   return (
     <>
       {children}
@@ -23,7 +20,7 @@ export default async function LogLayout({ children }: PropsWithChildren) {
         justifyContent="end"
         zIndex="1"
       >
-        <ToggleCalendar selectedDate={selectedDate} />
+        <ToggleCalendar />
       </Box>
     </>
   )
