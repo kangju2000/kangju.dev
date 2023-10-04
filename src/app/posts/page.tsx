@@ -6,6 +6,10 @@ import ChakraMotion from '@/components/ChakraMotion/ChakraMotion'
 import List from '@/components/List/List'
 
 export default function PostsPage() {
+  const sortedPosts = allPosts.sort((a, b) => {
+    return new Date(a.date).getTime() - new Date(b.date).getTime()
+  })
+
   return (
     <Stack spacing="24px">
       <ChakraMotion initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -22,7 +26,7 @@ export default function PostsPage() {
       >
         <List
           gap="32px"
-          items={allPosts}
+          items={sortedPosts}
           renderItem={(post) => <PostCard key={post.slug} post={post} />}
           renderEmpty={() => <div>포스트가 없습니다.</div>}
         />
