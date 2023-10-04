@@ -1,0 +1,472 @@
+---
+date: 2023-06-01
+title: 우당탕탕 리액트로 크롬 익스텐션 만들기 (Gachon-Tools)
+description: 우당당당 크롬 익스텐션을 만들어보자
+thumbnail: '/posts/gachon-extension/thumbnail.png'
+tags: ['gachon-extension', '크롬익스텐션']
+---
+
+가천대학교 사이버캠퍼스에서 과제를 한눈에 모아볼 수 있는 익스텐션을 개발했다.
+
+[크롬 익스텐션 스토어](https://chrome.google.com/webstore/detail/gachon-tools-%EC%82%AC%EC%9D%B4%EB%B2%84%EC%BA%A0%ED%8D%BC%EC%8A%A4-%ED%99%95%EC%9E%A5%ED%94%84%EB%A1%9C%EA%B7%B8/ogldncimhepjdfadhjjhkchknloncnmg?hl=ko&authuser=0)
+
+[깃허브](https://github.com/kangju2000/gachon-extension)에도 확인할 수 있다.
+
+## 개발 이유?
+
+작년에 코로나가 막 풀렸을 때라 대학교에서 대면과 비대면을 병행해서 수업을 진행했었다.
+
+그러다 한번 교수님이 휴강을 하시고 녹화 강의로 출석을 대체했다.
+
+당시에 21학점을 듣고 있었는데 딴 과제랑 할 일을 하느라 녹화 강의를 들어야 할 게 있었다는 걸 **완전히 잊고 있었다**. 마감기한이 다음 강의 시작 전이었는데, 강의실에 도착해서 여유롭게 있다가 옆에서 친구가 강의 들었냐는 말에 잊었던 녹화 강의가 떠올랐다.
+
+결국 지각 처리가 되었고, 억울했지만 까먹은 내 탓이라 할 말이 없었다..
+
+나처럼 과제를 깜빡해서 녹화 강의를 안 들었거나 과제를 제출하지 못한 학생들이 꽤 있을 것이다. 특히 학점을 많이 듣는 학생들이라면 더욱 과제를 관리하기 힘들거라 생각했다. 그래서 지금 해야 하는 과제가 무엇이고, 언제 마감인지 한눈에 볼 수 있는 기능이 들어간 익스텐션으로 만들어보았다.
+
+---
+
+## 익스텐션은 어떻게 만들까?
+
+크롬 익스텐션을 만들기 위해선 어떻게 구성되어있는지 알아야 한다.
+
+**manifest.json** - manifest 버전과 익스텐션 이름, 버전 등이 들어있는 명세서 같은 파일
+
+**background** - service worker로 브라우저 이벤트를 반응해서 동작하는 스크립트
+
+**content script** - 웹페이지에 직접 주입할 수 있는 스크립트
+
+**popup** - 익스텐션 아이콘 누르면 보이는 팝업 창
+
+**option** - 익스텐션 관리 페이지에서 설정 누르면 보이는 페이지
+
+## 리액트로도 익스텐션을 만들 수 있을까?
+
+### 보일러플레이트 사용
+
+다행히 [보일러플레이트](https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite)가 있어서 참고하여 세팅을 했다.
+
+#### ⚠️주의사항
+
+content script는 \`safe js environment\`, 즉 독립된 공간에서 실행되는데 이곳에서는 ES Module을 사용할 수 없으므로 dynamic import를 해주어야 한다. [참고](https://stackoverflow.com/questions/48104433/how-to-import-es6-modules-in-content-script-for-chrome-extension)
+
+보일러플레이트에서도 이 때문에 이런 식으로 구성했다.
+
+```ts
+// pages/content/index.ts
+import('./main');
+
+export {};
+
+// pages/content/main.tsx
+import Content from '@pages/content/Content';
+import { createRoot } from 'react-dom/client';
+
+const root = document.createElement('div');
+root.id = 'root';
+
+document.body.appendChild(root);
+
+createRoot(root).render(<Content />);
+```
+
+import()로 dynamic import를 해서 main.tsx에 접근하도록 했다.
+
+#### 문제 1: React.Lazy로 코드 스플리팅 시 에러 발생
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbfSXGk%2FbtshAvXuh65%2Fy700KUlBzqCK526M0Knk21%2Fimg.png)
+
+Suspense 기능을 사용하기 위해 React의 lazy로 **코드 스플리팅**을 해서 빌드했는데, 테스트 시 에러가 발생했다.
+
+> ERROR: Expected ")" but found "."
+
+에러에서 보이는 **dynamicImport**는 보일러플레이트에 있던 커스텀 플러그인에서 변환해준건데, 그 플러그인 때문에 생긴 오류였다.
+
+```tsx
+import type { PluginOption } from 'vite'
+
+export default function customDynamicImport(): PluginOption {
+  return {
+    name: 'custom-dynamic-import',
+    renderDynamicImport() {
+      return {
+        left: `
+        {
+          const dynamicImport = (path) => import(path);
+          dynamicImport(
+          `,
+        right: ')}',
+      }
+    },
+  }
+}
+```
+
+끝에 중괄호로 감싸주기 때문에 에러가 뜬 듯 하다.
+
+#### 시도 1 - 플러그인 적용 해제 (해결)
+
+그래서 이 플러그인을 적용하지 않고 진행하니 해당 에러는 나타나지 않았다. 하지만 바로 다음 에러가 발생했다.
+
+#### 문제 2:  익스텐션 테스트 시 브라우저 콘솔에서 **export를 읽을 수 없다**는 에러 발생
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FpmvFN%2FbtshzAdZ5Vd%2FM7Ex3t94z5G54hMlyki5ck%2Fimg.png)
+
+1. vite의 rollupOptions를 통해 build를 커스텀해서 생긴 오류인가? (❌)
+
+- rollupOptions를 지우고 번들링 된 파일만 가지고 manifest를 작성해서 테스트해 봄 -> **동일한 에러 발생**
+
+2. 추가 설정이 필요한 건가? (△)
+
+- vite.config 파일에서 **base 설정**을 하면 에셋 파일들을 정확히 읽지 않을까?
+
+```ts
+// vite.config.js
+export default defineConfig({
+  build: {
+    base: './',
+    rollupOptions: {
+      // ...
+    },
+  },
+})
+```
+
+이렇게 base root를 명시하고 번들링 하니 엔트리 파일에서 **import.meta.url**을 사용하고 있어서 또 에러가 떴다.
+
+```ts
+// content script entry file
+const __vitePreload = function preload(baseModule, deps, importerUrl) {
+  //...
+}
+
+__vitePreload(
+  () => import('../../../assets/js/main.096ede36.js'),
+  true ? ['../../../assets/js/main.096ede36.js', '../../../assets/js/client.8f342e30.js'] : void 0,
+  import.meta.url
+)
+```
+
+#### 시도 1: 커스텀 플러그인 만들기
+
+직접 저걸 바꿀 수 있는 방법이 있을까 알아보기 위해 vite 공식문서와 rollup 공식문서를 뒤져보았다.
+
+한참을 찾아본 끝에 Rollup에서 [resolveImportMeta](https://rollupjs.org/plugin-development/#resolveimportmeta)라는 훅을 찾았다. 이 훅은 ES Module에서 사용하는 import.meta를 직접 조작할 수 있게 한다.
+
+import.meta.url은 해당 모듈의 전체 url을 알 수 있는데, 이걸 익스텐션의 파일 경로로 가리키게 하려면 [chrome.runtime.getURL](https://developer.chrome.com/docs/extensions/reference/runtime/#method-getURL)을 사용하면 된다. 아래처럼 직접 커스텀 플러그인을 만들어보았다.
+
+```tsx
+import type { PluginOption } from 'vite'
+
+export default function resolveMetaChromeExtension(): PluginOption {
+  return {
+    name: 'resolve-meta-chrome-extension',
+    resolveImportMeta: (property) => {
+      if (property === 'url') {
+        return 'chrome.runtime.getURL("")'
+      }
+    },
+  }
+}
+```
+
+이 플러그인을 적용하니 base root 때문에 났던 에러는 해결할 수 있었지만, 처음에 발생한 에러인 export 문제는 없어지지 않았다..
+
+#### 시도 2: vite config의 build.modulePreload를 false로 하기 (해결)
+
+vite에서 build 시 미리 모듈을 캐싱한다. 그래서 vite가 알아서 modulePreload를 해주는 **\_\_vitePreload**라는 함수를 엔트리 파일에서 export 시켜주고 있게 된다. 이러면 위의 주의사항에서 말했듯이 ESM을 엔트리파일에서 사용할 수 없으므로 에러가 띄워지게 된다.
+
+왜 React.Lazy를 썼을 때 에러가 떴을까?
+
+엔트리 파일에서 main.tsx를 import 하고, main.tsx에서 App.tsx 파일을 렌더링하고 있다.
+
+하지만 Lazy를 통해 컴포넌트를 동적으로 import하고 있기 때문에, 엔트리 파일에 있는  **\_\_vitePreload**를 가져와야 한다. 그래서 vite가 엔트리 파일에서 저 함수를 export 하게 된 것이다.
+
+```ts
+const A = reactExports.lazy(() =>
+  __vitePreload(
+    () => import('./A-192aa1d7.js'),
+    true
+      ? ['assets/A-192aa1d7.js', 'assets/globals-0034e337.js', 'assets/globals-14f4290f.css']
+      : void 0
+  )
+)
+```
+
+> vitePreload가 뭔데?
+>
+> [공식 문서](https://vitejs-kr.github.io/guide/features.html#build-optimizations)에 설명이 있었다.
+>
+> vite는 빌드 시 Direct Import 구문에 대해 `<link ref="modulepreload">`로 미리 모듈을 캐싱하도록 자동으로 변환한다.  
+> 해당 모듈을 필요로 하는 경우 이를 바로 사용할 수 있게 된다.
+
+여기서 나오는 Direct Import는 dynamic import를 말하는 것 같다.
+
+미리 모듈을 캐싱해서 말 그대로 module을 preload 해주는 것이다.
+
+vite에서 build option으로 modulePreload 하는 것을 설정할 수 있어서 위의 문제를 해결할 수 있었다.
+
+### CRXJS 라이브러리 사용
+
+MVP를 배포할 때까지는 보일러플레이트를 활용해서 세팅했지만, 번거로운 점이 있어 [CRXJS](https://github.com/crxjs/chrome-extension-tools) 라이브러리에서 제공하는 vite 플러그인을 사용하게 되었다.
+
+이 라이브러리를 사용하면서 많은 이점을 얻을 수 있었다.
+
+1. vite의 **HMR 기능**을 사용할 수 있어서 개발 속도가 빨라짐
+
+- 빌드 -> dev 키고 익스텐션을 로드하면 변경사항이 있을 때마다 바로바로 확인할 수 있다.
+
+2. 익스텐션의 버전이 업데이트될 때 **package.json**의 버전과 **manifest.json**의 버전을 각각 수정할 필요가 없어짐
+
+- package.json만 변경하면 된다.
+
+- manifest를 빌드할 때 **자동으로 생성**되므로 관리하기 편해졌다.
+
+## UI를 어떻게 하지? 최대한 유저들에게 거슬리지 않게 하고 싶은데...
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FEjayc%2FbtsgcO4mrle%2FXkNMcJSRMsrb1xk4TONRpk%2Fimg.png)
+
+1. 처음에 생각한 위치는 메인 페이지의 강의 리스트가 보이는 곳이다.
+
+**강좌 전체 보기** 바로 아래 공간에 두려고 했지만 강의 리스트 위치가 아래로 내려가서 패스했다.
+
+2. 페이지 우측 하단
+
+채널톡처럼 우측 하단에 **원 모양의 버튼**을 만들어 켰을 때 **모달**이 띄워져도 좋을 것 같다고 생각했다.
+
+근데 우측 하단에 이미 맨 위로 올려주는 TOP 버튼이 존재해서 UI를 해치게 된다. 이것도 pass
+
+3. ⭐️**페이지 중앙 하단**
+
+2번과 비슷한데, 중앙 하단에 두어 누르면 모달이 띄워지게 했다. 최대한 유저들이 거슬리지 않으면서 누르기 쉬운 곳에 배치했다.
+
+위치가 완전 마음에 들진 않지만, 일단 이 방법을 택했다. (추후 유저가 버튼 위치를 수정하도록 업데이트할 예정)
+
+직접 이용해 보니까 동그란 원이 은근히 작아서 잘 눌리지 않았다. 그래서 원 위에 마우스를 올려두면 원이 좌우로 늘어나 누를 수 있는 범위를 넓혔다.
+
+![](https://blog.kakaocdn.net/dn/0q2F3/btsgcqJpxNd/0UdrZiJRxUgUWk47RmY4c1/img.gif)
+
+애니메이션은 Framer-motion 라이브러리를 사용해서 간단히 구현할 수 있었다.
+
+추가로 모달이 나타났다가 사라질 때, 필터가 켜지고 꺼질 때에도 자연스러운 효과를 내기 위해 위 라이브러리를 사용했다.
+
+## 과제 데이터 가져오기
+
+처음에는 get요청으로 페이지 document를 가져와 자바스크립트에서 제공하는 메서드로 직접 파싱 하여 데이터들을 가져왔었다.
+
+하지만 점점 가져와야 할 데이터들도 많아지고 조작하기 어려운 부분이 있어 cheerio 라이브러리를 사용하게 되었다.
+
+### 크롤링 로직
+
+1. 사이버캠퍼스의 **나의 강좌** 페이지에서 id, title 가져오기
+
+2. 강좌 id를 가지고 해당 강좌 페이지의 document를 가져와서 원하는 정보(과제, 녹화강의) 가져오기
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbPEgwk%2FbtshWtSZioQ%2Fxc11xRRZOzZq9jtab1Xwrk%2Fimg.png)
+
+#### 문제 1: 강좌 페이지에서는 제출 여부/시청 여부를 확인할 수 없다..!
+
+다행히 과제 페이지가 따로 있어서 이 페이지를 크롤링했다. 대신 여기서는 **시작 일시**를 알 수 없어 강좌 페이지에서 크롤링한 데이터와 과제 페이지에서 크롤링한 데이터를 id 값을 통해 매핑시켰다.
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fc0TDBe%2FbtshYcQY7PO%2FRzAEuA60i5qzzuiBNrrMy1%2Fimg.png)
+
+#### 문제 2: 녹화강의 페이지에서 녹화강의의 id를 가져올 수 없다
+
+학습진도현황 or 온라인출석부 페이지에서 시청 시간과 출석인정 요구시간을 비교해서 하면 얻을 수 있는데, 문제는 해당 녹화강의의 id를 얻을 수 없었다.
+
+그래서 과제에서 했던 것처럼 고유한 값으로 매핑시킬 수 없었다.
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbtK2cm%2Fbtsh4Zvr6Bs%2FThKK709M1hh4Kk6VspGnA0%2Fimg.png)
+
+#### 시도 1: 녹화강의 제목으로 매핑하기
+
+처음에는 제목 값으로 매핑했다. 적어도 내가 수강하고 있는 과목들은 녹화강의 제목이 같은 경우가 없어서 테스트할 때는 잘 되었다. 과제 제목이 같은 경우에도 잘 되겠지~ 하면서 넘어갔던 것 같다.
+
+하지만 역시나 문제가 터져버렸다. 여러 사용자들이 피드백을 통해 문제가 생긴 부분을 알려주었는데, 녹화강의의 시청 여부가 잘못 체크되는 문제가 있었다.
+
+스크린샷으로 봤을 때에도 크롤링 로직에는 이상이 없어서 난감했는데, 다행히 그 강좌를 듣고 있는 친구가 있어 그 계정으로 테스트해 본 결과 이 부분에서 문제가 발생한 것이다.
+
+시도 2: 녹화강의 제목 + 주차 제목으로 매핑하기
+
+고유한 값이 없기 때문에 어쩔 수 없이 위 방법을 택했다. 그나마 데이터가 겹치는 부분이 주차 제목이었다.
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fd8k9OG%2Fbtsh2PAqAar%2F4FNYjKyTu2OdFl7qicEXwK%2Fimg.png)
+
+data-original-title 값을 가져와 녹화강의 데이터에 넣고,
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FFAmxO%2FbtshTwPWxbW%2FKdW5oxOWdfq448vKeoZ9o1%2Fimg.png)
+
+강좌 페이지의 주차 제목을 녹화강의 데이터에 넣어서 두 데이터를 **녹화강의 제목 + 주차 제목**으로 매핑시켰다.
+
+하지만 **같은 주차에 같은 제목의 녹화강의**가 있으면 골치 아프다..
+
+이런 경우에는 사용자가 직접 시청 여부를 수정할 수 있도록 하면 될 것 같다.
+
+---
+
+## 배포
+
+배포는 번들링 된 파일을 압축해서 올리기만 하면 끝이다. 처음 배포한 후 바로 에브리타임(학교 커뮤니티)에 홍보하지 않고 며칠 동안은 주변 친구들에게만 홍보해서 테스트시켜 보았다.
+
+아니나 다를까 에러가 나는 부분이 꽤 있어서 리팩토링을 많이 할 수 있었다.
+
+### Sentry 도입
+
+그리고 에타에 홍보하기 전에 혹시 모를 에러를 수집하기 위해 Sentry라는 에러 로깅 시스템을 도입했다. 에러가 나면 난 위치를 추적해 줄 뿐만 아니라 에러가 나기 전까지 유저가 취한 행동을 영상으로 리플레이해주는 등 다양한 기능을 제공해주고 있다.
+
+세팅은 간단했다.
+
+init 세팅만 하면 에러가 발생했을 때 로그가 쌓이는데, Sentry에서 제공하는 ErrorBoundary로 감싸서 에러가 발생하면 Toast가 띄워지도록 구현했다.
+
+```ts
+Sentry.init({
+  dsn: import.meta.env.VITE_APP_SENTRY_DSN,
+  environment: import.meta.env.MODE,
+  release: version,
+  integrations: [
+    new Sentry.Integrations.Breadcrumbs({ console: true }),
+    new Sentry.BrowserTracing(),
+  ],
+  tracesSampleRate: 1.0,
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1.0,
+})
+```
+
+```tsx
+import { ErrorBoundary } from '@sentry/react'
+import { motion } from 'framer-motion'
+import { useRef, useState } from 'react'
+
+import ContentModal from '@/components/domains/ContentModal'
+import Toast from '@/components/uis/Toast'
+import Portal from '@/helpers/portal'
+
+export default function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const modalRef = useRef()
+
+  const handleModalClick = (event: React.MouseEvent) => {
+    if (event.target === modalRef.current) setIsModalOpen(false)
+  }
+
+  return (
+    <div className="fixed bottom-[25px] left-1/2 translate-x-[-50%]">
+      <motion.div
+        initial={{ width: '40px', height: '40px' }}
+        whileHover={{ width: '100px', height: '50px' }}
+        className="cursor-pointer rounded-[50px] bg-[#2F6EA2] shadow-md shadow-[#2F6EA2]"
+        onClick={() => setIsModalOpen((prev) => !prev)}
+      ></motion.div>
+      <Portal elementId="modal">
+        <ErrorBoundary fallback={<Toast message="에러가 발생했습니다." type="error" />}>
+          <ContentModal ref={modalRef} onClick={handleModalClick} isOpen={isModalOpen} />
+        </ErrorBoundary>
+      </Portal>
+    </div>
+  )
+}
+```
+
+그리고 크롤링 과정에서 예외 상황이 있는지 파악하기 위해 captureException을 사용해서 로그를 받아왔다.
+
+```ts
+if (!id) {
+  captureException(
+    new Error(`getVideoAtCourseDocument에서 id 없음. ${title} / ${startAt} / ${endAt}`)
+  )
+}
+```
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbguzjO%2FbtsibpV9yKf%2FDZ0ukfs11d2KOOKV3Yo4Wk%2Fimg.png)
+
+하지만 따로 어드민 계정이 없어 에러를 정확히 파악할 수 없었다. 지금은 그냥 엣지 케이스 확인용으로만 사용하고 있다.
+
+### 배포 자동화 (Github Actions)
+
+버전업이 될 때마다 일일이 압축하고 배포하기 번거로웠다. 그래서 자동화를 진행했다. 업로드해 주는 [Action](https://github.com/marketplace/actions/chrome-extension-upload-action)을 사용해서 구현했다.
+
+```yml
+name: Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Publish webextension
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - name: Build
+        run: |
+          yarn install
+          yarn build
+      - name: Make zip file
+        run: zip -r ./build.zip ./dist
+        shell: bash
+      - name: Upload & release
+        uses: mnao305/chrome-extension-upload@v4.0.1
+        with:
+          file-path: ./build.zip
+          extension-id: 'ogldncimhepjdfadhjjhkchknloncnmg'
+          client-id: ${{ secrets.CLIENT_ID }}
+          client-secret: ${{ secrets.CLIENT_SECRET }}
+          refresh-token: ${{ secrets.REFRESH_TOKEN }}
+```
+
+이제는 태그 푸시를 하면 알아서 배포를 진행해 줘서 편해졌다.
+
+### 드디어 홍보했지만....
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F9VOYe%2Fbtsiek0CK1s%2F8mDE8k6x3iDFEAFYCoxcj1%2Fimg.png)
+
+이렇게 홍보 글을 올렸다. 다행히 관심을 많이 주셔서 바로 HOT 게시판에 올라갈 수 있었다.
+
+하지만 문제가 생겼다.
+
+그날 작업한 것들을 배포하고 **검토 대기 중** 상태에서 자려고 누웠는데, 생각해 보니 잘못 올린 걸 깨달아서 급하게 취소를 했다.
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FlQFYX%2Fbtsh9ChXkft%2FbLakKzjwJuaNSIkSa3zJx1%2Fimg.png)
+
+여기서 **게시 취소** 버튼을 눌렀는데, 이게 검토 중인 걸 취소하는 게 아닌 **스토어에 게시된 프로그램**을 게시 취소하는 거였다...ㅋㅋㅋ
+
+그래서 스토어에 내 프로그램이 내려갔고, 홍보 글에 올린 스토어 링크에는 404가 뜨는 이상한 상황이 펼쳐졌다..
+
+취소를 취소하는 방법을 찾아보았지만, 방법이 없었다. 게시 취소하는 것도 구글에서 검토를 하고 승인받아야 했다. 언제 승인될지 몰라 내가 할 수 있는 건 하염없이 기다리는 것 밖에 없었다ㅠ 그래서 일단 홍보 글에 복구 중이라고 양해를 구하고 기다렸다.
+
+다행히 다음 날 저녁에 승인을 받아서 빠르게 재업로드를 했다..ㅎㅎ (오히려 링크 막혀서 사람들이 많이 스크랩해 주신 것 같다ㅎ)
+
+### 홍보 결과
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F4zPeP%2FbtsibpojXVB%2FOxIVZ84AqdZ5HOTbzo56jK%2Fimg.png)
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FlQFYX%2Fbtsh9ChXkft%2FbLakKzjwJuaNSIkSa3zJx1%2Fimg.png)
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb0Y3Bu%2FbtsibvIDJte%2FZLyyLpf307oc2KT59hrgHK%2Fimg.png)
+
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbGE96j%2FbtsiaBW8MeZ%2FjJgpXvJyTiH8uV1jqkbAn1%2Fimg.png)
+
+감사하게도 많은 분들이 관심을 주셔서 놀랐다. 댓글과 피드백 폼에 적극적으로 피드백 주셔서 도움이 많이 되었다.
+
+덕분에 해결한 에러들도 있었고, 추가하면 좋은 기능들도 많이 알려주셔서 적극 반영할 예정이다.
+
+### 이제부터 시작
+
+홍보를 하고 Sentry에 많은 에러 로그들이 찍혀서 당황했다. 그제야 테스트의 중요성을 깨달아 조금조금씩 테스트 코드를 작성하고 있다.
+
+배포하고 끝! 이 아니라 이제 시작인 것 같다. 앞으로 계속 개선해 나가면서 사용자들에게 더 좋은 기능을 제공하고 싶다.
+
+## 후기
+
+이렇게 첫 익스텐션을 개발하고 배포까지 해봤는데, 감사하게도 많은 학우분들이 관심을 가지고 이용해 주셔서 많은 경험을 할 수 있었다.
+
+실 사용자가 이용하는 서비스를 만든 건 처음이라서 더욱 얻어간 게 많은 프로젝트였다.
+
+크롬 익스텐션으로 프로젝트를 한 번 해보니 이거로 할 수 있는 게 많다고 느꼈다. 다음 사이드 프로젝트를 할 때 익스텐션을 만드는 것도 괜찮을 것 같다!
