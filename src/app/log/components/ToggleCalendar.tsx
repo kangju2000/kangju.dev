@@ -26,16 +26,12 @@ const ToggleCalendar = () => {
       <AnimatePresence>
         {isOpen && (
           <ChakraMotion
-            initial={{ opacity: 0 }}
+            initial={{ opacity: isOpen ? 1 : 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             pos="absolute"
             bottom="100%"
             right="20px"
-            // bg={{
-            //   dark: 'gray.800',
-            //   light: 'gray.50',
-            // }}
             _light={{ bg: 'gray.50' }}
             _dark={{ bg: 'gray.700' }}
             borderRadius="8px"
