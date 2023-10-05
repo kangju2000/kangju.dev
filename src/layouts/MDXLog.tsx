@@ -3,6 +3,7 @@ import { format } from 'date-fns'
 
 import MDXContent from './MDXContent'
 import ChakraMotion from '@/components/ChakraMotion/ChakraMotion'
+import Giscus from '@/components/Giscus/Giscus'
 
 import type { Log } from 'contentlayer/generated'
 
@@ -31,6 +32,7 @@ const MDXLog = ({ log }: MDXLogProps) => {
       >
         <MDXContent code={log.body.code} />
       </ChakraMotion>
+      <Giscus />
     </Stack>
   )
 }

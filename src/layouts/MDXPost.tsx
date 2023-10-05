@@ -3,6 +3,7 @@ import Image from 'next/image'
 
 import MDXContent from './MDXContent'
 import ChakraMotion from '@/components/ChakraMotion/ChakraMotion'
+import Giscus from '@/components/Giscus/Giscus'
 
 import type { Post } from 'contentlayer/generated'
 
@@ -60,6 +61,7 @@ const MDXPost = ({ post }: MDXPostProps) => {
       >
         <MDXContent code={post.body.code} />
       </ChakraMotion>
+      <Giscus />
     </Stack>
   )
 }
