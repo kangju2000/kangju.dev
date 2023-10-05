@@ -46,8 +46,7 @@
 }
 
 .react-datepicker__day.react-datepicker__day--selected {
-  background-color: var(--chakra-colors-teal-600) !important;
-  /* color: var(--chakra-colors-gray-300) !important; */
+  background-color: var(--chakra-colors-teal-500) !important;
 }
 
 .react-datepicker__day--keyboard-selected {
