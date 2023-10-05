@@ -11,8 +11,31 @@ import '@/styles/globals.css'
 import '@/styles/calendar.css'
 
 export const metadata: Metadata = {
-  title: 'kangju.dev',
+  metadataBase: new URL('https://kangju.dev'),
+  title: {
+    template: '%s | kangju.dev',
+    default: 'kangju.dev',
+  },
   description: '프론트엔드 개발자 강주혁입니다.',
+  icons: {
+    icon: '/icon.svg',
+  },
+  openGraph: {
+    title: {
+      template: '%s | kangju.dev',
+      default: 'kangju.dev',
+    },
+    description: '프론트엔드 개발자 강주혁입니다.',
+    type: 'website',
+    locale: 'ko',
+    url: 'https://kangju.dev',
+    images: [
+      {
+        url: '/icon.svg',
+        alt: 'kangju.dev',
+      },
+    ],
+  },
 }
 
 const config: ThemeConfig = {
