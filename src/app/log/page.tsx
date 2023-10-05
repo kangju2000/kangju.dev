@@ -44,7 +44,16 @@ export default function LogPage() {
           <List
             gap="12px"
             items={sortedFeaturedLogs}
-            renderItem={(log, index) => <FeaturedLog log={log} index={index} />}
+            renderItem={(log, index) => (
+              <ChakraMotion
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.06 }}
+              >
+                <FeaturedLog log={log} />
+              </ChakraMotion>
+            )}
           />
         </Box>
       </Stack>
