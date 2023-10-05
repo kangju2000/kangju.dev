@@ -32,7 +32,7 @@ const Giscus = () => {
   useEffect(() => {
     const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame')
     iframe?.contentWindow?.postMessage(
-      { giscus: { setConfig: { colorMode } } },
+      { giscus: { setConfig: { theme: colorMode } } },
       'https://giscus.app'
     )
   }, [colorMode])
