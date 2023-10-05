@@ -19,6 +19,9 @@ export async function generateMetadata({
     metadataBase: new URL('https://kangju.dev'),
     title: log?.description,
     description: log?.description || '프론트엔드 개발자 강주혁입니다.',
+    icons: {
+      icon: '/icon.svg',
+    },
     openGraph: {
       title: log?.description,
       description: log?.description || '프론트엔드 개발자 강주혁입니다.',

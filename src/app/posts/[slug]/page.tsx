@@ -11,7 +11,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string }
 }): Promise<Metadata> {
-  const post = allPosts.find((post) => post.dateFormatted === slug)
+  const post = allPosts.find((post) => post.slug === slug)
 
   if (!post) return metadata
 
@@ -19,6 +19,9 @@ export async function generateMetadata({
     metadataBase: new URL('https://kangju.dev'),
     title: post.title,
     description: post?.description || '프론트엔드 개발자 강주혁입니다.',
+    icons: {
+      icon: '/icon.svg',
+    },
     openGraph: {
       title: post.description,
       description: post?.description || '프론트엔드 개발자 강주혁입니다.',
