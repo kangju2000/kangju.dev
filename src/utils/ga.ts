@@ -6,20 +6,13 @@ export const pageview = (url: string) => {
   })
 }
 
-export const event = ({
-  action,
-  category,
-  label,
-  value,
-}: {
-  action: Gtag.EventNames
-  category: Gtag.EventParams['event_category']
-  label: Gtag.EventParams['event_label']
-  value: Gtag.EventParams['value']
-}) => {
+export const event = (
+  action: Gtag.EventNames,
+  { event_category, event_label, value }: Gtag.EventParams
+) => {
   window.gtag('event', action, {
-    event_category: category,
-    event_label: label,
-    value: value,
+    event_category,
+    event_label,
+    value,
   })
 }

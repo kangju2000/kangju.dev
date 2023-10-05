@@ -11,7 +11,7 @@ export default function GoogleAnalytics() {
   const query = useSearchParams()
 
   useEffect(() => {
-    gtag.pageview(pathname + query)
+    gtag.pageview(pathname + query.toString())
   }, [pathname, query])
 
   return (
