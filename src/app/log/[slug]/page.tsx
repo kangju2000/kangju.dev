@@ -2,6 +2,7 @@ import { allLogs } from 'contentlayer/generated'
 
 import { metadata } from '@/app/layout'
 import NotFound from '@/app/not-found'
+import { BASE_WEB_URL } from '@/constants'
 import MDXLog from '@/layouts/MDXLog'
 
 import type { Metadata } from 'next'
@@ -16,7 +17,7 @@ export async function generateMetadata({
   if (!log) return metadata
 
   return {
-    metadataBase: new URL('https://kangju.dev'),
+    metadataBase: new URL(BASE_WEB_URL),
     title: log?.description,
     description: log?.description || '프론트엔드 개발자 강주혁입니다.',
     icons: {
@@ -27,7 +28,7 @@ export async function generateMetadata({
       description: log?.description || '프론트엔드 개발자 강주혁입니다.',
       type: 'website',
       locale: 'ko',
-      url: `https://kangju.dev/log/${slug}`,
+      url: `${BASE_WEB_URL}/log/${slug}`,
     },
   }
 }

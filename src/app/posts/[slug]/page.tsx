@@ -2,6 +2,7 @@ import { allPosts } from 'contentlayer/generated'
 
 import { metadata } from '@/app/layout'
 import NotFound from '@/app/not-found'
+import { BASE_WEB_URL } from '@/constants'
 import MDXPost from '@/layouts/MDXPost'
 
 import type { Metadata } from 'next'
@@ -16,7 +17,7 @@ export async function generateMetadata({
   if (!post) return metadata
 
   return {
-    metadataBase: new URL('https://kangju.dev'),
+    metadataBase: new URL(BASE_WEB_URL),
     title: post.title,
     description: post?.description || '프론트엔드 개발자 강주혁입니다.',
     icons: {
@@ -27,7 +28,7 @@ export async function generateMetadata({
       description: post?.description || '프론트엔드 개발자 강주혁입니다.',
       type: 'website',
       locale: 'ko',
-      url: `https://kangju.dev/posts/${slug}`,
+      url: `${BASE_WEB_URL}/posts/${slug}`,
     },
   }
 }

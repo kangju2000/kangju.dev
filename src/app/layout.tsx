@@ -4,6 +4,7 @@ import { Suspense, type PropsWithChildren } from 'react'
 import GoogleAnalytics from './GoogleAnalytics'
 import Providers from './Providers'
 import Header from '@/components/Header/Header'
+import { BASE_WEB_URL } from '@/constants'
 
 import type { Metadata } from 'next'
 
@@ -11,7 +12,7 @@ import '@/styles/globals.css'
 import '@/styles/calendar.css'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://kangju.dev'),
+  metadataBase: new URL(BASE_WEB_URL),
   title: {
     template: '%s | kangju.dev',
     default: 'kangju.dev',
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
     description: '프론트엔드 개발자 강주혁입니다.',
     type: 'website',
     locale: 'ko',
-    url: 'https://kangju.dev',
+    url: BASE_WEB_URL,
     images: [
       {
         url: '/icon.svg',
