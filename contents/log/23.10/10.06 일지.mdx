@@ -1,0 +1,50 @@
+---
+description: Next.js 13(App Dir)에서 sitemap.xml 적용하기
+tags: ['next.js', 'sitemap.xml', 'search console']
+---
+
+## sitemap.xml
+
+SEO를 위해 sitemap.xml을 적용해보자.
+
+> 13.3 이상 버전에서는 `app/sitemap.ts` 파일을 생성하면 자동으로 sitemap.xml을 생성해준다.
+
+```ts:app/sitemap.ts
+import { allLogs, allPosts } from 'contentlayer/generated'
+import { MetadataRoute } from 'next'
+
+import { BASE_WEB_URL } from '@/constants'
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const routes: MetadataRoute.Sitemap = ['', '/posts', '/log'].map((route) => ({
+    url: `${BASE_WEB_URL}${route}`,
+    changefreq: 'daily',
+    priority: 0.7,
+    lastModified: new Date().toISOString(),
+  }))
+
+  const posts: MetadataRoute.Sitemap = allPosts.map((post) => ({
+    url: `${BASE_WEB_URL}/posts/${post.slug}`,
+    changefreq: 'daily',
+    priority: 0.7,
+    lastModified: post.date,
+  }))
+
+  const logs: MetadataRoute.Sitemap = allLogs.map((log) => ({
+    url: `${BASE_WEB_URL}/log/${log.dateFormatted}`,
+    changefreq: 'daily',
+    priority: 0.7,
+    lastModified: new Date(log.dateFormatted).toISOString(),
+  }))
+
+  return [...routes, ...posts, ...logs]
+}
+```
+
+빌드 후 `http://localhost:3000/sitemap.xml`에 접속하면 sitemap.xml이 생성된 것을 확인할 수 있다.
+
+## Search Console 등록
+
+sitemap.xml을 생성했으면 Search Console에 [등록](https://search.google.com/search-console/welcome)해주자.
+
+인내심을 갖고 기다리면 검색 엔진에 등록된다! 🎉
