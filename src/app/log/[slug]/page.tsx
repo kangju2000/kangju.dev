@@ -18,14 +18,15 @@ export async function generateMetadata({
 
   return {
     metadataBase: new URL(BASE_WEB_URL),
-    title: log?.description,
-    description: log?.description || '프론트엔드 개발자 강주혁입니다.',
+    title: log.description,
+    description: log.description || '프론트엔드 개발자 강주혁입니다.',
     icons: {
       icon: '/icon.svg',
     },
+    keywords: log.tags,
     openGraph: {
-      title: log?.description,
-      description: log?.description || '프론트엔드 개발자 강주혁입니다.',
+      title: log.description,
+      description: log.description || '프론트엔드 개발자 강주혁입니다.',
       type: 'website',
       locale: 'ko',
       url: `${BASE_WEB_URL}/log/${slug}`,

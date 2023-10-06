@@ -23,6 +23,7 @@ export async function generateMetadata({
     icons: {
       icon: '/icon.svg',
     },
+    keywords: post.tags,
     openGraph: {
       title: post.description,
       description: post?.description || '프론트엔드 개발자 강주혁입니다.',
