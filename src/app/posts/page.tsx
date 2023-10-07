@@ -4,6 +4,7 @@ import { allPosts } from 'contentlayer/generated'
 import PostCard from './components/PostCard'
 import ChakraMotion from '@/components/ChakraMotion/ChakraMotion'
 import List from '@/components/List/List'
+import { fadeIn, fadeInRight, staggerOne } from '@/constants/animations'
 
 export default function PostsPage() {
   const sortedPosts = allPosts.sort((a, b) => {
@@ -12,7 +13,7 @@ export default function PostsPage() {
 
   return (
     <Stack spacing="24px">
-      <ChakraMotion initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <ChakraMotion variants={fadeIn} initial="initial" animate="animate" exit="exit">
         <Heading as="h1" fontSize="3xl" mb="8px">
           포스트
         </Heading>
@@ -21,15 +22,13 @@ export default function PostsPage() {
       <Spacer />
       <ChakraMotion>
         <List
+          variants={staggerOne}
+          initial="initial"
+          animate="animate"
           gap="32px"
           items={sortedPosts}
-          renderItem={(post, index) => (
-            <ChakraMotion
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.06 }}
-            >
+          renderItem={(post) => (
+            <ChakraMotion variants={fadeInRight}>
               <PostCard key={post.slug} post={post} />
             </ChakraMotion>
           )}

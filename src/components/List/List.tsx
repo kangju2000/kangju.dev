@@ -1,7 +1,8 @@
-import { ChakraProps, Flex } from '@chakra-ui/react'
-import { Fragment } from 'react'
+import { type ComponentProps, Fragment } from 'react'
 
-interface ListProps<T> extends ChakraProps {
+import ChakraMotion from '../ChakraMotion/ChakraMotion'
+
+interface ListProps<T> extends ComponentProps<typeof ChakraMotion> {
   items: T[]
   renderItem: (item: T, index: number) => React.ReactNode
   renderEmpty?: () => React.ReactNode
@@ -19,11 +20,11 @@ const List = <T,>({
 }: ListProps<T>) => {
   if (items.length > 0) {
     return (
-      <Flex as="ul" direction={direction} gap={gap} {...props}>
+      <ChakraMotion as="ul" display="flex" flexDirection={direction} gap={gap} {...props}>
         {items.map((item, index) => (
           <Fragment key={index}>{renderItem(item, index)}</Fragment>
         ))}
-      </Flex>
+      </ChakraMotion>
     )
   }
 

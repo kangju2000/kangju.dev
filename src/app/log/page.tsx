@@ -4,6 +4,7 @@ import { allLogs } from 'contentlayer/generated'
 import FeaturedLog from './components/FeaturedLog'
 import ChakraMotion from '@/components/ChakraMotion/ChakraMotion'
 import List from '@/components/List/List'
+import { fadeIn, fadeInUp, staggerOne } from '@/constants/animations'
 
 export default function LogPage() {
   const featuredLogs = allLogs.filter((log) => !!log.description)
@@ -16,7 +17,7 @@ export default function LogPage() {
   })
 
   return (
-    <ChakraMotion initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+    <ChakraMotion variants={fadeIn} initial="initial" animate="animate" exit="exit">
       <Stack spacing="24px">
         <Box>
           <Heading as="h1" fontSize="3xl" mb="12px">
@@ -42,15 +43,13 @@ export default function LogPage() {
             Featured Logs
           </Heading>
           <List
+            variants={staggerOne}
+            initial="initial"
+            animate="animate"
             gap="12px"
             items={sortedFeaturedLogs}
-            renderItem={(log, index) => (
-              <ChakraMotion
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.06 }}
-              >
+            renderItem={(log) => (
+              <ChakraMotion variants={fadeInUp}>
                 <FeaturedLog log={log} />
               </ChakraMotion>
             )}
