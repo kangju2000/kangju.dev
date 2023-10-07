@@ -1,0 +1,92 @@
+---
+description: framer-motion에서 시간 차를 두고 애니메이션을 실행하는 방법
+tags: ['framer-motion', 'delay', 'staggerChildren']
+---
+
+## framer-motion에서 시간 차를 두는 방법
+
+### 1. delay 속성 사용하기
+
+```tsx
+import { motion } from 'framer-motion'
+
+const Motion = () => {
+  return (
+    <>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <h1>delay 0초</h1>
+      </motion.div>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+        <h1>delay 0.5초</h1>
+      </motion.div>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}>
+        <h1>delay 1초</h1>
+      </motion.div>
+    </>
+  )
+}
+```
+
+### 2. staggerChildren 속성 사용하기
+
+variants를 사용하면 staggerChildren 속성을 사용할 수 있다.
+
+```tsx
+const staggerOne = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+}
+
+const fadeIn = {
+  initial: {
+    opacity: 0,
+  },
+  animate: {
+    opacity: 1,
+  },
+}
+
+const Motion = () => {
+  return (
+    <motion.div variants={staggerOne} initial="initial" animate="animate">
+      {
+      {[1, 2, 3, 4, 5].map((item) => (
+        <motion.div key={item} variants={fadeIn}>
+          <h1>{item}</h1>
+        </motion.div>
+      ))}
+    </motion.div>
+  )
+}
+```
+
+꼭 `fadeIn` variant의 key 값이 `initial`, `animate`가 아니어도 된다.
+이렇게 해도 된다.
+
+```tsx
+//...
+
+const fadeIn = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+  },
+}
+
+const Motion = () => {
+  return (
+    <motion.div variants={staggerOne} initial="hidden" animate="visible">
+      {[1, 2, 3, 4, 5].map((item) => (
+        <motion.div key={item} variants={fadeIn}>
+          <h1>{item}</h1>
+        </motion.div>
+      ))}
+    </motion.div>
+  )
+}
+```
