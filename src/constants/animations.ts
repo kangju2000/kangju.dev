@@ -49,3 +49,9 @@ export const staggerOne: Variants = {
     transition: { staggerChildren: 0.1 },
   },
 }
+
+export const staggerTwo: Variants = {
+  animate: {
+    transition: { staggerChildren: 0.2 },
+  },
+}
