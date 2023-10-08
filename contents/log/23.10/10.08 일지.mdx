@@ -1,0 +1,358 @@
+## 왜 Next에서 메타데이터 title을 undefined로 하면 `[현재 URL]`가 뜨고, `''`로 하면 `| kangju.dev`로 뜨는걸까?
+
+일단 루트 레이아웃에서 이렇게 설정했다.
+
+```ts
+export const metadata: Metadata = {
+  //...
+  title: {
+    template: '%s | kangju.dev',
+    default: 'kangju.dev',
+  },
+}
+```
+
+그리고 로그 쪽에서 이렇게 설정했다.
+
+```ts
+export async function generateMetadata() {
+  //...
+
+  return {
+    //...
+    title: log.description, // string | undefined
+  }
+}
+```
+
+`log.description`이 string일 때는 template에 맞게 잘 뜨는데, undefined일 때는 `[현재 URL] | kangju.dev`가 뜬다.
+
+나는 `undefined`일 때는 default인 `kangju.dev`만 뜨게 하고 싶다.
+
+그래서 이렇게 했다.
+
+```ts
+export async function generateMetadata() {
+  //...
+
+  return {
+    //...
+    ...(log.description && {
+      title: log.description,
+    }),
+  }
+}
+```
+
+title 속성이 있을 때만 title 속성을 반환하도록 했다.
+
+`[현재 URL] | kangju.dev`로 뜨는게 Next에서 노린건지 잘 모르겠다. 한번 Next 코드를 까봤다.
+
+```ts:resolve-title.ts
+import type { Metadata } from '../types/metadata-interface'
+import type { AbsoluteTemplateString } from '../types/metadata-types'
+
+function resolveTitleTemplate(
+  template: string | null | undefined,
+  title: string
+) {
+  return template ? template.replace(/%s/g, title) : title
+}
+
+export function resolveTitle(
+  title: Metadata['title'],
+  stashedTemplate: string | null | undefined
+): AbsoluteTemplateString {
+  let resolved
+  const template =
+    typeof title !== 'string' && title && 'template' in title
+      ? title.template
+      : null
+
+  if (typeof title === 'string') {
+    resolved = resolveTitleTemplate(stashedTemplate, title)
+  } else if (title) {
+    if ('default' in title) {
+      resolved = resolveTitleTemplate(stashedTemplate, title.default)
+    }
+    if ('absolute' in title && title.absolute) {
+      resolved = title.absolute
+    }
+  }
+
+  if (title && typeof title !== 'string') {
+    return {
+      template,
+      absolute: resolved || '',
+    }
+  } else {
+    return { absolute: resolved || title || '', template }
+  }
+}
+```
+
+코드를 차근차근 읽어보자.
+
+### template
+
+```ts
+let resolved
+const template = typeof title !== 'string' && title && 'template' in title ? title.template : null
+```
+
+title 안에 `template`가 들어간 객체라면 `template` 변수에 `title.template`을 할당하고, 아니라면 `null`을 할당한다.
+
+### resolved
+
+```ts
+if (typeof title === 'string') {
+  resolved = resolveTitleTemplate(stashedTemplate, title)
+} else if (title) {
+  if ('default' in title) {
+    resolved = resolveTitleTemplate(stashedTemplate, title.default)
+  }
+  if ('absolute' in title && title.absolute) {
+    resolved = title.absolute
+  }
+}
+```
+
+나는 `title`에 `string | undefined` 타입을 넣어주었다.
+
+```ts
+function resolveTitleTemplate(template: string | null | undefined, title: string) {
+  return template ? template.replace(/%s/g, title) : title
+}
+```
+
+### 내일 계속...
+
+---
+
+> 여기서부터는 삽질의 흔적이다.. 쓰다보니 이상한 곳으로 빠져버렸다.
+
+`resolveTitle` 함수의 title 인자를 어디서 받아오는지 확인해보니 `resolve-metadata.ts`에서 받아온다.
+
+```ts:resolve-metadata.ts
+import { resolveTitle } from './resolve-title'
+
+//...
+
+function merge({
+  source,
+  target,
+  staticFilesMetadata,
+  titleTemplates,
+  metadataContext,
+}: {
+  source: Metadata | null
+  target: ResolvedMetadata
+  staticFilesMetadata: StaticMetadata
+  titleTemplates: TitleTemplates
+  metadataContext: MetadataContext
+}) {
+  //...
+   switch (key) {
+      case 'title': {
+        target.title = resolveTitle(source.title, titleTemplates.title)
+        break
+      }
+      //...
+   }
+}
+```
+
+`source.title`은 어디서 받아올까?
+
+```ts:resolve-metadata.ts
+// https://github.com/vercel/next.js/blob/canary/packages/next/src/lib/metadata/resolve-metadata.ts#L549-L555
+export async function accumulateMetadata(
+  metadataItems: MetadataItems,
+  metadataContext: MetadataContext
+): Promise<ResolvedMetadata> {
+  const resolvedMetadata = createDefaultMetadata()
+  const resolvers: ((value: ResolvedMetadata) => void)[] = []
+  const generateMetadataResults: (Metadata | Promise<Metadata>)[] = []
+
+  let titleTemplates: TitleTemplates = {
+    title: null,
+    twitter: null,
+    openGraph: null,
+  }
+
+  // Loop over all metadata items again, merging synchronously any static object exports,
+  // awaiting any static promise exports, and resolving parent metadata and awaiting any generated metadata
+
+  let resolvingIndex = 0
+  for (let i = 0; i < metadataItems.length; i++) {
+    const [metadataExport, staticFilesMetadata] = metadataItems[i]
+    let metadata: Metadata | null = null
+    if (typeof metadataExport === 'function') {
+      if (!resolvers.length) {
+        for (let j = i; j < metadataItems.length; j++) {
+          const [preloadMetadataExport] = metadataItems[j]
+          // call each `generateMetadata function concurrently and stash their resolver
+          if (typeof preloadMetadataExport === 'function') {
+            generateMetadataResults.push(
+              preloadMetadataExport(
+                new Promise((resolve) => {
+                  resolvers.push(resolve)
+                })
+              )
+            )
+          }
+        }
+      }
+
+      const generatedMetadata = generateMetadataResults[resolvingIndex++]
+
+      //...
+
+      metadata =
+        generatedMetadata instanceof Promise
+          ? await generatedMetadata
+          : generatedMetadata
+    } else if (metadataExport !== null && typeof metadataExport === 'object') {
+      // This metadataExport is the object form
+      metadata = metadataExport
+    }
+
+    merge({
+      metadataContext,
+      target: resolvedMetadata,
+      source: metadata,
+      staticFilesMetadata,
+      titleTemplates,
+    })
+
+    //...
+  }
+
+  return postProcessMetadata(resolvedMetadata, titleTemplates)
+}
+```
+
+source는 `metadata`라는 변수다. `metadata`는 `generateMetadata` 함수에서 반환하는 값이다.
+
+`metadataItems`에서 값을 가져오는 것 같은데, `metadataItems`는 어디서 가져오는걸까?
+
+### metadataItems
+
+테스트 코드를 찾아보니 다음과 같이 작성되어 있다.
+
+```ts:resolve-metadata.test.ts
+describe('title', () => {
+  it('should merge title with page title', async () => {
+    const metadataItems: MetadataItems = [
+      [{ title: 'root' }, null],
+      [{ title: 'layout' }, null],
+      [{ title: 'page' }, null],
+    ]
+    const metadata = await accumulateMetadata(metadataItems)
+    expect(metadata).toMatchObject({
+      title: { absolute: 'page', template: null },
+    })
+  })
+
+  it('should merge title with parent layout ', async () => {
+    const metadataItems: MetadataItems = [
+      [{ title: 'root' }, null],
+      [
+        { title: { absolute: 'layout', template: '1st parent layout %s' } },
+        null,
+      ],
+      [
+        { title: { absolute: 'layout', template: '2nd parent layout %s' } },
+        null,
+      ],
+      [null, null], // same level layout
+      [{ title: 'page' }, null],
+    ]
+    const metadata = await accumulateMetadata(metadataItems)
+    expect(metadata).toMatchObject({
+      title: { absolute: '2nd parent layout page', template: null },
+    })
+  })
+})
+```
+
+아하! 그럼 `accumulateMetadata`에서 보았던 `metadataExport`는 `{ title: 'root' }`와 같은 객체를 말하는 걸 알 수 있다.
+
+다시 이 코드를 보자.
+
+```ts:resolve-metadata.ts
+// https://github.com/vercel/next.js/blob/canary/packages/next/src/lib/metadata/resolve-metadata.ts#L503-L566
+let resolvingIndex = 0
+for (let i = 0; i < metadataItems.length; i++) {
+  const [metadataExport, staticFilesMetadata] = metadataItems[i]
+  let metadata: Metadata | null = null
+  if (typeof metadataExport === 'function') {
+    if (!resolvers.length) {
+    //...
+    } else if (metadataExport !== null && typeof metadataExport === 'object') {
+      // This metadataExport is the object form
+      metadata = metadataExport
+    }
+}
+```
+
+그냥 metadata에 그대로 들어가서 실행되는 것 같다..
+
+###
+
+이 `accumulateMetadata` 함수를 실행하는 주체는 `resolveMetadata` 함수이다.
+
+```ts:resolve-metadata.ts
+// https://github.com/vercel/next.js/blob/canary/packages/next/src/lib/metadata/resolve-metadata.ts#L571
+export async function resolveMetadata({
+  tree,
+  parentParams,
+  metadataItems,
+  errorMetadataItem,
+  getDynamicParamFromSegment,
+  searchParams,
+  errorConvention,
+  metadataContext,
+}: {
+  tree: LoaderTree
+  parentParams: { [key: string]: any }
+  metadataItems: MetadataItems
+  errorMetadataItem: MetadataItems[number]
+  /** Provided tree can be nested subtree, this argument says what is the path of such subtree */
+  treePrefix?: string[]
+  getDynamicParamFromSegment: GetDynamicParamFromSegment
+  searchParams: { [key: string]: any }
+  errorConvention: 'not-found' | undefined
+  metadataContext: MetadataContext
+}): Promise<[ResolvedMetadata, any]> {
+  const resolvedMetadataItems = await resolveMetadataItems({
+    tree,
+    parentParams,
+    metadataItems,
+    errorMetadataItem,
+    getDynamicParamFromSegment,
+    searchParams,
+    errorConvention,
+  })
+  let metadata: ResolvedMetadata = createDefaultMetadata()
+  let error
+  try {
+    metadata = await accumulateMetadata(resolvedMetadataItems, metadataContext)
+  } catch (err: any) {
+    error = err
+  }
+  return [metadata, error]
+}
+```
+
+`metadataItems`는 `resolvedMetadataItems` 비동기 함수로 받아온다.
+
+```ts:resolve-metadata.ts
+// https://github.com/vercel/next.js/blob/canary/packages/next/src/lib/metadata/resolve-metadata.ts#L347C2-L352C60
+const staticFilesMetadata = await resolveStaticMetadata(tree[2], props)
+const metadataExport = mod
+    ? await getDefinedMetadata(mod, props, { route })
+    : null
+
+  metadataItems.push([metadataExport, staticFilesMetadata])
+```
