@@ -1,0 +1,183 @@
+## 프로그라피 어드민 페이지
+
+사이드바를 구현했다.
+
+```tsx
+import { Heading, Stack, Text } from '@chakra-ui/react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
+type Item = {
+  label: string
+  href: string
+  subItems?: Omit<Item, 'subItems'>[]
+}
+
+type Props = {
+  title: string
+  items: Item[]
+}
+
+const Sidebar = ({ title, items }: Props) => {
+  return (
+    <Stack w="280px" h="100%" bg="gray.50" p="36px">
+      <Text fontSize="14px" fontWeight="700" mb="36px" color="black">
+        {title}
+      </Text>
+      <Stack spacing="25px">
+        {items.map((item) => (
+          <SideItem key={item.label} {...item} />
+        ))}
+      </Stack>
+    </Stack>
+  )
+}
+
+export default Sidebar
+
+const SideItem = ({ label, href, subItems }: Item) => {
+  const pathname = usePathname()
+
+  const isActive = href === pathname || subItems?.some((subItem) => subItem.href === pathname)
+
+  return (
+    <Stack spacing="12px">
+      <Link href={href}>
+        <Heading size="sm" color={isActive ? 'black' : 'gray.500'}>
+          {label}
+        </Heading>
+      </Link>
+      {subItems?.map((subItem) => <SideSubItem key={subItem.label} {...subItem} />)}
+    </Stack>
+  )
+}
+
+const SideSubItem = ({ label, href }: Item) => {
+  const pathname = usePathname()
+  const isActive = href === pathname
+
+  return (
+    <Link href={href}>
+      <Text
+        ml="32px"
+        color={isActive ? 'black' : 'gray.500'}
+        bg={isActive ? 'gray.100' : 'transparent'}
+        p="4px 8px"
+      >
+        {label}
+      </Text>
+    </Link>
+  )
+}
+```
+
+Sidebar를 사용하는 곳에 `Layout`이기 때문에 pathname으로 props를 다르게 넘거주도록 했다.
+
+```tsx
+import { Box, Flex } from '@chakra-ui/react'
+import Header from './Header'
+import Sidebar from './Sidebar'
+import type { PropsWithChildren } from 'react'
+import { usePathname } from 'next/navigation'
+import { sidebarList } from '@/constants/sidebar'
+
+const Layout = ({ children }: PropsWithChildren) => {
+  const pathname = usePathname()
+
+  const sidebarProps = sidebarList.find((sidebar) => pathname.startsWith(sidebar.href))
+
+  if (!sidebarProps) {
+    return children
+  }
+
+  return (
+    <>
+      <Header currentPath={sidebarProps.href} />
+      <Flex pt="80px" h="100%">
+        {sidebarProps && <Sidebar {...sidebarProps} />}
+        <Box as="main" flex="1" p="36px">
+          {children}
+        </Box>
+      </Flex>
+    </>
+  )
+}
+
+export default Layout
+```
+
+여기서 `sidebarList`는 sidebar에 들어갈 item들을 담아 배열로 저장해놓은 것이다.
+
+```ts
+type SidebarProps = ComponentProps<typeof Sidebar> & { href: string }
+
+const memberSidebar: SidebarProps = {
+  title: '회원 관리',
+  href: '/member',
+  items: [
+    {
+      label: '현 기수 관리',
+      href: '/member',
+      subItems: [
+        {
+          label: '대시보드',
+          href: '/member/dashboard',
+        },
+        {
+          label: '출석체크',
+          href: '/member/attendance',
+        },
+      ],
+    },
+    {
+      label: '이전 기수 데이터',
+      href: '/member/previous',
+    },
+  ],
+}
+
+//...
+
+export const sidebarList: SidebarProps[] = [
+  memberSidebar,
+  //...
+]
+```
+
+이렇게 nesting 가능한 구조로 사이드 바를 구현했다. 이렇게 구현함으로써 매 페이지마다 사이드바를 구현하는 것을 방지할 수 있게 되었다.
+
+## 리액트 중간고사
+
+오늘 학교 리액트 중간고사를 봤다.
+
+시험 문제는 객관식, 빈칸, 단답형 이렇게 나왔는데, 문제가 불친절하게 나왔다..
+
+빈칸이 다음과 같이 나왔다.
+
+```js {1}
+const root = document.getElementById(____)
+render(<App />, root)
+```
+
+문제는 별다른 얘기 없이 저 빈칸에 들어갈 코드를 적으라는 것이었다.
+
+뭐 답은 `'root'`지만, `index.html`도 보여주지 않은 상태에서 이런 문제를 내는 것은 너무 불친절한 것 같다. 그리고 아무리 CRA를 쓰더라도 `index.html`을 보여주지 않는 것은 좀 그렇다.
+
+마치 CRA가 정답인거처럼... CRA를 쓰지 않는다면 어떻게 해야하는지는 알려주지 않는다.
+
+그리고 이런 문제도 있었다.
+
+#### Q. 'React'의 'Component'를 사용하기 위한 방법으로 올바른 것은?
+
+1. `import { Component } from 'react'`
+2. `import [ Component ] from 'react'`
+3. `import ( Component ) from 'react'`
+4. `import Component from 'react'`
+
+언뜻 보면 1, 4번이 될 것 같아서 교수님께 default export인지 named export인지 물어봤는데, 한 파일에는 하나의 컴포넌트만 존재하니 여러 컴포넌트가 존재하는 상황을 가져와보라고 하셨다..
+
+일단 default export 상황인건 알겠는데, 교수님의 답변이 이해가 안돼서 문제 옆에 코드 적어놓고 제출할 때 다시 여쭤봤다.
+
+그러니까, 문제에 주어진 상황에서만 판단하라고 단호하게 말씀하셨다. 문제에 주어진 상황이 너무 불친절한데 어떻게 판단하라는 건지 모르겠다.
+
+애초에 'react'에서 Component를 import한다는 말도 이상하다. 말고도 문제 오류가 너무 많았다.
