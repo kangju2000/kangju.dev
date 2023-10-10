@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
+import ChakraMotion from '../ChakraMotion/ChakraMotion'
 import List from '@/components/List/List'
 
 const links = [
@@ -48,10 +49,11 @@ const Header = () => {
           <Image
             src="https://avatars.githubusercontent.com/u/23312485?v=4"
             alt="kangjuhyeok"
-            fill
             style={{
               objectFit: 'cover',
             }}
+            fill
+            priority
           />
         </Link>
         <List
@@ -61,8 +63,7 @@ const Header = () => {
           items={links}
           renderItem={(link) => (
             <Link href={link.href} _hover={{ textDecoration: 'none' }} pos="relative">
-              <chakra.li
-                as={motion.li}
+              <ChakraMotion
                 key={`${link.href}${link.label}`}
                 p="8px 16px"
                 cursor="pointer"
@@ -71,7 +72,7 @@ const Header = () => {
                 }}
               >
                 <Text fontWeight={currentType === link.href ? '700' : '500'}>{link.label}</Text>
-              </chakra.li>
+              </ChakraMotion>
               {currentType === link.href && (
                 <chakra.span
                   as={motion.span}
