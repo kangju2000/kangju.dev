@@ -47,9 +47,8 @@ const PostCard = ({ post }: PostCardProps) => {
             style={{
               objectFit: 'cover',
             }}
-            sizes="(max-width: 480px) 100%, 160px"
+            sizes="(max-width: 480px) 100vw, 160px"
             fill
-            priority
           />
         </Box>
         <Stack overflow="hidden">

@@ -1,4 +1,4 @@
-import { type ComponentProps, Fragment } from 'react'
+import { type ComponentProps } from 'react'
 
 import ChakraMotion from '../ChakraMotion/ChakraMotion'
 
@@ -22,7 +22,7 @@ const List = <T,>({
     return (
       <ChakraMotion as="ul" display="flex" flexDirection={direction} gap={gap} {...props}>
         {items.map((item, index) => (
-          <Fragment key={index}>{renderItem(item, index)}</Fragment>
+          <li key={index}>{renderItem(item, index)}</li>
         ))}
       </ChakraMotion>
     )
