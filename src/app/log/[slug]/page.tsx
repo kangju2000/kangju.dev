@@ -18,9 +18,9 @@ export async function generateMetadata({
 
   return {
     metadataBase: new URL(BASE_WEB_URL),
-    ...(log.description && {
-      title: log.description,
-    }),
+    title: {
+      absolute: `${log.dateFormatted} 일지`,
+    },
     description: log.description || '프론트엔드 개발자 강주혁입니다.',
     icons: {
       icon: '/icon.svg',
