@@ -164,20 +164,3 @@ render(<App />, root)
 뭐 답은 `'root'`지만, `index.html`도 보여주지 않은 상태에서 이런 문제를 내는 것은 너무 불친절한 것 같다. 그리고 아무리 CRA를 쓰더라도 `index.html`을 보여주지 않는 것은 좀 그렇다.
 
 마치 CRA가 정답인거처럼... CRA를 쓰지 않는다면 어떻게 해야하는지는 알려주지 않는다.
-
-그리고 이런 문제도 있었다.
-
-#### Q. 'React'의 'Component'를 사용하기 위한 방법으로 올바른 것은?
-
-1. `import { Component } from 'react'`
-2. `import [ Component ] from 'react'`
-3. `import ( Component ) from 'react'`
-4. `import Component from 'react'`
-
-언뜻 보면 1, 4번이 될 것 같아서 교수님께 default export인지 named export인지 물어봤는데, 한 파일에는 하나의 컴포넌트만 존재하니 여러 컴포넌트가 존재하는 상황을 가져와보라고 하셨다..
-
-일단 default export 상황인건 알겠는데, 교수님의 답변이 이해가 안돼서 문제 옆에 코드 적어놓고 제출할 때 다시 여쭤봤다.
-
-그러니까, 문제에 주어진 상황에서만 판단하라고 단호하게 말씀하셨다. 문제에 주어진 상황이 너무 불친절한데 어떻게 판단하라는 건지 모르겠다.
-
-애초에 'react'에서 Component를 import한다는 말도 이상하다. 말고도 문제 오류가 너무 많았다.
