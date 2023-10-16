@@ -46,7 +46,7 @@ const MDXPost = ({ post }: MDXPostProps) => {
               >
                 {post.title}
               </Heading>
-              <Text fontSize="sm" color="gray.300">
+              <Text fontSize="sm" fontWeight="700" color="gray.100">
                 {post.dateFormatted} | {post.readTime.text}
               </Text>
             </Center>
