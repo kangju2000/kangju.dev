@@ -149,7 +149,7 @@ const { images, setImages } = useWriteContext()
 
 Jotai에서 [`Provider`](https://jotai.org/docs/core/provider)라는 것도 제공해준다.
 
-:::note Provider
+<Admonition type="note" title="Provider">
 
 The Provider component is to provide state for a component sub tree. Multiple Providers can be used for multiple subtrees, and they can even be nested. This works just like React Context.
 
@@ -161,7 +161,7 @@ Providers are useful for three reasons:
 2. To accept initial values of atoms.
 3. To clear all atoms by remounting.
 
-:::
+</Admonition>
 
 선택적으로 `store`를 사용해서 특정 범위 내에서 상태를 관리할 수 있다.
 

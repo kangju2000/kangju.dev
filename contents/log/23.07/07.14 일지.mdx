@@ -23,20 +23,20 @@ tags:
 
 ## 인사이트
 
-:::note 인사이트
+<Admonition type='note' title='인사이트'>
 
 - [유용한 리액트 패턴 5가지](https://velog.io/@dnr6054/%EC%9C%A0%EC%9A%A9%ED%95%9C-%EB%A6%AC%EC%95%A1%ED%8A%B8-%ED%8C%A8%ED%84%B4-5%EA%B0%80%EC%A7%80?utm_source=pocket_saves)
 - [Algebraic Effects of React Suspense](https://blog.mathpresso.com/algebraic-effects-of-react-suspense-157b49807ea0), [모두를 위한 대수적 효과](https://overreacted.io/ko/algebraic-effects-for-the-rest-of-us/)
 - [Template Literal Types로 타입 안전하게 코딩하기](https://toss.tech/article/template-literal-types)
 - [React.memo() 현명하게 사용하기](https://ui.toast.com/weekly-pick/ko_20190731)
 
-:::
+</Admonition>
 
 ### 유용한 리액트 패턴 5가지
 
 최근에 컴파운드 컴포넌트 패턴으로 구현해보면서 어떻게 하면 더 추상화를 잘하고, 선언적으로 구현할 수 있을지 고민을 하게 되었다.
 
-:::tip 여기서 잠깐!
+<Admonition type='tip' title='여기서 잠깐!'>
 
 리액트는 `선언형` 프로그래밍이라고 한다.
 
@@ -52,7 +52,7 @@ tags:
 - 무엇을 보여줄지에 집중할 수 있다.
 - 결과를 예측하기 쉽다.
 
-:::
+</Admonition>
 
 ### Algebraic Effects of React Suspense
 
@@ -72,11 +72,11 @@ tags:
 
 즉, 대수적 효과는 서로 다른 환경 사이의 interaction에서 사이드 이펙트가 발생할 수 있는데, 이걸 적절한 handler로 해결하는 접근 방식을 의미하는 것이고, 이 handler는 "sub-expression"에서 발생시킨 effect를 "central-control"에서 잡아 적절하게 처리한 뒤, 다시 "sub-expression"이 멈췄던 곳으로 흐름을 되돌려주는 것이다.
 
-:::note Suspense에서의 대수적 효과
+<Admonition type='note' title='Suspense에서의 대수적 효과'>
 
 대수적 효과는 부모 컴포넌트(Suspense)와 자식 컴포넌트(UserList) 사이의 interaction에서 발생한 SideEffect(throw Promise)를 적절한 Handler(catch Promise in Suspense)를 사용해 해결하는 접근 방식을 의미하는 것이고, 이 Handler는 sub-expression(UserList)에서 발생시킨 Effect(throw Promise)를 central-control(Suspense)에서 잡아 적절하게 처리한 뒤, 다시 sub-expression(UserList)이 멈췄던 곳으로 흐름을 되돌려 주는 것이다.
 
-:::
+</Admonition>
 
 이로써 Suspense는 대수적 효과를 사용해서 부모 컴포넌트에게 `로딩 상태`에 대한 처리의 `책임`을 넘겨줌으로써 메인 컴포넌트에서는 로딩 UI 표시의 책임을 `분리`하게 된다 -> UI 컴포넌트를 조금 더 `선언적`으로 작성하도록 만들어준다 -> React가 지향하는 방향과 일치하다.
 
@@ -96,12 +96,12 @@ tags:
 
 하지만 실무에서는 성능이 중요하기 때문에 이런 것들을 적재적소에 잘 사용해야 한다.
 
-:::note useMemo vs React.memo
+<Admonition type='note' title='useMemo vs React.memo'>
 
 - `useMemo` - hook, 함수형 컴포넌트 안에서만 사용 가능
 - `React.memo` - HOC, 함수형, 클래스형 컴포넌트 모두 사용 가능
 
-:::
+</Admonition>
 
 #### 언제 사용해야 할까?
 

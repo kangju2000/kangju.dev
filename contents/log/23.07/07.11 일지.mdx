@@ -19,7 +19,7 @@ tags: [추상화 수준, 함수형 프로그래밍, 클린 코드, 계층형 설
 
 함수형 프로그래밍 뿐만 아니라, `클린 코드` 책에서도 이렇게 설명하고 있다.
 
-:::note
+<Admonition type='note'>
 
 > 3장 함수
 
@@ -33,7 +33,7 @@ tags: [추상화 수준, 함수형 프로그래밍, 클린 코드, 계층형 설
 
 핵심은 짧으면서도 '한 가지'만 하는 함수다. 위에서 아래로 TO 문단을 읽어내려 가듯이 코드를 구현하면 추상화 수준을 일관되게 유지하기가 쉬워진다.
 
-:::
+</Admonition>
 
 이 개념을 프로젝트에 적용해보고 싶었다.
 
@@ -53,17 +53,9 @@ tags: [추상화 수준, 함수형 프로그래밍, 클린 코드, 계층형 설
 
 다음은 진유림님의 `토스ㅣSLASH 21 - 실무에서 바로 쓰는 Frontend Clean Code` 에서 나왔던 예시다.
 
-<img
-  width="500"
-  alt="image"
-  src="https://github.com/Self-Driven-Development/TIL/assets/23312485/8a3fbb0e-bc81-4f63-b354-555ad37cb559"
-/>
+<Image src="https://github.com/Self-Driven-Development/TIL/assets/23312485/8a3fbb0e-bc81-4f63-b354-555ad37cb559" />
 
-<img
-  width="500"
-  alt="image"
-  src="https://github.com/Self-Driven-Development/TIL/assets/23312485/62a7f1e3-c3c5-44e5-9b86-ad31bc7221f0"
-/>
+<Image src="https://github.com/Self-Driven-Development/TIL/assets/23312485/62a7f1e3-c3c5-44e5-9b86-ad31bc7221f0" />
 
 ### Gloddy 프로젝트에서도 적용해보자
 
@@ -116,7 +108,7 @@ Next13의 App Router를 사용하고 있는데 어떻게 서버 컴포넌트와 
 
 slice는 데이터를 읽는 용도로만 사용할 수 있기 때문에 해당 데이터는 어디에 있든지 상관없다.
 
-:::note
+<Admonition type='note'>
 
 메모리 어딘가에 있다고 했는데, 상황에 따라 힙, 스택, 또는 바이너리에 있을 수 있다.
 
@@ -143,7 +135,7 @@ let x: &[u8] = &[b'a', b'b', b'c'];
 let stack_str: &str = str::from_utf8(x).unwrap();
 ```
 
-:::
+</Admonition>
 
 #### 참고
 

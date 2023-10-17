@@ -112,7 +112,7 @@ export default function Child() {
 
 </details>
 
-:::warning 주의할 점
+<Admonition type='warning' title='주의할 점'>
 
 `HydrationProvider` 컴포넌트는 비동기 서버 컴포넌트이다. 그래서 사용하게 되면 이런 에러가 뜰 수 있다.
 
@@ -133,7 +133,7 @@ Type 'Promise<Element>' is missing the following properties from type 'ReactElem
 
 우리 프로젝트에서는 yarn berry를 사용하고 있어서 타입스크립트 버전을 업그레이드 한 후 `yarn dlx @yarnpkg/sdks vscode`로 워크스페이스의 타입스크립트 버전을 업데이트 해서 해결했다.
 
-:::
+</Admonition>
 
 ---
 

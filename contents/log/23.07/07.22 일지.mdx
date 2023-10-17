@@ -57,7 +57,7 @@ export function useFunnel<Steps extends NonEmptyArray<string>>(
 
 이제 useFunnel에서 타입 단언하지 않아도 리터럴 타입으로 추론이 가능하다..!!
 
-:::note [...Steps]로 한 이유
+<Admonition type="note" title="[...Steps]로 한 이유">
 
 **`readonly Steps`**로 하면 다음과 같은 에러메시지가 뜬다.
 
@@ -78,7 +78,7 @@ type Readonly<T> = {
 
 `Readonly`는 제네릭 T의 모든 프로퍼티를 readonly로 변환하는 타입이다.
 
-:::
+</Admonition>
 
 ## Gloddy 개발 - react-hook-form 에러 해결
 
