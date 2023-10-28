@@ -19,6 +19,7 @@ const components: MDXComponents = {
     <Image
       width={0}
       height={0}
+      alt={props.alt || '이미지'}
       sizes="100vw"
       style={{
         width: props.width || '100%',
