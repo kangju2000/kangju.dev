@@ -26,6 +26,7 @@ const components: MDXComponents = {
         height: props.height || 'auto',
         borderRadius: '8px',
         margin: '24px 0',
+        objectFit: 'cover',
       }}
       {...props}
     />
