@@ -1,12 +1,21 @@
-import { Box, Flex, Text, chakra } from '@chakra-ui/react'
+import { Box, Flex, StyleProps, Text, chakra } from '@chakra-ui/react'
 
 import type { PropsWithChildren } from 'react'
 
-const admonition = {
+type Admonition = {
+  [key in 'note' | 'tip' | 'warning' | 'danger']: {
+    title: string
+    bg: StyleProps['bg']
+    borderLeftColor: StyleProps['borderLeftColor']
+    icon: () => JSX.Element
+  }
+}
+
+const admonition: Admonition = {
   note: {
     title: '노트',
-    bg: 'gray.400',
-    border: 'gray.200',
+    bg: '#474748',
+    borderLeftColor: '#d4d5d8',
     icon: () => (
       <svg viewBox="0 0 14 16" fill="currentColor" width="14" height="16">
         <path
@@ -18,8 +27,8 @@ const admonition = {
   },
   tip: {
     title: '팁',
-    bg: 'blue.400',
-    border: 'blue.200',
+    bg: '#003100',
+    borderLeftColor: '#009400',
     icon: () => (
       <svg viewBox="0 0 12 16" fill="currentColor" width="12" height="16">
         <path
@@ -29,10 +38,10 @@ const admonition = {
       </svg>
     ),
   },
-  caution: {
+  warning: {
     title: '주의',
-    bg: 'yellow.400',
-    border: 'yellow.200',
+    bg: '#4d3800',
+    borderLeftColor: '#e6a700',
     icon: () => (
       <svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16">
         <path
@@ -44,8 +53,8 @@ const admonition = {
   },
   danger: {
     title: '위험',
-    bg: 'red.400',
-    border: 'red.200',
+    bg: '#4b1113',
+    borderLeftColor: '#e13238',
     icon: () => (
       <svg viewBox="0 0 12 16" fill="currentColor" width="12" height="16">
         <path
@@ -58,7 +67,7 @@ const admonition = {
 }
 
 interface AdmonitionProps {
-  type: 'note' | 'tip' | 'caution' | 'danger'
+  type: 'note' | 'tip' | 'warning' | 'danger'
   title?: string
 }
 
@@ -70,7 +79,7 @@ const Admonition = ({ type, title, children }: PropsWithChildren<AdmonitionProps
       bg={admonition[type].bg || 'gray.400'}
       color="white"
       borderLeftWidth="5px"
-      borderLeftColor={admonition[type].border || 'gray.200'}
+      borderLeftColor={admonition[type].borderLeftColor || 'gray.200'}
     >
       <Flex alignItems="center" mb="16px">
         <chakra.span mr="8px">{admonition[type].icon()}</chakra.span>
