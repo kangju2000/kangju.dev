@@ -76,6 +76,9 @@ const Header = () => {
               {currentType === link.href && (
                 <chakra.span
                   as={motion.span}
+                  layout
+                  layoutId="underline"
+                  style={{ originY: '0px' }}
                   pos="absolute"
                   bottom="0"
                   left="0"
@@ -83,12 +86,6 @@ const Header = () => {
                   h="2px"
                   bg="teal.600"
                   borderRadius="2px"
-                  initial={{
-                    scaleX: 0,
-                  }}
-                  animate={{
-                    scaleX: 1,
-                  }}
                 />
               )}
             </Link>
