@@ -18,7 +18,7 @@ const MDXLog = ({ log }: MDXLogProps) => {
       <Stack spacing="30px">
         <ChakraMotion variants={fadeIn}>
           <Center flexDirection="column">
-            <Heading as="h2" mb="24px">
+            <Heading as="h2" mb="24px" textAlign="center">
               {log.description || format(new Date(log.dateFormatted), 'yyyy년 MM월 dd일')}
             </Heading>
             <Text fontSize="sm" color="gray.500">
