@@ -41,7 +41,7 @@ const MDXContent = ({ code }: MDXContentProps) => {
   const MDXComponent = useMDXComponent(code)
 
   return (
-    <Prose>
+    <Prose overflow="hidden" overflowX="auto">
       <MDXComponent components={components} />
     </Prose>
   )
