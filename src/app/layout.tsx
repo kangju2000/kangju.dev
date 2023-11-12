@@ -55,7 +55,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
             <Header />
             <Box
               as="main"
-              maxW="700px"
+              maxW="750px"
               minW="320px"
               minH="calc(100vh - 64px)"
               m="0 auto"

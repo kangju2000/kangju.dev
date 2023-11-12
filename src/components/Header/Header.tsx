@@ -25,7 +25,7 @@ const Header = () => {
         as="nav"
         justify="space-between"
         align="center"
-        maxW="700px"
+        maxW="750px"
         h="64px"
         p={{
           base: '8px 16px',
