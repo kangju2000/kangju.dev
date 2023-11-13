@@ -43,15 +43,15 @@ export default function LogPage() {
             Featured Logs
           </Heading>
           <List
-            variants={staggerOne}
+            // variants={staggerOne}
             initial="initial"
             animate="animate"
             gap="12px"
             items={sortedFeaturedLogs}
             renderItem={(log) => (
-              <ChakraMotion variants={fadeInUp}>
-                <FeaturedLog log={log} />
-              </ChakraMotion>
+              // <ChakraMotion variants={fadeInUp}>
+              <FeaturedLog log={log} />
+              // </ChakraMotion>
             )}
           />
         </Box>
