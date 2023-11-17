@@ -1,9 +1,9 @@
 'use client'
 
-import { chakra } from '@chakra-ui/react'
 import { Prose } from '@nikolovlazar/chakra-ui-prose'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 
+import CustomLink from '@/components/common/CustomLink'
 import Admonition from '@/components/mdx/Admonition'
 import Image from '@/components/mdx/Image'
 import Youtube from '@/components/mdx/Youtube'
@@ -12,8 +12,7 @@ import type { MDXComponents } from 'mdx/types'
 
 const components = {
   Youtube,
-  code: (props) => <chakra.span fontWeight="bold" {...props} />,
-  a: (props) => <chakra.a {...props} />,
+  a: CustomLink,
   Admonition,
   img: Image,
   Image,
@@ -27,7 +26,7 @@ const MDXContent = ({ code }: MDXContentProps) => {
   const MDXComponent = useMDXComponent(code)
 
   return (
-    <Prose overflow="hidden" overflowX="auto">
+    <Prose>
       <MDXComponent components={components} />
     </Prose>
   )
