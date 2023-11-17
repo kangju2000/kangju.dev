@@ -74,7 +74,7 @@ import()로 dynamic import를 해서 main.tsx에 접근하도록 했다.
 
 #### 문제 1: React.Lazy로 코드 스플리팅 시 에러 발생
 
-![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbfSXGk%2FbtshAvXuh65%2Fy700KUlBzqCK526M0Knk21%2Fimg.png)
+![](/posts/gachon-extension/error1.png)
 
 Suspense 기능을 사용하기 위해 React의 lazy로 **코드 스플리팅**을 해서 빌드했는데, 테스트 시 에러가 발생했다.
 
@@ -110,7 +110,7 @@ export default function customDynamicImport(): PluginOption {
 
 #### 문제 2:  익스텐션 테스트 시 브라우저 콘솔에서 **export를 읽을 수 없다**는 에러 발생
 
-![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FpmvFN%2FbtshzAdZ5Vd%2FM7Ex3t94z5G54hMlyki5ck%2Fimg.png)
+![](/posts/gachon-extension/error2.png)
 
 1. vite의 rollupOptions를 통해 build를 커스텀해서 생긴 오류인가? (❌)
 
@@ -224,7 +224,7 @@ MVP를 배포할 때까지는 보일러플레이트를 활용해서 세팅했지
 
 ## UI를 어떻게 하지? 최대한 유저들에게 거슬리지 않게 하고 싶은데...
 
-![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FEjayc%2FbtsgcO4mrle%2FXkNMcJSRMsrb1xk4TONRpk%2Fimg.png)
+![](/posts/gachon-extension/gachon-ui.png)
 
 1. 처음에 생각한 위치는 메인 페이지의 강의 리스트가 보이는 곳이다.
 
@@ -244,7 +244,7 @@ MVP를 배포할 때까지는 보일러플레이트를 활용해서 세팅했지
 
 직접 이용해 보니까 동그란 원이 은근히 작아서 잘 눌리지 않았다. 그래서 원 위에 마우스를 올려두면 원이 좌우로 늘어나 누를 수 있는 범위를 넓혔다.
 
-![](https://blog.kakaocdn.net/dn/0q2F3/btsgcqJpxNd/0UdrZiJRxUgUWk47RmY4c1/img.gif)
+![](/posts/gachon-extension/circle.gif)
 
 애니메이션은 Framer-motion 라이브러리를 사용해서 간단히 구현할 수 있었다.
 
@@ -262,13 +262,13 @@ MVP를 배포할 때까지는 보일러플레이트를 활용해서 세팅했지
 
 2. 강좌 id를 가지고 해당 강좌 페이지의 document를 가져와서 원하는 정보(과제, 녹화강의) 가져오기
 
-![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbPEgwk%2FbtshWtSZioQ%2Fxc11xRRZOzZq9jtab1Xwrk%2Fimg.png)
+![](/posts/gachon-extension/crawling.png)
 
 #### 문제 1: 강좌 페이지에서는 제출 여부/시청 여부를 확인할 수 없다..!
 
 다행히 과제 페이지가 따로 있어서 이 페이지를 크롤링했다. 대신 여기서는 **시작 일시**를 알 수 없어 강좌 페이지에서 크롤링한 데이터와 과제 페이지에서 크롤링한 데이터를 id 값을 통해 매핑시켰다.
 
-![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fc0TDBe%2FbtshYcQY7PO%2FRzAEuA60i5qzzuiBNrrMy1%2Fimg.png)
+![](/posts/gachon-extension/crawling2.png)
 
 #### 문제 2: 녹화강의 페이지에서 녹화강의의 id를 가져올 수 없다
 
@@ -276,7 +276,7 @@ MVP를 배포할 때까지는 보일러플레이트를 활용해서 세팅했지
 
 그래서 과제에서 했던 것처럼 고유한 값으로 매핑시킬 수 없었다.
 
-![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbtK2cm%2Fbtsh4Zvr6Bs%2FThKK709M1hh4Kk6VspGnA0%2Fimg.png)
+![](/posts/gachon-extension/crawling3.png)
 
 #### 시도 1: 녹화강의 제목으로 매핑하기
 
@@ -290,11 +290,11 @@ MVP를 배포할 때까지는 보일러플레이트를 활용해서 세팅했지
 
 고유한 값이 없기 때문에 어쩔 수 없이 위 방법을 택했다. 그나마 데이터가 겹치는 부분이 주차 제목이었다.
 
-![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fd8k9OG%2Fbtsh2PAqAar%2F4FNYjKyTu2OdFl7qicEXwK%2Fimg.png)
+![](/posts/gachon-extension/crawling4.png)
 
 data-original-title 값을 가져와 녹화강의 데이터에 넣고,
 
-![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FFAmxO%2FbtshTwPWxbW%2FKdW5oxOWdfq448vKeoZ9o1%2Fimg.png)
+![](/posts/gachon-extension/crawling5.png)
 
 강좌 페이지의 주차 제목을 녹화강의 데이터에 넣어서 두 데이터를 **녹화강의 제목 + 주차 제목**으로 매핑시켰다.
 
@@ -378,7 +378,7 @@ if (!id) {
 }
 ```
 
-![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbguzjO%2FbtsibpV9yKf%2FDZ0ukfs11d2KOOKV3Yo4Wk%2Fimg.png)
+![](/posts/gachon-extension/sentry.png)
 
 하지만 따로 어드민 계정이 없어 에러를 정확히 파악할 수 없었다. 지금은 그냥 엣지 케이스 확인용으로만 사용하고 있다.
 
@@ -423,9 +423,9 @@ jobs:
 
 이제는 태그 푸시를 하면 알아서 배포를 진행해 줘서 편해졌다.
 
-### 드디어 홍보했지만....
+### 홍보, 하지만...
 
-![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F9VOYe%2Fbtsiek0CK1s%2F8mDE8k6x3iDFEAFYCoxcj1%2Fimg.png)
+![](/posts/gachon-extension/everytime.png)
 
 이렇게 홍보 글을 올렸다. 다행히 관심을 많이 주셔서 바로 HOT 게시판에 올라갈 수 있었다.
 
@@ -433,7 +433,7 @@ jobs:
 
 그날 작업한 것들을 배포하고 **검토 대기 중** 상태에서 자려고 누웠는데, 생각해 보니 잘못 올린 걸 깨달아서 급하게 취소를 했다.
 
-![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FlQFYX%2Fbtsh9ChXkft%2FbLakKzjwJuaNSIkSa3zJx1%2Fimg.png)
+![](/posts/gachon-extension/cancel.png)
 
 여기서 **게시 취소** 버튼을 눌렀는데, 이게 검토 중인 걸 취소하는 게 아닌 **스토어에 게시된 프로그램**을 게시 취소하는 거였다...ㅋㅋㅋ
 
@@ -445,13 +445,11 @@ jobs:
 
 ### 홍보 결과
 
-![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F4zPeP%2FbtsibpojXVB%2FOxIVZ84AqdZ5HOTbzo56jK%2Fimg.png)
+![에브리타임](/posts/gachon-extension/everytime-result.png)
 
-![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FlQFYX%2Fbtsh9ChXkft%2FbLakKzjwJuaNSIkSa3zJx1%2Fimg.png)
+![크롬 스토어](/posts/gachon-extension/chrome-result.png)
 
-![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fb0Y3Bu%2FbtsibvIDJte%2FZLyyLpf307oc2KT59hrgHK%2Fimg.png)
-
-![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbGE96j%2FbtsiaBW8MeZ%2FjJgpXvJyTiH8uV1jqkbAn1%2Fimg.png)
+![웨일 스토어](/posts/gachon-extension/whale-result.png)
 
 감사하게도 많은 분들이 관심을 주셔서 놀랐다. 댓글과 피드백 폼에 적극적으로 피드백 주셔서 도움이 많이 되었다.
 
