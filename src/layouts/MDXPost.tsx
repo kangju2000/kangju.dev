@@ -1,7 +1,7 @@
 import { Box, Center, Heading, Stack, Text } from '@chakra-ui/react'
-import Image from 'next/image'
 
 import MDXContent from './MDXContent'
+import BlurImage from '@/components/common/BlurImage'
 import ChakraMotion from '@/components/common/ChakraMotion'
 import Giscus from '@/components/common/Giscus'
 import { fadeIn, staggerTwo } from '@/constants/animations'
@@ -27,7 +27,7 @@ const MDXPost = ({ post }: MDXPostProps) => {
             overflow="hidden"
           >
             <Box pos="absolute" top="0" left="0" w="100%" h="100%" bg="blackAlpha.500" zIndex="1" />
-            <Image
+            <BlurImage
               src={post.thumbnail}
               alt="thumbnail"
               style={{

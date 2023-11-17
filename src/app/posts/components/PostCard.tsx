@@ -1,7 +1,8 @@
 import { Box, Heading, Stack, Text } from '@chakra-ui/react'
 import { format } from 'date-fns'
-import Image from 'next/image'
 import Link from 'next/link'
+
+import BlurImage from '@/components/common/BlurImage'
 
 import type { Post } from 'contentlayer/generated'
 
@@ -41,7 +42,7 @@ const PostCard = ({ post }: PostCardProps) => {
           borderRadius="16px"
           overflow="hidden"
         >
-          <Image
+          <BlurImage
             src={post.thumbnail}
             alt="썸네일"
             style={{
