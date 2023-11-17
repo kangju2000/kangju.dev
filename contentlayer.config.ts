@@ -4,11 +4,12 @@ import readingTime from 'reading-time'
 import rehypeAutoLinkHeadings from 'rehype-autolink-headings'
 import rehypeCodeTitles from 'rehype-code-titles'
 import rehypeImgSize from 'rehype-img-size'
-import rehypePrism from 'rehype-prism-plus'
+import rehypePrismPlus from 'rehype-prism-plus'
 import rehypeSlug from 'rehype-slug'
 import remarkBreaks from 'remark-breaks'
 import remarkGfm from 'remark-gfm'
 import remarkToc from 'remark-toc'
+import remarkUnwrapImages from 'remark-unwrap-images'
 
 import type { MDXOptions } from 'contentlayer/core'
 
@@ -85,17 +86,15 @@ export default makeSource({
   contentDirPath: 'contents',
   documentTypes: [Post, Log],
   mdx: {
-    remarkPlugins: [remarkGfm, remarkBreaks, remarkToc],
+    remarkPlugins: [remarkGfm, remarkBreaks, remarkToc, remarkUnwrapImages],
     rehypePlugins: [
       rehypeSlug,
       rehypeCodeTitles,
-      rehypePrism,
+      rehypePrismPlus,
       [
         rehypeAutoLinkHeadings,
         {
-          properties: {
-            className: ['anchor'],
-          },
+          behavior: 'wrap',
         },
       ],
       [
