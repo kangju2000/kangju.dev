@@ -1,4 +1,4 @@
-import { Box, VStack } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 
 import BlurImage from '@/components/common/BlurImage'
 

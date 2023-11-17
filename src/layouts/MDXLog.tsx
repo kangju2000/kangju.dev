@@ -13,7 +13,6 @@ interface MDXLogProps {
 }
 
 const MDXLog = ({ log }: MDXLogProps) => {
-  console.log(log.description?.split(','))
   return (
     <ChakraMotion variants={staggerTwo} initial="initial" animate="animate">
       <Stack spacing="30px">
