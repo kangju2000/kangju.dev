@@ -2,8 +2,8 @@ import { Box, Center, Heading, Stack, Text } from '@chakra-ui/react'
 import Image from 'next/image'
 
 import MDXContent from './MDXContent'
-import ChakraMotion from '@/components/ChakraMotion/ChakraMotion'
-import Giscus from '@/components/Giscus/Giscus'
+import ChakraMotion from '@/components/common/ChakraMotion'
+import Giscus from '@/components/common/Giscus'
 import { fadeIn, staggerTwo } from '@/constants/animations'
 
 import type { Post } from 'contentlayer/generated'

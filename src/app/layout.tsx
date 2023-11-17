@@ -3,7 +3,7 @@ import { Suspense, type PropsWithChildren } from 'react'
 
 import GoogleAnalytics from './GoogleAnalytics'
 import Providers from './Providers'
-import Header from '@/components/Header/Header'
+import Header from '@/components/common/Header'
 import { BASE_WEB_URL } from '@/constants'
 
 import type { Metadata } from 'next'

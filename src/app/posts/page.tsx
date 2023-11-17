@@ -2,8 +2,8 @@ import { Heading, Spacer, Stack, Text } from '@chakra-ui/react'
 import { allPosts } from 'contentlayer/generated'
 
 import PostCard from './components/PostCard'
-import ChakraMotion from '@/components/ChakraMotion/ChakraMotion'
-import List from '@/components/List/List'
+import ChakraMotion from '@/components/common/ChakraMotion'
+import List from '@/components/common/List'
 import { fadeIn, fadeInRight, staggerOne } from '@/constants/animations'
 
 export default function PostsPage() {

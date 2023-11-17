@@ -2,8 +2,8 @@ import { Box, Divider, Heading, Highlight, Stack, Text } from '@chakra-ui/react'
 import { allLogs } from 'contentlayer/generated'
 
 import FeaturedLog from './components/FeaturedLog'
-import ChakraMotion from '@/components/ChakraMotion/ChakraMotion'
-import List from '@/components/List/List'
+import ChakraMotion from '@/components/common/ChakraMotion'
+import List from '@/components/common/List'
 import { fadeIn, fadeInUp, staggerOne } from '@/constants/animations'
 
 export default function LogPage() {

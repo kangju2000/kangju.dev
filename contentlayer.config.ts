@@ -3,11 +3,14 @@ import { format } from 'date-fns'
 import readingTime from 'reading-time'
 import rehypeAutoLinkHeadings from 'rehype-autolink-headings'
 import rehypeCodeTitles from 'rehype-code-titles'
+import rehypeImgSize from 'rehype-img-size'
 import rehypePrism from 'rehype-prism-plus'
 import rehypeSlug from 'rehype-slug'
 import remarkBreaks from 'remark-breaks'
 import remarkGfm from 'remark-gfm'
 import remarkToc from 'remark-toc'
+
+import type { MDXOptions } from 'contentlayer/core'
 
 const ReadTime = defineNestedType(() => ({
   name: 'ReadTime',
@@ -86,7 +89,6 @@ export default makeSource({
     rehypePlugins: [
       rehypeSlug,
       rehypeCodeTitles,
-      //@ts-ignore
       rehypePrism,
       [
         rehypeAutoLinkHeadings,
@@ -96,6 +98,12 @@ export default makeSource({
           },
         },
       ],
+      [
+        rehypeImgSize,
+        {
+          dir: 'public',
+        },
+      ],
     ],
-  },
+  } as MDXOptions,
 })

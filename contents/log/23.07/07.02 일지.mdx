@@ -111,7 +111,7 @@ function ChildComponent(props) {
 
 위 코드에서는 state를 공유하기 위해 부모에서 자식 컴포넌트로 한 번 전달했지만, 만약 그 깊이가 깊어진다면 state 관리가 어렵고 가독성이 떨어질 것이다. 이것을 과도한 **props drilling**이라고 한다.
 
-![](https://blog.kakaocdn.net/dn/Ppkmt/btrXRU9pvx1/mrst4s8GQ6L7fVhXmOsig0/img.png)
+![](/log/23.07/07.02/react-data-flow.png)
 
 이 문제를 해결하기 위해 전역 상태를 관리하는 라이브러리를 사용하게 된다.
 
@@ -122,8 +122,6 @@ function ChildComponent(props) {
 > 자바스크립트 앱을 위한 예측 가능한 상태 컨테이너
 
 Redux는 자바스크립트 앱이 점차 고도화 되고, 그에 따라 복잡해지는 데이터를 통제하기 위해 고안된 Flux 패턴 기반의 구현체이다.
-
-![](https://pollen-port-115.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fb39b1fb5-4dbb-4f3c-a37b-7e62c943ebe5%2FUntitled.png?id=f6833542-a8cd-4dc1-a857-50fd8a8f912f&table=block&spaceId=75afd7aa-b6ab-4cc8-9a59-9695618bc541&width=2000&userId=&cache=v2)
 
 데이터의 변경은 반드시 발행된 Action에 의해 순수 함수인 Reducer 내에서 일어나야 하며, 단방향으로만(`(View → Action + Dispatcher → Middleware → Reducer → Store) → View`) 일어난다.
 

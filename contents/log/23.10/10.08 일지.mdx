@@ -1,4 +1,6 @@
-## 왜 Next에서 메타데이터 title을 undefined로 하면 `[현재 URL]`가 뜨고, `''`로 하면 `| kangju.dev`로 뜨는걸까?
+---
+description: 왜 Next에서 메타데이터 title을 undefined로 하면 [현재 URL]이 뜨고, 빈 문자열로 하면 | kangju.dev로 뜨는걸까?
+---
 
 일단 루트 레이아웃에서 이렇게 설정했다.
 
@@ -117,7 +119,9 @@ if (typeof title === 'string') {
 }
 ```
 
-나는 `title`에 `string | undefined` 타입을 넣어주었다.
+#### title이 string일 때
+
+title을 resolved에 할당하게 된다.
 
 ```ts
 function resolveTitleTemplate(template: string | null | undefined, title: string) {
@@ -125,7 +129,29 @@ function resolveTitleTemplate(template: string | null | undefined, title: string
 }
 ```
 
-### 내일 계속...
+`template`이 존재하면 `template`에 `%s`를 `title`로 바꾼다. 그리고 `resolved`에 할당한다.
+
+#### title이 object일 때
+
+title이 object일 때는 `default`와 `absolute`가 있는지 확인하고 분기에 따라 `resolved`에 할당한다.
+
+```ts
+//layout.tsx
+title = {
+  template: '%s | kangju.dev',
+  default: 'kangju.dev',
+}
+
+//about/page.tsx
+title = {
+  absolute: 'kangju.dev',
+}
+
+// 결과
+resolved = 'kangju.dev'
+```
+
+### 음,,, 대충 이해는 됐다. 일단 여기까지만 이해하고 넘어가자.
 
 ---
 

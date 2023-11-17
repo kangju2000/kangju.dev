@@ -48,7 +48,7 @@ GEC는 단 하나만 존재해야 한다. (JS는 싱글 스레드이기 때문�
 코드가 실행되면서 FEC가 생성되면 스택에 쌓이고, 실행이 끝나면 스택에서 제거된다.
 모든 js 코드가 실행이 끝나야 GEC가 스택에서 제거된다.
 
-![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FGIQ4w%2FbtqLxv0VNNO%2FQ93UvbJWmnAtKxoPJX2kxK%2Fimg.png)
+![](/log/23.06/06.20/stack.png)
 
 ## Execution Context 구성
 
@@ -162,7 +162,7 @@ lexical scope(정적 스코프)를 기준으로 상위 scope의 lexical environm
   - this는 함수를 호출한 객체를 참조한다.
   - arrow function은 함수를 선언할 때 this에 바인딩할 객체가 정적으로 결정된다.(상위 스코프의 this를 참조)
 
-![](https://mblogthumb-phinf.pstatic.net/MjAyMjAyMjNfMjAg/MDAxNjQ1NTUwMjY4NTk2.cRBGb-t0SureofBB4PVXPK_vt5IM3T8d70W1AsTDKUsg.IG1dMA_7sLjD5GB9eI6kPjjcRZFjqB5lnNW5IjNeHRMg.PNG.dlaxodud2388/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-02-23_%EC%98%A4%EC%A0%84_2.17.44.png?type=w800)
+![](/log/23.06/06.20/this-binding.png)
 
 ## 🤔 왜 Lexical Environment와 Variable Environment가 분리되어 있을까?
 
@@ -345,7 +345,7 @@ GEC {
 }
 ```
 
-![](https://miro.medium.com/v2/resize:fit:1100/1*SBP65hdVDW5j0LuVryTiXw.gif)
+![](/log/23.06/06.20/execution-stack.gif)
 
 ---
 

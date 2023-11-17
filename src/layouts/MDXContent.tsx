@@ -2,36 +2,22 @@
 
 import { chakra } from '@chakra-ui/react'
 import { Prose } from '@nikolovlazar/chakra-ui-prose'
-import Image from 'next/image'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 
-import Admonition from '@/components/Admonition/Admonition'
-import Youtube from '@/components/Youtube/Youtube'
+import Admonition from '@/components/mdx/Admonition'
+import Image from '@/components/mdx/Image'
+import Youtube from '@/components/mdx/Youtube'
 
 import type { MDXComponents } from 'mdx/types'
 
-const components: MDXComponents = {
+const components = {
   Youtube,
   code: (props) => <chakra.span fontWeight="bold" {...props} />,
   a: (props) => <chakra.a {...props} />,
   Admonition,
-  Image: (props) => (
-    <Image
-      width={0}
-      height={0}
-      alt={props.alt || '이미지'}
-      sizes="100vw"
-      style={{
-        width: props.width || '100%',
-        height: props.height || 'auto',
-        borderRadius: '8px',
-        margin: '24px 0',
-        objectFit: 'cover',
-      }}
-      {...props}
-    />
-  ),
-}
+  img: Image,
+  Image,
+} as MDXComponents
 
 interface MDXContentProps {
   code: string

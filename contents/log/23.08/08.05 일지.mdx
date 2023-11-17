@@ -1,6 +1,6 @@
 ---
-description: ky instance의 response 타입 바꾸기, 자식 컴포넌트에게 비동기 데이터를 props로 전달하기 vs 자식 컴포넌트 내부에서 비동기 데이터를 가져오기
-tags: [ky, react-query, kyInstance]
+description: ky instance의 response 타입 바꾸기
+tags: [ky, react-query, ky instance]
 ---
 
 ## 오늘 한 일
@@ -78,7 +78,7 @@ export default api
 + const { data } = await api.get<Place>(`api/v1/places/${id}`);
 ```
 
-## 🤔자식 컴포넌트에게 비동기 데이터를 props로 전달하기 vs 자식 컴포넌트 내부에서 비동기 데이터를 가져오기
+## 🤔 자식 컴포넌트에게 비동기 데이터를 props로 전달하기 vs 자식 컴포넌트 내부에서 비동기 데이터를 가져오기
 
 ### 1. 자식 컴포넌트에게 비동기 데이터를 props로 전달하기
 

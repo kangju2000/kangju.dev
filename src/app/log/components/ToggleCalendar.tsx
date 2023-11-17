@@ -5,10 +5,10 @@ import { AnimatePresence } from 'framer-motion'
 import { useParams } from 'next/navigation'
 import { useRef, useState } from 'react'
 
-import CalButton from '@/components/Calendar/CalButton'
-import Calendar from '@/components/Calendar/Calendar'
-import ChakraMotion from '@/components/ChakraMotion/ChakraMotion'
-import { CalendarIcon } from '@/components/Icons/CommonIcons'
+import Calendar from '@/components/common/Calendar'
+import CalButton from '@/components/common/Calendar/CalButton'
+import ChakraMotion from '@/components/common/ChakraMotion'
+import { CalendarIcon } from '@/components/common/Icons/CommonIcons'
 import { useOnClickOutside } from '@/hooks/useOnClickOutside'
 
 const ToggleCalendar = () => {

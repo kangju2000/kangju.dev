@@ -77,12 +77,6 @@ export default async function PlacePage({ params }: { params: { id: string } }) 
 
 이제 데이터를 가져올 때 별다른 분기처리 없이 data를 가져오면 된다.
 
-<img
-  width="619"
-  alt="image"
-  src="https://github.com/Self-Driven-Development/TIL/assets/23312485/59d2befc-809d-4e81-8eb4-74fab0628d87"
-/>
-
 ```tsx
 // components/PlaceDetail.tsx
 export default function PlaceDetail({ placeId }: PlaceDetailProps) {
@@ -94,13 +88,15 @@ export default function PlaceDetail({ placeId }: PlaceDetailProps) {
 }
 ```
 
+![결과](/log/23.08/08.03/result.png)
+
 <Admonition type='warning' title='주의할 점'>
 
 위와 같이 코드를 작성하면 에러가 발생하게 된다.
 
 > Uncaught Error: Functions cannot be passed directly to Client Components unless you explicitly expose it by marking it with "use server".
 
-![image](https://github.com/Self-Driven-Development/TIL/assets/23312485/af14c872-1e9a-4af0-8701-112abe5ec090)
+![](/log/23.08/08.03/error.png)
 
 함수를 "use server"로 표시해서 명시적으로 작성한 경우 말고는 직접 클라이언트 컴포넌트에 전달할 수 없다고 한다.
 
@@ -112,7 +108,7 @@ fallback 클라이언트 컴포넌트를 만들어서 `rejectedFallback`에 전�
 
 ### 2. "use server" 추가
 
-> "use serve"를 추가하기 위해서는 next config 파일에 다음과 같이 설정해야한다.
+> "use server"를 추가하기 위해서는 next config 파일에 다음과 같이 설정해야한다.
 >
 > ```js
 > // next.config.js

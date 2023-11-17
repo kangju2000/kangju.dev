@@ -1,3 +1,7 @@
+---
+description: Gloddy - 다국어 지원
+---
+
 ## 오늘 한 일
 
 - gloddy 개발
@@ -8,11 +12,11 @@
 
 ---
 
-## gloddy
+## Gloddy
 
 이제 QA 한 것들을 거의 다 반영한 것 같다.
 
-## 다국어 지원
+### 다국어 지원
 
 `i18n`을 사용하여 다국어 지원을 했다.
 
@@ -20,7 +24,7 @@
 
 그래서 이 [글](https://locize.com/blog/next-13-app-dir-i18n/)을 보면서 직접 세팅했다.
 
-### 서버 컴포넌트에서 사용하는 방법
+#### 서버 컴포넌트에서 사용하는 방법
 
 ```tsx
 import Link from 'next/link'
@@ -37,7 +41,7 @@ export default async function Page({ params: { lng } }) {
 }
 ```
 
-### 클라이언트 컴포넌트에서 사용하는 방법
+#### 클라이언트 컴포넌트에서 사용하는 방법
 
 ```tsx
 'use client'

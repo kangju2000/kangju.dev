@@ -5,8 +5,8 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
-import ChakraMotion from '../ChakraMotion/ChakraMotion'
-import List from '@/components/List/List'
+import ChakraMotion from '../ChakraMotion'
+import List from '@/components/common/List'
 
 const links = [
   { href: '/', label: 'Home' },

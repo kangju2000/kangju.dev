@@ -1,6 +1,6 @@
 import { type ComponentProps } from 'react'
 
-import ChakraMotion from '../ChakraMotion/ChakraMotion'
+import ChakraMotion from '../ChakraMotion'
 
 interface ListProps<T> extends ComponentProps<typeof ChakraMotion> {
   items: T[]
