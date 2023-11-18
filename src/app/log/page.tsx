@@ -4,7 +4,7 @@ import { allLogs } from 'contentlayer/generated'
 import FeaturedLog from './components/FeaturedLog'
 import ChakraMotion from '@/components/common/ChakraMotion'
 import List from '@/components/common/List'
-import { fadeIn, fadeInUp, staggerOne } from '@/constants/animations'
+import { fadeIn } from '@/constants/animations'
 
 export default function LogPage() {
   const featuredLogs = allLogs.filter((log) => !!log.description)
