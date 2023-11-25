@@ -1,0 +1,197 @@
+---
+description: 블로그 - next/image placeholder 속성 적용
+---
+
+블로그에 next/image `placeholder` 속성을 적용했다.
+
+## 기존의 문제점
+
+mdx의 이미지를 next/image로 했을 때, 이미지를 불러오는 동안 아무것도 렌더링되지 않다가 이미지가 로드되면 렌더링되는 현상이 있었다. 그로 인해 layout shift가 발생했고, 이는 UX에 좋지 않은 영향을 미쳤다.
+
+## 해결 방법
+
+그래서 next/image의 placeholder 속성을 적용해보았다. 적용하기 위해서는 먼저 [plaiceholder](https://plaiceholder.co/docs) 라이브러리를 설치해야 한다.
+
+### next/image의 placeholder 속성
+
+해당 속성을 사용하게 되면 이미지를 불러오는 동안 placeholder 이미지를 보여준다. 그리고 이미지가 로드되면 기존의 이미지로 교체한다.
+
+```tsx
+// https://nextjs.org/docs/pages/api-reference/components/image#placeholder
+<Image
+  src={src}
+  alt={alt}
+  width={width}
+  height={height}
+  placeholder="blur"
+  blurDataURL={blurDataURL}
+/>
+```
+
+<Admonition type="note" title="placeholder 속성의 값">
+
+```tsx
+export type PlaceholderValue = 'blur' | 'empty' | `data:image/${string}`
+
+{
+  //...
+  placeholder?: PlaceholderValue | undefined;
+}
+```
+
+- `empty` : **default** 값. 이미지를 불러오는 동안 아무것도 보여주지 않는다.
+- `blur` : 이미지를 불러오는 동안 blur 이미지를 보여준다. (\*blurDataURL 속성 필요)
+- `data:image/${string}` : 이미지를 불러오는 동안 해당 data url을 보여준다.
+
+</Admonition>
+
+### plaiceholder 라이브러리
+
+> "Plaiceholder" is a suite of server-side functions for creating low quality image placeholders (LQIP).
+
+나는 이 라이브러리로 base64 형태의 blur 이미지를 생성하여 next/image의 placeholder 속성에 적용할 것이다.
+
+```bash
+pnpm add plaiceholder
+```
+
+#### getBase64 함수
+
+```tsx
+// src/utils/getBase64.ts
+import fs from 'node:fs/promises'
+import { join } from 'path'
+import { getPlaiceholder } from 'plaiceholder'
+
+const getBase64 = async (src: string) => {
+  const isExternal = src.startsWith('http')
+  let buffer: Buffer
+
+  if (isExternal) {
+    buffer = await fetch(src).then(async (res) => Buffer.from(await res.arrayBuffer()))
+  } else {
+    buffer = await fs.readFile(join(process.cwd(), `public${src}`))
+  }
+
+  const { base64 } = await getPlaiceholder(buffer)
+
+  return base64 as `data:image/${string}`
+}
+
+export default getBase64
+```
+
+`외부 이미지` - fetch를 통해 가져온 후 Buffer.from을 통해 Buffer로 변환
+`내부 이미지` - node.js의 fs 모듈을 통해 파일을 읽음
+
+그리고 plaiceholder의 `getPlaiceholder`를 통해 base64 형태의 blur 이미지를 생성한다.
+
+#### BlurImage 컴포넌트
+
+```tsx
+// src/components/BlurImage.tsx
+import Image, { type ImageProps } from 'next/image'
+
+import getBase64 from '@/utils/getBase64'
+
+const BlurImage = async ({ src, ...props }: ImageProps & { src: string }) => {
+  const base64 = await getBase64(src)
+
+  return <Image {...props} alt={props.alt || ''} src={src} placeholder={base64} />
+}
+
+export default BlurImage
+```
+
+이제 BlurImage 컴포넌트를 적용할 수 있다.
+
+`next-contentlayer/hooks`의 `useMDXComponent`로 mdx를 렌더링하는데, 이때 `components` 속성을 통해 mdx의 컴포넌트를 커스텀할 수 있다. 그래서 `components` 속성을 통해 `img` 컴포넌트를 바꿔주었다.
+나는 BlurImage에서 조금의 스타일링을 더 추가한 `Image` 컴포넌트를 만들어서 img태그를 Image 컴포넌트로 변경하였다.
+
+```tsx
+// src/layouts/MDXContent.tsx
+import { useMDXComponent } from 'next-contentlayer/hooks'
+ㅡ
+import Prose from './Prose'
+import Image from '@/components/mdx/Image'
+
+import type { MDXComponents } from 'mdx/types'
+
+const components = {
+  //...
+  img: Image,
+  Image,
+} as MDXComponents
+
+interface MDXContentProps {
+  code: string
+}
+
+const MDXContent = ({ code }: MDXContentProps) => {
+  const MDXComponent = useMDXComponent(code)
+
+  return (
+    <Prose>
+      <MDXComponent code={code} components={components} />
+    </Prose>
+  )
+}
+
+export default MDXContent
+```
+
+<Admonition type="warning" title="주의사항">
+
+Next 13 버전을 기준으로, BlurImage를 사용하는 곳은 서버 컴포넌트에서 사용해야 한다. 만약 클라이언트 컴포넌트에서 사용하면 에러가 발생한다.
+
+나는 Chakra UI의 mdx 스타일링을 위해 `@nikolovlazar/chakra-ui-prose` 라이브러리에서 제공하는 `Prose` 컴포넌트를 사용하고 있었는데, 이 컴포넌트는 클라이언트 컴포넌트로 되어있어서 BlurImage를 사용할 수 없었다.
+그래서 Prose 컴포넌트를 **서버 컴포넌트**로 변경하였다.
+
+```tsx
+// src/layouts/Prose.tsx
+'use client'
+
+import { Prose as ChakraProse } from '@nikolovlazar/chakra-ui-prose'
+import { useEffect, type PropsWithChildren } from 'react'
+
+const Prose = ({ children }: PropsWithChildren) => {
+  // url에 hash가 있으면 해당 id를 가진 element로 스크롤 이동
+  useEffect(() => {
+    if (typeof document === 'undefined') return
+
+    const hash = window.decodeURI(location.hash.replace('#', ''))
+    if (hash !== '') {
+      const element = document.getElementById(hash)
+      if (element) {
+        const offset = element.offsetTop
+
+        setTimeout(function () {
+          window.scrollTo(0, offset - 64)
+        }, 0)
+      }
+    }
+  }, [])
+
+  return <ChakraProse>{children}</ChakraProse>
+}
+
+export default Prose
+```
+
+```diff
+// src/components/MDXContent.tsx
+-import { Prose } from '@nikolovlazar/chakra-ui-prose'
++import Prose from './Prose'
+
+const MDXContent = ({ code }: MDXContentProps) => {
+  const MDXComponent = useMDXComponent(code)
+
+  return (
+    <Prose>
+      <MDXComponent code={code} components={components} />
+    </Prose>
+  )
+}
+```
+
+</Admonition>
