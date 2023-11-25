@@ -1,8 +1,6 @@
-'use client'
-
-import { Prose } from '@nikolovlazar/chakra-ui-prose'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 
+import Prose from './Prose'
 import CustomLink from '@/components/common/CustomLink'
 import Admonition from '@/components/mdx/Admonition'
 import Image from '@/components/mdx/Image'
@@ -27,7 +25,7 @@ const MDXContent = ({ code }: MDXContentProps) => {
 
   return (
     <Prose>
-      <MDXComponent components={components} />
+      <MDXComponent code={code} components={components} />
     </Prose>
   )
 }

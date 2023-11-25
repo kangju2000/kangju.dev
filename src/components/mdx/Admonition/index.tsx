@@ -1,3 +1,5 @@
+'use client'
+
 import { Box, Flex, StyleProps, Text, chakra } from '@chakra-ui/react'
 
 import type { PropsWithChildren } from 'react'

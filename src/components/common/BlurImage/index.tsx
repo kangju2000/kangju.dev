@@ -1,25 +1,11 @@
-'use client'
-
 import Image, { type ImageProps } from 'next/image'
-import { useState } from 'react'
 
-const BlurImage = ({ src, ...props }: ImageProps) => {
-  const [isLoaded, setIsLoaded] = useState(false)
+import getBase64 from '@/utils/getBase64'
 
-  return (
-    <Image
-      {...props}
-      alt={props.alt || ''}
-      src={src}
-      style={{
-        aspectRatio: 'auto',
-        filter: isLoaded ? 'none' : 'blur(5px)',
-        transition: 'filter 0.2s ease-in-out',
-        ...props.style,
-      }}
-      onLoadingComplete={() => setIsLoaded(true)}
-    />
-  )
+const BlurImage = async ({ src, ...props }: ImageProps & { src: string }) => {
+  const base64 = await getBase64(src)
+
+  return <Image {...props} alt={props.alt || ''} src={src} placeholder={base64} />
 }
 
 export default BlurImage
