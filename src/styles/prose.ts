@@ -36,8 +36,6 @@ const proseOverrides: ComponentSingleStyleConfig = {
     },
     h3: {
       fontSize: '2xl',
-      pt: '70px',
-      mt: '-70px',
       _hover: {
         _before: {
           content: '"🔗"',
