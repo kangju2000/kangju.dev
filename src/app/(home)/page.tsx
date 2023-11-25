@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, Text } from '@chakra-ui/react'
-import Image from 'next/image'
 import Link from 'next/link'
 
+import BlurImage from '@/components/common/BlurImage'
 import ChakraMotion from '@/components/common/ChakraMotion'
 import { GithubIcon, LinkedInIcon } from '@/components/common/Icons/LogoIcons'
 
@@ -10,7 +10,7 @@ export default function Home() {
     <ChakraMotion initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <Box>
         <Flex align="center" gap="24px">
-          <Image
+          <BlurImage
             src="https://avatars.githubusercontent.com/u/23312485?v=4"
             alt="kangjuhyeok"
             style={{
