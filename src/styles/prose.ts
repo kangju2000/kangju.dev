@@ -70,6 +70,10 @@ const proseOverrides: ComponentSingleStyleConfig = {
         textDecoration: 'underline',
       },
     },
+    blockQuote: {
+      fontStyle: 'inherit',
+      color: 'gray.500',
+    },
   },
 }
 

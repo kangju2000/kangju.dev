@@ -78,6 +78,7 @@ const Admonition = ({ type, title, children }: PropsWithChildren<AdmonitionProps
     <Box
       borderRadius="8"
       p="16px"
+      my="16px"
       bg={admonition[type].bg || 'gray.400'}
       color="white"
       borderLeftWidth="5px"
