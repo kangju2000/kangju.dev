@@ -73,9 +73,6 @@ devDependencies:
   '@types/react-dom':
     specifier: 18.2.7
     version: 18.2.7
-  '@types/unist':
-    specifier: ^3.0.2
-    version: 3.0.2
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.7.2
     version: 6.7.2(@typescript-eslint/parser@6.7.2)(eslint@8.50.0)(typescript@5.2.2)
@@ -100,9 +97,6 @@ devDependencies:
   husky:
     specifier: ^8.0.0
     version: 8.0.3
-  image-size:
-    specifier: ^1.0.2
-    version: 1.0.2
   lint-staged:
     specifier: ^14.0.1
     version: 14.0.1
@@ -142,9 +136,6 @@ devDependencies:
   typescript:
     specifier: 5.2.2
     version: 5.2.2
-  unist-util-visit:
-    specifier: ^5.0.0
-    version: 5.0.0
 
 packages:
 
