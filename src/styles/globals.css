@@ -349,3 +349,18 @@ pre[class*='language-'] > code[class*='language-'] {
   border-top: 4px solid var(--chakra-colors-blue-500);
   font-size: 0.8rem;
 }
+
+:not(pre) > code {
+  font-weight: inherit !important;
+  font-size: 0.9em;
+  border: 1px solid var(--chakra-colors-chakra-border-color);
+  background: var(--chakra-colors-chakra-subtle-bg);
+  color: var(--chakra-colors-chakra-body-text);
+  padding: 1.4px 4.2px;
+  border-radius: 4.2px;
+}
+
+:not(pre) > code::before,
+:not(pre) > code::after {
+  content: '' !important;
+}
