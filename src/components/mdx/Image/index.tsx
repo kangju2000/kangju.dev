@@ -16,6 +16,7 @@ const Image = ({ src, alt, width, height }: ImageProps) => {
       pos="relative"
       w="100%"
       h="100%"
+      my="16px"
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
