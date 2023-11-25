@@ -14,7 +14,7 @@ const Prose = ({ children }: PropsWithChildren) => {
         const offset = element.offsetTop
 
         setTimeout(function () {
-          window.scrollTo(0, offset)
+          window.scrollTo(0, offset - 64)
         }, 0)
       }
     }

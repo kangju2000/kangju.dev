@@ -24,6 +24,7 @@ const proseOverrides: ComponentSingleStyleConfig = {
     h2: {
       position: 'relative',
       fontSize: '3xl',
+      scrollMarginTop: '64px',
       _hover: {
         _before: {
           content: '"🔗"',
@@ -35,7 +36,9 @@ const proseOverrides: ComponentSingleStyleConfig = {
       },
     },
     h3: {
+      position: 'relative',
       fontSize: '2xl',
+      scrollMarginTop: '64px',
       _hover: {
         _before: {
           content: '"🔗"',
@@ -48,6 +51,7 @@ const proseOverrides: ComponentSingleStyleConfig = {
     },
     h4: {
       fontSize: 'xl',
+      scrollMarginTop: '64px',
     },
     'ol > li': {
       listStyleType: 'decimal',
