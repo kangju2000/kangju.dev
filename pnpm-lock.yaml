@@ -17,9 +17,6 @@ dependencies:
   '@emotion/styled':
     specifier: ^11.11.0
     version: 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.22)(react@18.2.0)
-  '@plaiceholder/next':
-    specifier: ^3.0.0
-    version: 3.0.0(next@13.5.6)(plaiceholder@3.0.0)(sharp@0.32.6)
   contentlayer:
     specifier: ^0.3.4
     version: 0.3.4(esbuild@0.19.3)
@@ -2175,18 +2172,6 @@ packages:
       picocolors: 1.0.0
       tslib: 2.6.2
     dev: true
-
-  /@plaiceholder/next@3.0.0(next@13.5.6)(plaiceholder@3.0.0)(sharp@0.32.6):
-    resolution: {integrity: sha512-7UK/H1X64hwo2VaxOPKMXE+OY9IgmKLPsq/xKHZ+gU07oqQSfIWWIgpVVucMB3ZgVYah+68agR15BRuSxAuMHw==}
-    peerDependencies:
-      next: '>= 10.0.0'
-      plaiceholder: '>=3.0.0'
-      sharp: '>= 0.30.6'
-    dependencies:
-      next: 13.5.6(@opentelemetry/api@1.6.0)(react-dom@18.2.0)(react@18.2.0)
-      plaiceholder: 3.0.0(sharp@0.32.6)
-      sharp: 0.32.6
-    dev: false
 
   /@popperjs/core@2.11.8:
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
