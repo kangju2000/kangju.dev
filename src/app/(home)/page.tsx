@@ -64,7 +64,7 @@ export default function Home() {
 
       <Flex justify="space-between" align="center" mb="30px">
         <Heading size="md">최근 로그</Heading>
-        <Link href="/logs">
+        <Link href="/log">
           <Text as="span" color="gray.500" fontSize="sm">
             모든 로그 보기 →
           </Text>
