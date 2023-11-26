@@ -26,16 +26,14 @@ const TabList = ({ links }: TabListProps) => {
       items={links}
       renderItem={(link) => (
         <Link href={link.href} _hover={{ textDecoration: 'none' }} pos="relative">
-          <ChakraMotion
+          <Text
             key={`${link.href}${link.label}`}
             p="8px 16px"
             cursor="pointer"
-            whileHover={{
-              scale: 1.1,
-            }}
+            fontWeight={currentType === link.href ? '700' : '500'}
           >
-            <Text fontWeight={currentType === link.href ? '700' : '500'}>{link.label}</Text>
-          </ChakraMotion>
+            {link.label}
+          </Text>
           {currentType === link.href && (
             <ChakraMotion
               as="span"
