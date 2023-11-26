@@ -14,7 +14,7 @@ const FeaturedLog = ({ log }: FeaturedLogProps) => {
   return (
     <Link href={`/log/${log.dateFormatted}`}>
       <Text as="h3" fontSize="md" mb="8px">
-        {log.description}
+        {log.description || log.dateFormatted}
       </Text>
       <Text fontSize="smaller" color="gray.500">
         {format(new Date(log.dateFormatted), 'yy.MM.dd')}

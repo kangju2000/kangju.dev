@@ -1,51 +1,77 @@
-import { Box, Flex, Heading, Text } from '@chakra-ui/react'
+import { Box, Divider, Flex, Heading, Text } from '@chakra-ui/react'
+import { allLogs, allPosts } from 'contentlayer/generated'
 import Link from 'next/link'
 
+import FeaturedLog from '../log/components/FeaturedLog'
+import PostCard from '../posts/components/PostCard'
 import BlurImage from '@/components/common/BlurImage'
 import ChakraMotion from '@/components/common/ChakraMotion'
 import { GithubIcon, LinkedInIcon } from '@/components/common/Icons/LogoIcons'
+import List from '@/components/common/List'
 
 export default function Home() {
+  const recentPosts = allPosts.sort((a, b) => b.date.localeCompare(a.date)).slice(0, 2)
+  const recentLogs = allLogs
+    .sort((a, b) => b.dateFormatted.localeCompare(a.dateFormatted))
+    .slice(0, 5)
+
   return (
     <ChakraMotion initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <Box>
-        <Flex align="center" gap="24px">
+      <Flex gap="24px" h={{ base: '100px', md: '130px' }}>
+        <Box pos="relative" flexShrink={0} h="inherit" aspectRatio={1}>
           <BlurImage
             src="https://avatars.githubusercontent.com/u/23312485?v=4"
             alt="kangjuhyeok"
             style={{
               objectFit: 'cover',
-              borderRadius: '50%',
+              borderRadius: '8px',
             }}
-            width={130}
-            height={130}
+            fill
             priority
           />
+        </Box>
+        <Box display="flex" flexDir="column" justifyContent="space-around">
           <Box>
-            <Heading size="lg">강주혁 - Frontend Developer</Heading>
-            <Text mt="15px">
-              사람들에게 <b>도움을 주는 데 즐거움을 느끼는</b> 개발자입니다.
+            <Text fontSize="md" color="gray.500">
+              Frontend Developer
             </Text>
-            <Flex gap="10px" mt="15px">
-              <Link href="https://github.com/kangju2000/" target="_blank">
-                <GithubIcon />
-              </Link>
-              <Link href="https://www.linkedin.com/in/kangju2000/" target="_blank">
-                <LinkedInIcon />
-              </Link>
-            </Flex>
+            <Heading size="lg">강주혁</Heading>
           </Box>
-        </Flex>
+          <Flex gap="10px" mt="15px">
+            <Link href="https://github.com/kangju2000/" target="_blank">
+              <GithubIcon />
+            </Link>
+            <Link href="https://www.linkedin.com/in/kangju2000/" target="_blank">
+              <LinkedInIcon />
+            </Link>
+          </Flex>
+        </Box>
+      </Flex>
 
-        {/* <Heading size="md" mt="30px">
-          최근 포스트
-        </Heading>
-        <Flex>
-          <Box>포스트 1</Box>
-          <Box>포스트 2</Box>
-          <Box>포스트 3</Box>
-        </Flex> */}
-      </Box>
+      <Divider my="30px" />
+
+      <Flex justify="space-between" align="center" mb="30px">
+        <Heading size="md">최근 포스트</Heading>
+        <Link href="/posts">
+          <Text as="span" color="gray.500" fontSize="sm">
+            모든 포스트 보기 →
+          </Text>
+        </Link>
+      </Flex>
+      <List items={recentPosts} renderItem={(post) => <PostCard post={post} />} />
+
+      <Divider my="30px" />
+
+      <Flex justify="space-between" align="center" mb="30px">
+        <Heading size="md">최근 로그</Heading>
+        <Link href="/logs">
+          <Text as="span" color="gray.500" fontSize="sm">
+            모든 로그 보기 →
+          </Text>
+        </Link>
+      </Flex>
+
+      <List items={recentLogs} renderItem={(log) => <FeaturedLog log={log} />} gap="10px" />
     </ChakraMotion>
   )
 }
