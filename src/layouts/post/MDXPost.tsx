@@ -1,6 +1,6 @@
 import { Box, Center, Heading, Stack, Text } from '@chakra-ui/react'
 
-import MDXContent from './MDXContent'
+import MDXContent from '../MDXContent'
 import BlurImage from '@/components/common/BlurImage'
 import ChakraMotion from '@/components/common/ChakraMotion'
 import Giscus from '@/components/common/Giscus'

@@ -1,7 +1,8 @@
 import { Center, Heading, Stack, Text } from '@chakra-ui/react'
 import { format } from 'date-fns'
 
-import MDXContent from './MDXContent'
+import PaginationButtonGroup from './PaginationButtonGroup'
+import MDXContent from '../MDXContent'
 import ChakraMotion from '@/components/common/ChakraMotion'
 import Giscus from '@/components/common/Giscus'
 import { fadeIn, staggerTwo } from '@/constants/animations'
@@ -9,10 +10,12 @@ import { fadeIn, staggerTwo } from '@/constants/animations'
 import type { Log } from 'contentlayer/generated'
 
 interface MDXLogProps {
+  prevLog?: Log
   log: Log
+  nextLog?: Log
 }
 
-const MDXLog = ({ log }: MDXLogProps) => {
+const MDXLog = ({ prevLog, log, nextLog }: MDXLogProps) => {
   return (
     <ChakraMotion variants={staggerTwo} initial="initial" animate="animate">
       <Stack spacing="30px">
@@ -36,6 +39,7 @@ const MDXLog = ({ log }: MDXLogProps) => {
         <ChakraMotion variants={fadeIn}>
           <MDXContent code={log.body.code} />
         </ChakraMotion>
+        <PaginationButtonGroup prevLog={prevLog} nextLog={nextLog} />
         <Giscus />
       </Stack>
     </ChakraMotion>

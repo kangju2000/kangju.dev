@@ -3,7 +3,7 @@ import { allLogs } from 'contentlayer/generated'
 import { metadata } from '@/app/layout'
 import NotFound from '@/app/not-found'
 import { BASE_WEB_URL } from '@/constants'
-import MDXLog from '@/layouts/MDXLog'
+import MDXLog from '@/layouts/log/MDXLog'
 
 import type { Metadata } from 'next'
 
@@ -43,9 +43,9 @@ export function generateStaticParams() {
 }
 
 export default function LogDetailPage({ params: { slug } }: { params: { slug: string } }) {
-  const log = allLogs.find((log) => log.dateFormatted === slug)
+  const index = allLogs.findIndex((log) => log.dateFormatted === slug)
 
-  if (!log) return <NotFound />
+  if (index === -1) return <NotFound />
 
-  return <MDXLog log={log} />
+  return <MDXLog log={allLogs[index]} prevLog={allLogs[index - 1]} nextLog={allLogs[index + 1]} />
 }

@@ -3,7 +3,7 @@ import { allPosts } from 'contentlayer/generated'
 import { metadata } from '@/app/layout'
 import NotFound from '@/app/not-found'
 import { BASE_WEB_URL } from '@/constants'
-import MDXPost from '@/layouts/MDXPost'
+import MDXPost from '@/layouts/post/MDXPost'
 
 import type { Metadata } from 'next'
 
