@@ -1,5 +1,6 @@
 import { Heading, Spacer, Stack, Text } from '@chakra-ui/react'
 import { allPosts } from 'contentlayer/generated'
+import { compareDesc } from 'date-fns'
 
 import PostCard from './components/PostCard'
 import ChakraMotion from '@/components/common/ChakraMotion'
@@ -7,9 +8,7 @@ import List from '@/components/common/List'
 import { fadeIn, fadeInRight, staggerOne } from '@/constants/animations'
 
 export default function PostsPage() {
-  const sortedPosts = allPosts.sort((a, b) => {
-    return new Date(b.date).getTime() - new Date(a.date).getTime()
-  })
+  const sortedPosts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)))
 
   return (
     <Stack spacing="24px">

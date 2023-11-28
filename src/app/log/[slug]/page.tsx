@@ -1,4 +1,5 @@
 import { allLogs } from 'contentlayer/generated'
+import { compareDesc } from 'date-fns'
 
 import { metadata } from '@/app/layout'
 import NotFound from '@/app/not-found'
@@ -43,9 +44,18 @@ export function generateStaticParams() {
 }
 
 export default function LogDetailPage({ params: { slug } }: { params: { slug: string } }) {
-  const index = allLogs.findIndex((log) => log.dateFormatted === slug)
+  const sortedLogs = allLogs.sort((a, b) =>
+    compareDesc(new Date(b.dateFormatted), new Date(a.dateFormatted))
+  )
+  const index = sortedLogs.findIndex((log) => log.dateFormatted === slug)
 
   if (index === -1) return <NotFound />
 
-  return <MDXLog log={allLogs[index]} prevLog={allLogs[index - 1]} nextLog={allLogs[index + 1]} />
+  return (
+    <MDXLog
+      log={sortedLogs[index]}
+      prevLog={sortedLogs[index - 1]}
+      nextLog={sortedLogs[index + 1]}
+    />
+  )
 }

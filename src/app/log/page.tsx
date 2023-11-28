@@ -1,5 +1,6 @@
 import { Box, Divider, Heading, Highlight, Stack, Text } from '@chakra-ui/react'
 import { allLogs } from 'contentlayer/generated'
+import { compareDesc } from 'date-fns'
 
 import FeaturedLog from './components/FeaturedLog'
 import ChakraMotion from '@/components/common/ChakraMotion'
@@ -9,12 +10,9 @@ import { fadeIn } from '@/constants/animations'
 export default function LogPage() {
   const featuredLogs = allLogs.filter((log) => !!log.description)
 
-  const sortedFeaturedLogs = featuredLogs.sort((a, b) => {
-    const aDate = new Date(a.dateFormatted)
-    const bDate = new Date(b.dateFormatted)
-
-    return bDate.getTime() - aDate.getTime()
-  })
+  const sortedFeaturedLogs = featuredLogs.sort((a, b) =>
+    compareDesc(new Date(a.dateFormatted), new Date(b.dateFormatted))
+  )
 
   return (
     <ChakraMotion variants={fadeIn} initial="initial" animate="animate" exit="exit">
