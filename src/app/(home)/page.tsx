@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Heading, Text } from '@chakra-ui/react'
+import { Box, Divider, Flex, Heading, Text, Tooltip } from '@chakra-ui/react'
 import { allLogs, allPosts } from 'contentlayer/generated'
 import Link from 'next/link'
 
@@ -39,10 +39,14 @@ export default function Home() {
           </Box>
           <Flex gap="10px" mt="15px">
             <Link href="https://github.com/kangju2000/" target="_blank">
-              <GithubIcon />
+              <Tooltip label="Github" aria-label="Github">
+                <GithubIcon />
+              </Tooltip>
             </Link>
             <Link href="https://www.linkedin.com/in/kangju2000/" target="_blank">
-              <LinkedInIcon />
+              <Tooltip label="LinkedIn" aria-label="LinkedIn">
+                <LinkedInIcon />
+              </Tooltip>
             </Link>
           </Flex>
         </Box>
