@@ -3,6 +3,7 @@ import { format } from 'date-fns'
 import Link from 'next/link'
 
 import BlurImage from '@/components/common/BlurImage'
+import ChakraMotion from '@/components/common/ChakraMotion'
 
 import type { Post } from 'contentlayer/generated'
 
@@ -13,7 +14,7 @@ interface PostCardProps {
 const PostCard = ({ post }: PostCardProps) => {
   return (
     <Link href={`/posts/${post.slug}`}>
-      <Box
+      <ChakraMotion
         display={{
           sm: 'flex',
         }}
@@ -24,9 +25,11 @@ const PostCard = ({ post }: PostCardProps) => {
           sm: '24px',
         }}
         cursor="pointer"
-        _hover={{
-          opacity: 0.8,
-          transition: 'opacity 0.2s ease-in-out',
+        whileHover={{
+          scale: 1.01,
+          transition: {
+            duration: 0.2,
+          },
         }}
       >
         <Box
@@ -83,7 +86,7 @@ const PostCard = ({ post }: PostCardProps) => {
             {format(new Date(post.date), 'yy.MM.dd')}
           </Text>
         </Stack>
-      </Box>
+      </ChakraMotion>
     </Link>
   )
 }
