@@ -23,7 +23,7 @@ const proseOverrides: ComponentSingleStyleConfig = {
     ...UlLiStyle({ repeatCount: 6 }),
     h2: {
       position: 'relative',
-      fontSize: '3xl',
+      fontSize: { base: '2xl', md: '3xl' },
       scrollMarginTop: '64px',
       _hover: {
         _before: {
@@ -37,7 +37,7 @@ const proseOverrides: ComponentSingleStyleConfig = {
     },
     h3: {
       position: 'relative',
-      fontSize: '2xl',
+      fontSize: { base: 'xl', md: '2xl' },
       scrollMarginTop: '64px',
       _hover: {
         _before: {
@@ -50,8 +50,14 @@ const proseOverrides: ComponentSingleStyleConfig = {
       },
     },
     h4: {
-      fontSize: 'xl',
+      fontSize: { base: 'lg', md: 'xl' },
       scrollMarginTop: '64px',
+    },
+    p: {
+      fontSize: { base: 'sm', md: 'md' },
+    },
+    li: {
+      fontSize: { base: 'sm', md: 'md' },
     },
     'ol > li': {
       listStyleType: 'decimal',
