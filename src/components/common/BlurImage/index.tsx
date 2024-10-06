@@ -10,7 +10,8 @@ const BlurImage = async ({ src, ...props }: ImageProps & { src: string }) => {
       {...props}
       alt={props.alt || ''}
       src={src}
-      placeholder={base64}
+      placeholder="blur"
+      blurDataURL={base64}
       style={{
         ...props.style,
         transition: 'opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1)',

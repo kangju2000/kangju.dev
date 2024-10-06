@@ -1,5 +1,5 @@
 ---
-date: 2024-10-05
+date: 2024-10-06
 title: Shadow DOM으로 스타일 충돌 해결하기
 description: Gachon Tools 프로젝트에서 Shadow DOM을 적용하여 스타일 충돌 문제를 해결해보자
 thumbnail: '/posts/solving-style-conflicts-with-shadow-dom/thumbnail.webp'
@@ -8,7 +8,9 @@ tags: ['web', 'Shadow DOM', 'gachon-tools']
 
 ## 1. 서론
 
-Gachon Tools는 학교 LMS(학습 관리 시스템) 서비스 위에 렌더링되는 크롬 익스텐션이다. 이 프로젝트를 진행하면서 한 가지 문제가 있었다. 바로 LMS의 전역 스타일과 충돌하는 문제였다.
+Gachon Tools는 학교 LMS(학습 관리 시스템) 서비스 위에 렌더링되는 크롬 익스텐션이다. 이 프로젝트에 대한 이야기는 전에 작성한 [우당탕탕 리액트로 크롬 익스텐션 만들기](/posts/gachon-extension)에 자세히 나와있다.
+
+이 프로젝트를 진행하면서 한 가지 문제가 있었는데, 바로 LMS의 전역 스타일과 충돌하는 문제였다.
 
 ![LMS의 전역 스타일](/posts/solving-style-conflicts-with-shadow-dom/lms-css.png)
 
