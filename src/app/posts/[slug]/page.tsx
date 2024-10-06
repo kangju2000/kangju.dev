@@ -25,7 +25,7 @@ export async function generateMetadata({
     },
     keywords: post.tags,
     openGraph: {
-      title: post.description,
+      title: post.title,
       description: post?.description || '프론트엔드 개발자 강주혁입니다.',
       type: 'website',
       locale: 'ko',
