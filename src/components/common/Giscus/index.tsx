@@ -12,7 +12,7 @@ const Giscus = () => {
 
     const script = document.createElement('script')
     script.src = 'https://giscus.app/client.js'
-    script.setAttribute('data-repo', 'kangju2000/next-blog')
+    script.setAttribute('data-repo', 'kangju2000/kangju.dev')
     script.setAttribute('data-repo-id', 'R_kgDOKXQbJQ')
     script.setAttribute('data-category', 'General')
     script.setAttribute('data-category-id', 'DIC_kwDOKXQbJc4CZ4HM')
