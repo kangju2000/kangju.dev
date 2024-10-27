@@ -30,6 +30,7 @@ export async function generateMetadata({
       type: 'website',
       locale: 'ko',
       url: `${BASE_WEB_URL}/posts/${slug}`,
+      images: [{ url: post.thumbnail }],
     },
   }
 }
