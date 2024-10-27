@@ -1,4 +1,4 @@
-import { Box, Center, Heading, Stack, Text } from '@chakra-ui/react'
+import { Box, Center, Heading, Text } from '@chakra-ui/react'
 
 import MDXContent from '../MDXContent'
 import BlurImage from '@/components/common/BlurImage'
@@ -15,49 +15,42 @@ interface MDXPostProps {
 const MDXPost = ({ post }: MDXPostProps) => {
   return (
     <ChakraMotion variants={staggerTwo} initial="initial" animate="animate">
-      <Stack spacing="50px">
-        <ChakraMotion variants={fadeIn}>
-          <Center
-            pos="relative"
-            w="100%"
-            minH="200px"
-            p="24px"
-            flexDirection="column"
-            borderRadius="16px"
-            overflow="hidden"
-          >
-            <Box pos="absolute" top="0" left="0" w="100%" h="100%" bg="blackAlpha.500" zIndex="1" />
-            <BlurImage
-              src={post.thumbnail}
-              alt="thumbnail"
-              style={{
-                objectFit: 'cover',
-              }}
-              fill
-            />
-            <Center flexDirection="column" zIndex="1" h="100%" color="white" textAlign="center">
-              <Heading
-                as="h2"
-                mb={{
-                  base: '12px',
-                  sm: '18px',
-                }}
-                wordBreak="break-all"
-              >
-                {post.title}
-              </Heading>
-              <Text fontSize="sm" fontWeight="700" color="gray.100">
-                {post.dateFormatted} | {post.readTime.text}
-              </Text>
-            </Center>
-          </Center>
-        </ChakraMotion>
+      <ChakraMotion variants={fadeIn}>
+        <Center
+          pos="relative"
+          w="100%"
+          minH="250px"
+          p="24px"
+          flexDirection="column"
+          borderRadius="16px"
+          overflow="hidden"
+        >
+          <Box pos="absolute" top="0" left="0" w="100%" h="100%" bg="blackAlpha.500" zIndex="1" />
+          <BlurImage
+            src={post.thumbnail}
+            alt="thumbnail"
+            style={{ objectFit: 'cover', filter: 'blur(10px)', opacity: 0.7, scale: 1.1 }}
+            fill
+          />
 
-        <ChakraMotion variants={fadeIn}>
-          <MDXContent code={post.body.code} />
-        </ChakraMotion>
-        <Giscus />
-      </Stack>
+          <Center flexDirection="column" zIndex="1" h="100%" color="white" textAlign="center">
+            <Heading as="h2" mb={{ base: '12px', sm: '18px' }} wordBreak="break-all">
+              {post.title}
+            </Heading>
+            <Heading as="h3" fontSize="sm" fontWeight="700" color="gray.100">
+              {post.description}
+            </Heading>
+            <Text pos="absolute" bottom={6} fontSize="sm" fontWeight="700" color="gray.100">
+              {post.dateFormatted} | {post.readTime.text}
+            </Text>
+          </Center>
+        </Center>
+      </ChakraMotion>
+
+      <ChakraMotion variants={fadeIn}>
+        <MDXContent code={post.body.code} />
+      </ChakraMotion>
+      <Giscus />
     </ChakraMotion>
   )
 }

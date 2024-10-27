@@ -14,15 +14,15 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const post = allPosts.find((post) => post.slug === slug)
 
-  if (!post) return metadata
+  if (post == null) {
+    return metadata
+  }
 
   return {
     metadataBase: new URL(BASE_WEB_URL),
     title: post.title,
     description: post?.description || '프론트엔드 개발자 강주혁입니다.',
-    icons: {
-      icon: '/icon.svg',
-    },
+    icons: { icon: '/icon.svg' },
     keywords: post.tags,
     openGraph: {
       title: post.title,
@@ -35,15 +35,15 @@ export async function generateMetadata({
 }
 
 export function generateStaticParams() {
-  return allPosts.map((post) => ({
-    slug: post.slug,
-  }))
+  return allPosts.map((post) => ({ slug: post.slug }))
 }
 
 export default function PostPage({ params }: { params: { slug: string } }) {
   const post = allPosts.find((post) => post.slug === params.slug)
 
-  if (!post) return <NotFound />
+  if (post == null) {
+    return <NotFound />
+  }
 
   return <MDXPost post={post} />
 }

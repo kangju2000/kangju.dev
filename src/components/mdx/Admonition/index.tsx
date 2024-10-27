@@ -16,8 +16,8 @@ type Admonition = {
 const admonition: Admonition = {
   note: {
     title: '노트',
-    bg: '#474748',
-    borderLeftColor: '#d4d5d8',
+    bg: 'gray.700',
+    borderLeftColor: 'gray.200',
     icon: () => (
       <svg viewBox="0 0 14 16" fill="currentColor" width="14" height="16">
         <path
@@ -29,8 +29,8 @@ const admonition: Admonition = {
   },
   tip: {
     title: '팁',
-    bg: '#003100',
-    borderLeftColor: '#009400',
+    bg: 'blue.800',
+    borderLeftColor: 'blue.200',
     icon: () => (
       <svg viewBox="0 0 12 16" fill="currentColor" width="12" height="16">
         <path
@@ -42,8 +42,8 @@ const admonition: Admonition = {
   },
   warning: {
     title: '주의',
-    bg: '#4d3800',
-    borderLeftColor: '#e6a700',
+    bg: 'orange.700',
+    borderLeftColor: 'orange.200',
     icon: () => (
       <svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16">
         <path
@@ -55,8 +55,8 @@ const admonition: Admonition = {
   },
   danger: {
     title: '위험',
-    bg: '#4b1113',
-    borderLeftColor: '#e13238',
+    bg: 'red.700',
+    borderLeftColor: 'red.200',
     icon: () => (
       <svg viewBox="0 0 12 16" fill="currentColor" width="12" height="16">
         <path

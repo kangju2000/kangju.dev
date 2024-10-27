@@ -3,11 +3,7 @@ import type { ComponentSingleStyleConfig } from '@chakra-ui/react'
 const UlLiStyle = ({ repeatCount }: { repeatCount: number }) => {
   const listStyleTypes = ['disc', 'circle', 'square']
 
-  const style: { [key: string]: ComponentSingleStyleConfig['baseStyle'] } = {
-    'ul > li::marker': {
-      color: 'teal.600',
-    },
-  }
+  const style: { [key: string]: ComponentSingleStyleConfig['baseStyle'] } = {}
 
   Array.from({ length: repeatCount }).forEach((_, i) => {
     style[`ul > li ${'> ul > li'.repeat(i)}`] = {
@@ -58,18 +54,17 @@ const proseOverrides: ComponentSingleStyleConfig = {
     },
     li: {
       fontSize: { base: 'sm', md: 'md' },
+      margin: '8px 0',
     },
     'ol > li': {
       listStyleType: 'decimal',
-    },
-    'ol > li::marker': {
-      color: 'teal.600',
     },
     'ol > li > ol > li': {
       listStyleType: 'lower-alpha',
     },
     a: {
-      color: 'teal.500',
+      color: 'blue.400',
+      fontWeight: 'semibold',
       outline: 'none !important',
       boxShadow: 'none !important',
       _hover: {
