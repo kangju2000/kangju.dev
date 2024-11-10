@@ -8,7 +8,6 @@ import rehypePrismPlus from 'rehype-prism-plus'
 import rehypeSlug from 'rehype-slug'
 import remarkBreaks from 'remark-breaks'
 import remarkGfm from 'remark-gfm'
-import remarkToc from 'remark-toc'
 import remarkUnwrapImages from 'remark-unwrap-images'
 
 import type { MDXOptions } from 'contentlayer/core'
@@ -86,7 +85,7 @@ export default makeSource({
   contentDirPath: 'contents',
   documentTypes: [Post, Log],
   mdx: {
-    remarkPlugins: [remarkGfm, remarkBreaks, remarkToc, remarkUnwrapImages],
+    remarkPlugins: [remarkGfm, remarkUnwrapImages, remarkBreaks],
     rehypePlugins: [
       rehypeSlug,
       rehypeCodeTitles,

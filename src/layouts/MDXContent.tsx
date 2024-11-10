@@ -1,9 +1,11 @@
+import { Box } from '@chakra-ui/react'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 
 import Prose from './Prose'
 import CustomLink from '@/components/common/CustomLink'
 import Admonition from '@/components/mdx/Admonition'
 import Image from '@/components/mdx/Image'
+import TOC from '@/components/mdx/TOC'
 import Youtube from '@/components/mdx/Youtube'
 
 import type { MDXComponents } from 'mdx/types'
@@ -24,9 +26,12 @@ const MDXContent = ({ code }: MDXContentProps) => {
   const MDXComponent = useMDXComponent(code)
 
   return (
-    <Prose>
-      <MDXComponent code={code} components={components} />
-    </Prose>
+    <Box id="mdx-content">
+      <Prose>
+        <TOC />
+        <MDXComponent components={components} />
+      </Prose>
+    </Box>
   )
 }
 

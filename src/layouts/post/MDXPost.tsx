@@ -48,7 +48,9 @@ const MDXPost = ({ post }: MDXPostProps) => {
       </ChakraMotion>
 
       <ChakraMotion variants={fadeIn}>
-        <MDXContent code={post.body.code} />
+        <Box position="relative" maxW="1200px" mx="auto">
+          <MDXContent code={post.body.code} />
+        </Box>
       </ChakraMotion>
       <Giscus />
     </ChakraMotion>

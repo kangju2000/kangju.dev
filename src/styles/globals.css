@@ -351,14 +351,17 @@ pre[class*='language-'] > code[class*='language-'] {
   font-size: 0.8rem;
 }
 
+/* highlight text */
 :not(pre) > code {
   font-weight: inherit !important;
-  font-size: 0.9em;
+  font-size: 14px;
   border: 1px solid var(--chakra-colors-chakra-border-color);
   background: var(--chakra-colors-chakra-subtle-bg);
   color: var(--chakra-colors-chakra-body-text);
-  padding: 1.4px 4.2px;
-  border-radius: 4.2px;
+  padding: 2px 4px;
+  margin: 0 2px;
+  border-radius: 4px;
+  font-family: var(--chakra-fonts-mono), Consolas, 'Andale Mono', 'Ubuntu Mono', 'Courier New';
 }
 
 :not(pre) > code::before,

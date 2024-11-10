@@ -8,6 +8,9 @@ const UlLiStyle = ({ repeatCount }: { repeatCount: number }) => {
   Array.from({ length: repeatCount }).forEach((_, i) => {
     style[`ul > li ${'> ul > li'.repeat(i)}`] = {
       listStyleType: listStyleTypes[i % listStyleTypes.length],
+      '::marker': {
+        color: 'gray.500',
+      },
     }
   })
 
@@ -52,9 +55,15 @@ const proseOverrides: ComponentSingleStyleConfig = {
     p: {
       fontSize: { base: 'sm', md: 'md' },
     },
+    'li > p': {
+      margin: '8px 0',
+    },
     li: {
       fontSize: { base: 'sm', md: 'md' },
       margin: '8px 0',
+    },
+    'ol > li::marker': {
+      color: 'gray.500',
     },
     'ol > li': {
       listStyleType: 'decimal',
@@ -74,6 +83,10 @@ const proseOverrides: ComponentSingleStyleConfig = {
     blockQuote: {
       fontStyle: 'inherit',
       color: 'gray.500',
+    },
+    pre: {
+      backgroundColor: 'gray.900 !important',
+      fontSize: '14px',
     },
   },
 }
