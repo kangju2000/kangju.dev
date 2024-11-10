@@ -39,6 +39,7 @@ src/vs/
 Monaco Editor의 TextModel은 VSCode의 UndoRedoService를 주입받아 사용한다.
 
 ```typescript
+// src/vs/editor/common/model/textModel.ts
 class TextModel {
   private readonly _commandManager: EditStack;
 
@@ -88,6 +89,7 @@ future 스택이 비워지는 이유는 Undo 후 새로운 작업이 발생하�
 ![](/posts/vscode-undo-redo/process.png)
 
 ```typescript
+// src/vs/platform/undoRedo/common/undoRedoService.ts
 class UndoRedoService implements IUndoRedoService {
   public undo(resource: URI): void {
     const editStack = this._editStacks.get(resource)
