@@ -21,12 +21,16 @@ export function useScroll(headings: TOCItem[]) {
     )
 
     headings.forEach((heading) => {
-      observer.observe(document.getElementById(heading.id)!)
-    })
+      const element = document.getElementById(heading.id)
 
-    return () => {
-      observer.disconnect()
-    }
+      if (element) {
+        observer.observe(element)
+      }
+
+      return () => {
+        observer.disconnect()
+      }
+    })
   }, [headings])
 
   return { activeId }

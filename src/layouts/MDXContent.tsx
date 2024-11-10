@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react'
+import { Box, Spacer } from '@chakra-ui/react'
 import { useMDXComponent } from 'next-contentlayer/hooks'
 
 import Prose from './Prose'
@@ -31,6 +31,7 @@ const MDXContent = ({ code }: MDXContentProps) => {
         <TOC />
         <MDXComponent components={components} />
       </Prose>
+      <Spacer h="100px" />
     </Box>
   )
 }
