@@ -354,11 +354,11 @@ pre[class*='language-'] > code[class*='language-'] {
 /* highlight text */
 :not(pre) > code {
   font-weight: inherit !important;
-  font-size: 14px;
+  font-size: 15px;
   border: 1px solid var(--chakra-colors-chakra-border-color);
   background: var(--chakra-colors-chakra-subtle-bg);
   color: var(--chakra-colors-chakra-body-text);
-  padding: 2px 4px;
+  padding: 1px 3px;
   margin: 0 2px;
   border-radius: 4px;
   font-family: var(--chakra-fonts-mono), Consolas, 'Andale Mono', 'Ubuntu Mono', 'Courier New';
