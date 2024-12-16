@@ -29,8 +29,9 @@ const TOC = () => {
   return (
     <Box
       position="fixed"
-      right={{ xl: '40px', '2xl': '80px' }}
+      right={{ xl: '16px', '2xl': '80px' }}
       top="120px"
+      maxWidth="280px"
       maxHeight="calc(100vh - 200px)"
       overflowY="auto"
       display={{ base: 'none', xl: 'block' }}
@@ -77,6 +78,7 @@ const TOC = () => {
               borderRadius="md"
               fontWeight="normal !important"
               display="block"
+              whiteSpace="pre-wrap"
             >
               {item.text}
             </Link>

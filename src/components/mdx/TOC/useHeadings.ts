@@ -16,13 +16,11 @@ export function useHeadings() {
       return
     }
 
-    const headingsArray = Array.from(mdxContent.querySelectorAll('h1, h2, h3, h4')).map(
-      (element) => ({
-        id: element.id,
-        text: element.textContent ?? '',
-        level: parseInt(element.tagName.slice(1)),
-      })
-    )
+    const headingsArray = Array.from(mdxContent.querySelectorAll('h1, h2, h3')).map((element) => ({
+      id: element.id,
+      text: element.textContent ?? '',
+      level: parseInt(element.tagName.slice(1)),
+    }))
 
     setHeadings(headingsArray)
   }, [])
