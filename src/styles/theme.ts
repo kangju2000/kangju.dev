@@ -1,11 +1,11 @@
 import { extendTheme } from '@chakra-ui/react'
 import { withProse } from '@nikolovlazar/chakra-ui-prose'
-import { Noto_Sans_KR, JetBrains_Mono } from 'next/font/google'
+import { JetBrains_Mono, IBM_Plex_Sans_KR } from 'next/font/google'
 
 import proseOverrides from '@/styles/prose'
 
-const notoSansKr = Noto_Sans_KR({
-  weight: ['400', '700', '900'],
+const ibmPlexSansKr = IBM_Plex_Sans_KR({
+  weight: ['400', '500', '700'],
   style: 'normal',
   display: 'swap',
   subsets: ['latin'],
@@ -19,16 +19,11 @@ const jetBrainsMono = JetBrains_Mono({
 })
 
 const fonts = {
-  heading: notoSansKr.style.fontFamily,
-  body: notoSansKr.style.fontFamily,
+  heading: ibmPlexSansKr.style.fontFamily,
+  body: ibmPlexSansKr.style.fontFamily,
   mono: jetBrainsMono.style.fontFamily,
 }
 
-const theme = extendTheme(
-  {
-    fonts,
-  },
-  withProse(proseOverrides)
-)
+const theme = extendTheme({ fonts }, withProse(proseOverrides))
 
 export default theme
