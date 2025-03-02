@@ -1,0 +1,233 @@
+---
+date: 2025-03-02
+title: 오픈소스 큐레이션 - 문서화 프레임워크
+description: 문서화를 위한 오픈소스 큐레이션
+thumbnail: '/posts/curation-document/thumbnail.png'
+tags: ['curation', 'open-source', '오픈소스', 'document']
+---
+
+## **시작하며**
+
+문서화는 프로젝트를 이해하고 유지보수하는 데 필수적인 요소다. 코드만큼이나 중요한 역할을 하지만, 적절한 도구를 선택하지 않으면 부담스러울 수 있다.
+
+오픈소스 생태계에는 다양한 문서화 프레임워크가 존재하며, 각기 다른 방식으로 접근한다.
+이번 큐레이션에서는 현재 활발하게 사용되고 있는 문서화 프레임워크들을 살펴보며, 어떤 방식이 가장 적합한지 탐색해보자.
+
+---
+
+### **Gatsby**
+
+<img
+  alt="GitHub Repo stars"
+  src="https://img.shields.io/github/stars/gatsbyjs/gatsby?style=for-the-badge"
+/>
+
+![](/posts/curation-document/gatsby.png)
+
+#### **Links**
+
+- GitHub: [gatsbyjs/gatsby](https://github.com/gatsbyjs/gatsby)
+- Website: [gatsbyjs.org](https://www.gatsbyjs.org/)
+
+#### **About**
+
+> The best React-based framework with performance, scalability, and security built in.
+
+`Gatsby`는 최신 웹 기술을 활용하여 빠르고 안정적인 웹사이트를 구축할 수 있도록 설계된 React 기반 프레임워크다.  
+정적 사이트 생성(SSG)과 동적 기능을 결합하여 **SEO 최적화, 빠른 로딩 속도, 보안 강화**를 기본 제공하며, 플러그인 기반 아키텍처를 통해 확장성을 극대화했다.  
+또한, Next.js와 같은 서버 사이드 렌더링(SSR) 기능도 지원하여 다양한 웹사이트 구축이 가능하다.
+
+#### **Philosophy**
+
+Gatsby는 "**모든 웹사이트가 빠르고 접근 가능해야 한다**"는 철학을 기반으로 만들어졌다.  
+Jamstack 아키텍처를 통해 성능을 극대화하며, 정적 사이트를 CDN에 배포하여 더욱 빠른 웹 경험을 제공하는 것을 목표로 한다.
+
+#### **Review**
+
+Gatsby는 강력한 플러그인 생태계와 커뮤니티 지원이 큰 장점이다.  
+하지만 Next.js와 같은 프레임워크가 성장하면서 인기가 감소하고 있으며, [2023년 2월 Netlify가 Gatsby를 인수](https://www.gatsbyjs.com/blog/gatsby-is-joining-netlify/)한 이후 개발이 활발하지 않아 점점 생태계에서 사라지고 있는 점이 아쉽다.
+
+---
+
+### **Docusaurus**
+
+<img
+  alt="GitHub Repo stars"
+  src="https://img.shields.io/github/stars/facebook/docusaurus?style=for-the-badge"
+/>
+
+![](/posts/curation-document/docusaurus.jpg)
+
+#### **Links**
+
+- GitHub: [facebook/docusaurus](https://github.com/facebook/docusaurus)
+- Website: [docusaurus.io](https://docusaurus.io/)
+
+#### **About**
+
+> Easy to maintain open source documentation websites.
+
+`Docusaurus`는 React 기반의 정적 사이트 생성기로, **Markdown을 활용해 기술 문서를 쉽게 작성**할 수 있도록 설계되었다.  
+버전 관리, 다국어 지원, 검색, 테마 커스터마이징 등의 기능을 기본 제공하며, 최소한의 API로 배우기 쉽고 확장성이 뛰어나다.
+
+#### **Philosophy**
+
+Docusaurus는 "**최소한의 API 표면적(Minimal API Surface Area)**"을 유지하는 것이 핵심 철학이다. 설정이 간결하고 학습 부담이 적어야 하며, 불필요한 추상화를 배제해 개발자가 직접 기능을 확장할 수 있도록 한다. **잘못된 추상화를 제공하는 것보다, 아예 추상화를 제공하지 않는 것이 낫다**는 접근 방식을 따른다.
+
+또한, Docusaurus는 **벤더 락인을 최소화하는 방향으로 설계**되었다. 기본적으로 제공되는 플러그인과 스타일링 방식을 사용할 필요 없이, **Markdown 엔진, CSS 프레임워크, 테마 방식 등 핵심적인 요소들을 자유롭게 선택할 수 있다.** 표준적인 웹 기술을 기반으로 하기 때문에, 특정 플랫폼이나 도구에 종속되지 않고도 유지보수와 확장이 용이하다.
+
+이 접근 방식은 [Sebastian Markbage의 강연](https://www.youtube.com/watch?v=4anAwXYqLG8&ab_channel=JSConf)에서도 강조된 개념으로, 불필요한 제약 없이 개발자가 원하는 방식으로 문서를 구축할 수 있도록 하는 것을 목표로 한다.
+
+#### **Review**
+
+Docusaurus의 철학을 보며 **벤더 락인(Vendor Lock-in)** 이라는 아키텍처 안티패턴을 처음 알게 되었다. 특정 기술에 종속되지 않고, Markdown 엔진이나 CSS 프레임워크 등을 자유롭게 선택할 수 있도록 설계되었다는 점이 인상적이었다.
+또한, **최소한의 API 표면적을 유지하는 원칙**을 따르며 불필요한 추상화를 배제하고 있다는 점도 흥미로웠다. 핵심 기능만 제공하면서도 확장성을 고려하는 접근 방식이, 단순한 사용 편의성을 넘어 장기적인 유지보수성을 위한 선택이라는 점이 와닿았다. **최소한의 제약으로 최대한의 자유도를 제공하는 문서화 프레임워크라는 느낌을 받았다.**
+
+---
+
+### **Nextra**
+
+<img
+  alt="GitHub Repo stars"
+  src="https://img.shields.io/github/stars/shuding/nextra?style=for-the-badge"
+/>
+
+![](/posts/curation-document/nextra.jpeg)
+
+#### **Links**
+
+- GitHub: [shuding/nextra](https://github.com/shuding/nextra)
+- Website: [nextra.site](https://nextra.site/)
+
+#### **About**
+
+> Simple, powerful, and flexible site generation framework with everything you love from Next.js.
+
+`Nextra`는 **Next.js 기반의 정적 사이트 생성기**로, Markdown을 활용하여 **콘텐츠 중심의 웹사이트를 쉽게 만들 수 있도록 설계**되었다.  
+Next.js의 강력한 기능을 유지하면서도, 더 간결한 설정과 짧은 코드로 문서 사이트를 구축할 수 있는 것이 특징이다.
+
+#### **Review**
+
+개인적으로 즐겨 사용하는 문서화 프레임워크 중 하나다. Next.js 기반이어서 기존 Next.js 프로젝트와 쉽게 통합할 수 있고, 설정이 간단해 빠르게 문서를 만들 수 있다는 점이 큰 장점이라고 생각한다.
+
+다만, 사용하면서 아쉬운 점도 있었다. **제공하는 기능이 꽤 많이 추상화되어 있어, 문서가 실제로 어떻게 렌더링될지 예측하기 어려운 경우가 있다.** 예를 들어, config 파일을 통해 UI를 설정할 때 예상과 다르게 렌더링되는 경우가 종종 발생했다. 직접적인 제어보다는 설정 기반으로 동작하는 부분이 많아서, 커스터마이징이 필요한 경우에는 오히려 불편할 때도 있었다.
+
+그럼에도 불구하고 UI가 깔끔하고 유지보수가 활발해 계속 사용하게 된다. **빠르게 문서를 구축하고 싶은 경우에는 최적의 선택 중 하나**라고 생각한다.
+
+---
+
+### **VitePress**
+
+<img
+  alt="GitHub Repo stars"
+  src="https://img.shields.io/github/stars/vuejs/vitepress?style=for-the-badge"
+/>
+
+![](/posts/curation-document/vitepress.jpg)
+
+#### **Links**
+
+- GitHub: [vuejs/vitepress](https://github.com/vuejs/vitepress)
+- Website: [vitepress.dev](https://vitepress.dev/)
+
+#### **About**
+
+> Vite & Vue powered static site generator.
+
+`VitePress`는 **Vite와 Vue 기반의 정적 사이트 생성기(SSG)** 로, 빠르고 가벼운 문서화 프레임워크다.  
+VuePress의 후속 프로젝트로 Vue 3와 Vite를 활용하여 더 나은 성능과 개발 경험(DX)을 제공한다.
+
+#### **Review**
+
+Vue 생태계에서 가볍고 빠른 문서화 솔루션을 찾는다면 좋은 선택이다. **Vite 기반의 빠른 빌드 속도와 즉각적인 개발 서버 시작**이 강점이며, 기본적으로 기술 문서 작성을 위한 테마를 제공해 Vue 프로젝트의 공식 문서나 블로그 운영에 적합하다.
+
+다만, **Vue를 기반으로 하기 때문에 다른 프레임워크 사용자에게는 진입 장벽이 될 수 있으며, 플러그인 생태계가 아직 성장 중이라 필요한 기능을 직접 구현해야 할 때도 있다.** 그럼에도 불구하고, Vue 개발자라면 **가볍고 최적화된 문서화 프레임워크로 활용하기에 충분히 매력적이다.**
+
+---
+
+### **Fumadocs**
+
+<img
+  alt="GitHub Repo stars"
+  src="https://img.shields.io/github/stars/fuma-nama/fumadocs?style=for-the-badge"
+/>
+
+![](/posts/curation-document/fumadocs.png)
+
+#### **Links**
+
+- GitHub: [fuma-nama/fumadocs](https://github.com/fuma-nama/fumadocs)
+- Website: [fumadocs.vercel.app](https://fumadocs.vercel.app/)
+
+#### **About**
+
+> The beautiful docs framework with Next.js.
+
+`Fumadocs`는 최소한의 설정으로 문서화 사이트를 구축할 수 있도록 설계된 Next.js 기반 프레임워크다. 기존의 문서화 프레임워크들이 특정한 방식에 종속적인 경우가 많지만, **Fumadocs는 개발자가 원하는 방식대로 변경할 수 있는 "제약 없는 프레임워크"** 를 목표로 한다.
+
+#### **Philosophy**
+
+Fumadocs는 "불필요한 추상화를 배제하고 개발자의 제어권을 보장하는 것"을 중요하게 생각한다.
+설정 파일을 통한 자동화보다는 직접 코드 작성 및 UI 커스터마이징이 가능하도록 설계되었다.
+
+Next.js의 App Router, 정적 사이트 생성(SSG), 클라이언트 컴포넌트 등의 기능을 그대로 활용하면서도,
+문서화 과정에서 개발자가 원하는 방식으로 UI와 기능을 구성할 수 있도록 높은 자유도를 제공한다.
+
+#### **Review**
+
+Fumadocs는 단순한 문서 프레임워크를 넘어, 문서 구축을 위한 통합 솔루션에 가깝다.
+Headless UI 라이브러리(Fumadocs Core), type-safe한 콘텐츠 변환을 지원하는 MDX, 설정을 간편하게 도와주는 CLI 도구까지 포함되어 있어, 여러 도구를 조합할 필요 없이 한 곳에서 해결할 수 있다는 점이 강점이다.
+
+---
+
+### **Quartz**
+
+<img
+  alt="GitHub Repo stars"
+  src="https://img.shields.io/github/stars/jackyzha0/quartz?style=for-the-badge"
+/>
+
+![](/posts/curation-document/quartz.png)
+
+#### **Links**
+
+- GitHub: [jackyzha0/quartz](https://github.com/jackyzha0/quartz)
+- Website: [quartz.jzhao.xyz](https://quartz.jzhao.xyz/)
+
+#### **About**
+
+> 🌱 a fast, batteries-included static-site generator that transforms Markdown content into fully functional websites
+
+`Quartz`는 빠르고 강력한 정적 사이트 생성기로, Markdown 기반 콘텐츠를 웹사이트로 변환하는 데 최적화된 프레임워크다.
+특히, **디지털 정원(Digital Garden)** 개념을 중심으로 설계되어 있어, 단순한 문서화 프레임워크를 넘어 아이디어를 정리하고 공유하는 플랫폼으로 활용할 수 있다.
+
+#### **Philosophy**
+
+Quartz는 기존 문서화 프레임워크와 달리, 노트를 선형적이고 계층적으로 정리하는 방식을 강요하지 않는다.
+이는 "**정원은 진정한 하이퍼텍스트여야 한다**"는 철학을 기반으로 한다.
+
+- 정형화된 폴더 구조보다는 자연스럽게 연결되는 아이디어의 흐름을 우선한다.
+- 특정 구조에 구애받지 않고, 자유로운 방식으로 정보를 축적하고 발전시킬 수 있다.
+- 디지털 정원 개념을 통해 기록을 공유하고, 피드백을 통해 발전시키는 과정을 중요하게 여긴다.
+
+> “문을 열어둔 채로 일하는 사람은 온갖 방해를 받지만, 가끔은 세상이 어떤 모습인지, 그리고 무엇이 중요한지에 대한 단서를 얻기도 한다.”
+> — 리처드 해밍
+
+이처럼 Quartz는 단순한 정적 사이트 생성기가 아니라, 열린 공간에서 사고를 확장하고 공유할 수 있도록 돕는 도구를 목표로 한다.
+
+#### **Review**
+
+Markdown을 기반으로 개인 노트, 기술 블로그, 지식 관리 시스템을 구축하기에 적합한 도구다.
+설정이 단순하여 비개발자도 쉽게 활용할 수 있으며, 개발자라면 커스터마이징을 통해 더욱 강력한 기능을 추가할 수도 있다.
+
+하지만 전통적인 문서화 시스템(Notion 등)과는 철학이 다르기 때문에, 정형화된 구조를 선호하는 사용자에게는 적응이 필요할 수 있다.
+디지털 정원이라는 개념에 익숙하지 않다면 초기 학습 곡선이 존재할 수도 있다.
+
+---
+
+## **결론**
+
+프로젝트의 문서화 방식은 개발 경험과 유지보수에 큰 영향을 미친다.
+다양한 오픈소스 도구들이 각기 다른 방식으로 문서화를 지원하며, 프로젝트의 목표와 협업 방식에 따라 최적의 선택이 달라질 수 있다.
+
+이번 큐레이션을 통해 각 도구의 철학과 기능을 살펴봤다. 철학과 컨셉을 중심으로 오픈소스들을 탐색하니 새로운 개념들과 의도를 알게 되어 흥미로웠다. 앞으로도 오픈소스 생태계에서 주목할 만한 도구들을 지속적으로 탐색해보자.
