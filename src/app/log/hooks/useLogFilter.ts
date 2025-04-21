@@ -1,6 +1,7 @@
 import { type Log } from 'contentlayer/generated'
 import { format, parseISO } from 'date-fns'
-import { useMemo, useState } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 export interface LogFilterState {
   activeYear: string | null
@@ -8,14 +9,78 @@ export interface LogFilterState {
   currentPage: number
 }
 
+const STORAGE_KEY = 'log_filter_state'
+
 export default function useLogFilter(logs: Log[], logsPerPage: number = 10) {
-  const [filterState, setFilterState] = useState<LogFilterState>({
-    activeYear: null,
-    activeMonth: null,
-    currentPage: 1,
-  })
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const prevStateRef = useRef<LogFilterState | null>(null)
+
+  const initialState = useMemo<LogFilterState>(() => {
+    const isBrowser = typeof window !== 'undefined'
+
+    const yearFromUrl = searchParams.get('year')
+    const monthFromUrl = searchParams.get('month')
+    const pageFromUrl = searchParams.get('page')
+
+    let savedState: LogFilterState | null = null
+
+    if (isBrowser) {
+      try {
+        const savedData = localStorage.getItem(STORAGE_KEY)
+        if (savedData) {
+          savedState = JSON.parse(savedData)
+        }
+      } catch (error) {
+        console.error('Failed to parse saved filter state:', error)
+      }
+    }
+
+    return {
+      activeYear: yearFromUrl || savedState?.activeYear || null,
+      activeMonth: monthFromUrl || savedState?.activeMonth || null,
+      currentPage: pageFromUrl ? parseInt(pageFromUrl, 10) : savedState?.currentPage || 1,
+    }
+  }, [searchParams])
+
+  const [filterState, setFilterState] = useState<LogFilterState>(initialState)
 
   const { activeYear, activeMonth, currentPage } = filterState
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    if (
+      prevStateRef.current?.activeYear === activeYear &&
+      prevStateRef.current?.activeMonth === activeMonth &&
+      prevStateRef.current?.currentPage === currentPage
+    ) {
+      return
+    }
+
+    prevStateRef.current = { activeYear, activeMonth, currentPage }
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(filterState))
+
+    const params = new URLSearchParams(searchParams.toString())
+
+    params.delete('year')
+    params.delete('month')
+    params.delete('page')
+
+    if (activeYear) params.set('year', activeYear)
+    if (activeMonth) params.set('month', activeMonth)
+    if (currentPage > 1) params.set('page', currentPage.toString())
+
+    const queryString = params.toString()
+    const newUrl = queryString ? `${pathname}?${queryString}` : pathname
+
+    if (window.location.pathname + window.location.search !== newUrl) {
+      router.replace(newUrl, { scroll: false })
+    }
+  }, [filterState, pathname, router, searchParams])
 
   const logsByYearAndMonth = useMemo<Record<string, Record<string, Log[]>>>(() => {
     const grouped: Record<string, Record<string, Log[]>> = {}

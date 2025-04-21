@@ -13,7 +13,7 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react'
 import { allLogs } from 'contentlayer/generated'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import AllLogsSection from './components/AllLogsSection'
 import FeaturedLogsSection from './components/FeaturedLogsSection'
@@ -27,6 +27,12 @@ export default function LogPage() {
   const [activeTab, setActiveTab] = useState(0)
   const [isMounted, setIsMounted] = useState(false)
   const isMobile = useBreakpointValue({ base: true, md: false })
+  const animationRef = useRef(true)
+
+  useEffect(() => {
+    setIsMounted(true)
+    window.scrollTo(0, 0)
+  }, [])
 
   const allLogData = useMemo(() => {
     return [...allLogs].sort(
@@ -53,23 +59,16 @@ export default function LogPage() {
 
   const { activeYear, activeMonth, currentPage } = filterState
 
-  const optimizedFadeIn = {
-    ...fadeIn,
-    initial: { opacity: 0 },
-    animate: { opacity: 1, transition: { duration: 0.5 } },
-    exit: { opacity: 0, transition: { duration: 0.3 } },
-  }
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
   if (!isMounted) {
     return null
   }
 
   return (
-    <ChakraMotion variants={optimizedFadeIn} initial="initial" animate="animate" exit="exit">
+    <ChakraMotion
+      {...(animationRef.current && { initial: 'initial', animate: 'animate', exit: 'exit' })}
+      onAnimationComplete={() => (animationRef.current = false)}
+      variants={fadeIn}
+    >
       <Box mb="32px">
         <Heading as="h1" fontSize="3xl" mb="12px">
           개발 로그
