@@ -1,59 +1,135 @@
-import { Box, Divider, Heading, Highlight, Stack, Text } from '@chakra-ui/react'
-import { allLogs } from 'contentlayer/generated'
-import { compareDesc } from 'date-fns'
+'use client'
 
-import FeaturedLog from './components/FeaturedLog'
+import {
+  Box,
+  Flex,
+  Heading,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+  useBreakpointValue,
+} from '@chakra-ui/react'
+import { allLogs } from 'contentlayer/generated'
+import { useEffect, useMemo, useState } from 'react'
+
+import AllLogsSection from './components/AllLogsSection'
+import FeaturedLogsSection from './components/FeaturedLogsSection'
+import useLogFilter from './hooks/useLogFilter'
 import ChakraMotion from '@/components/common/ChakraMotion'
-import List from '@/components/common/List'
 import { fadeIn } from '@/constants/animations'
 
-export default function LogPage() {
-  const featuredLogs = allLogs.filter((log) => !!log.description)
+const LOGS_PER_PAGE = 10
 
-  const sortedFeaturedLogs = featuredLogs.sort((a, b) =>
-    compareDesc(new Date(a.dateFormatted), new Date(b.dateFormatted))
-  )
+export default function LogPage() {
+  const [activeTab, setActiveTab] = useState(0)
+  const [isMounted, setIsMounted] = useState(false)
+  const isMobile = useBreakpointValue({ base: true, md: false })
+
+  const allLogData = useMemo(() => {
+    return [...allLogs].sort(
+      (a, b) => new Date(b.dateFormatted).getTime() - new Date(a.dateFormatted).getTime()
+    )
+  }, [])
+
+  const featuredLogs = useMemo(() => {
+    return allLogData.filter((log) => !!log.description)
+  }, [allLogData])
+
+  const {
+    filterState,
+    filteredLogs,
+    paginatedLogs,
+    availableYears,
+    availableMonths,
+    totalPages,
+    handleYearClick,
+    handleMonthClick,
+    handlePageChange,
+    handleResetFilters,
+  } = useLogFilter(allLogData, LOGS_PER_PAGE)
+
+  const { activeYear, activeMonth, currentPage } = filterState
+
+  const optimizedFadeIn = {
+    ...fadeIn,
+    initial: { opacity: 0 },
+    animate: { opacity: 1, transition: { duration: 0.5 } },
+    exit: { opacity: 0, transition: { duration: 0.3 } },
+  }
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  if (!isMounted) {
+    return null
+  }
 
   return (
-    <ChakraMotion variants={fadeIn} initial="initial" animate="animate" exit="exit">
-      <Stack spacing="24px">
-        <Box>
-          <Heading as="h1" fontSize="3xl" mb="12px">
-            개발 로그
-          </Heading>
-          <Text mb="6px">하루하루 개발한 내용을 기록합니다.</Text>
-          <Highlight
-            query="달력"
-            styles={{
-              color: 'white',
-              bg: 'teal.500',
-              padding: '1px 4px',
-              margin: '0 2px',
-              borderRadius: '4px',
-            }}
-          >
-            우측 하단의 달력을 통해 로그를 확인할 수 있습니다.
-          </Highlight>
-        </Box>
-        <Divider my="24px" />
-        <Box>
-          <Heading as="h2" fontSize="2xl" mb="16px">
-            Featured Logs
-          </Heading>
-          <List
-            // variants={staggerOne}
-            initial="initial"
-            animate="animate"
-            gap="12px"
-            items={sortedFeaturedLogs}
-            renderItem={(log) => (
-              // <ChakraMotion variants={fadeInUp}>
-              <FeaturedLog log={log} />
-              // </ChakraMotion>
-            )}
+    <ChakraMotion variants={optimizedFadeIn} initial="initial" animate="animate" exit="exit">
+      <Box mb="32px">
+        <Heading as="h1" fontSize="3xl" mb="12px">
+          개발 로그
+        </Heading>
+        <Text mb="16px">하루하루 개발한 내용을 기록합니다.</Text>
+      </Box>
+
+      {isMobile ? (
+        <Tabs
+          colorScheme="teal"
+          index={activeTab}
+          onChange={setActiveTab}
+          variant="enclosed"
+          isFitted
+        >
+          <TabList mb="24px">
+            <Tab>Featured</Tab>
+            <Tab>모든 로그</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel p="0">
+              <FeaturedLogsSection featuredLogs={featuredLogs} />
+            </TabPanel>
+            <TabPanel p="0">
+              <AllLogsSection
+                logs={filteredLogs}
+                paginatedLogs={paginatedLogs}
+                activeYear={activeYear}
+                activeMonth={activeMonth}
+                availableYears={availableYears}
+                availableMonths={availableMonths}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onYearClick={handleYearClick}
+                onMonthClick={handleMonthClick}
+                onPageChange={handlePageChange}
+                onResetFilters={handleResetFilters}
+              />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      ) : (
+        <Flex direction="column" gap="32px">
+          <FeaturedLogsSection featuredLogs={featuredLogs} />
+          <AllLogsSection
+            logs={filteredLogs}
+            paginatedLogs={paginatedLogs}
+            activeYear={activeYear}
+            activeMonth={activeMonth}
+            availableYears={availableYears}
+            availableMonths={availableMonths}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onYearClick={handleYearClick}
+            onMonthClick={handleMonthClick}
+            onPageChange={handlePageChange}
+            onResetFilters={handleResetFilters}
           />
-        </Box>
-      </Stack>
+        </Flex>
+      )}
     </ChakraMotion>
   )
 }
